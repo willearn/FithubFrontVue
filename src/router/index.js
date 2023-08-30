@@ -13,6 +13,31 @@ const router = createRouter({
       name: 'rent',
       component: () => import('../views/rent.vue')
     },
+    {
+      path: '/course',
+      name: 'course',
+      component: () => import('../views/course.vue')
+    },
+    {
+      path: '/course/single',
+      name: 'singleCourse',
+      component: () => import('../views/singleCourse.vue')
+    },
+    {
+      path: '/cart',
+      name: 'cart',
+      component: () => import('../views/cart.vue')
+    },
+    {
+      path: '/checkout',
+      name: 'checkout',
+      component: () => import('../views/checkout.vue')
+    },
+    {
+      path: '/ordercheck',
+      name: 'ordercheck',
+      component: () => import('../views/orderCheck.vue')
+    },
   ]
 })
 
