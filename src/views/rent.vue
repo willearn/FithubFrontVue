@@ -38,10 +38,42 @@
         </div>
     </div>
 
+
+    <!-- rent-->
+    <section class="page-section mybg-light" id="rent">
+        <div class="container text-center">
+            <h1>場地租借</h1>
+            <hr class="divider" />
+            <div class="col-lg-12 col-md-12">
+                
+                    
+                    場地:
+                    <select class="form-select-lg me-sm-5">
+                        <option>攀岩教室</option>
+                        <option>有氧大教室</option>
+                        <option>有氧小教室</option>
+                    </select>
+                    日期:
+                 <input type="date" class="form-control-lg me-sm-5">
+                    時段:
+                    <select class="form-select-lg me-sm-5">
+                        <option>上午</option>
+                        <option>下午</option>
+                        <option>晚上</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">預約</button>
+                
+            </div>
+        </div>
+    </section>
+
     <!-- rent-->
     <section class="page-section" id="rent">
         <div class="container text-center">
-            <h1>租借場地</h1>
+            <h1>場地介紹</h1>
+            <hr class="divider" />
+            <div class="col-lg-12 col-md-12 text-center">
+            </div>
             <div class="col-lg-12 col-md-12 text-center">
                 <table class="table table-bordered align-middle text-center">
                     <thead>
@@ -54,27 +86,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
+
                         <tr>
                             <td class="col-lg-2 col-md-2">攀岩教室</td>
                             <td class="col-lg-2 col-md-2">15</td>
                             <td class="col-lg-2 col-md-2">攀岩場</td>
                             <td class="col-lg-2 col-md-2">3000</td>
-                            <td class="col-lg-2 col-md-2"><img src="../assets/index/classroom/攀岩教室.jpg" class="img-fluid"></td>
+                            <td class="col-lg-2 col-md-2"><img src="../assets/index/classroom/攀岩教室.jpg" class="img-fluid">
+                            </td>
                         </tr>
                         <tr>
                             <td class="col-lg-2 col-md-2">有氧大教室</td>
                             <td class="col-lg-2 col-md-2">60</td>
                             <td class="col-lg-2 col-md-2">有氧運動、重量訓練、綜合體能、瑜珈、伸展、證照考試</td>
                             <td class="col-lg-2 col-md-2">12000</td>
-                            <td class="col-lg-2 col-md-2"><img src="../assets/index/classroom/有氧大教室.jpg" class="img-fluid"></td>
+                            <td class="col-lg-2 col-md-2"><img src="../assets/index/classroom/有氧大教室.jpg" class="img-fluid">
+                            </td>
                         </tr>
                         <tr>
                             <td class="col-lg-2 col-md-2">有氧小教室</td>
                             <td class="col-lg-2 col-md-2">30</td>
                             <td class="col-lg-2 col-md-2">有氧運動、重量訓練、綜合體能、瑜珈、伸展</td>
                             <td class="col-lg-2 col-md-2">6000</td>
-                            <td class="col-lg-2 col-md-2"><img src="../assets/index/classroom/有氧小教室.jpg" class="img-fluid"></td>
+                            <td class="col-lg-2 col-md-2"><img src="../assets/index/classroom/有氧小教室.jpg" class="img-fluid">
+                            </td>
                         </tr>
                     </tbody>
                 </table>
