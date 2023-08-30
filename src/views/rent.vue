@@ -116,15 +116,38 @@
 
 
 <script setup>
-
+import axios from 'axios'
 import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { reactive, ref, onMounted } from 'vue'
 
+const AllclassDateAndclassTime = ref([]);
+
+// 從伺服器獲取 JSON 格式教室資料
+const getfindAllclassDateAndclassTime = async () => {
+    try {
+        const response = await axios.get('http://localhost:8080/fithub/classes/findAllclassDateAndclassTime'); // 替換為實際的 API URL
+        AllclassDateAndclassTime.value = response.data; //data為response物件的屬性，通常是返回的JSON格式資料
+        console.log(AllclassDateAndclassTime.value)
+
+    } catch (error) {
+        console.error('Error getfindAllclassDateAndclassTime data:', error);
+    }
+};
 
 
-onMounted(() => {
-    //掛載日曆物件
+onMounted(async () => {
+    await getfindAllclassDateAndclassTime();
+
+    // 處理 AllclassDateAndclassTime 的數據，生成 FullCalendar 的事件陣列
+    const events = AllclassDateAndclassTime.value.map(item => {
+        return {
+            title: `${item[0]}:已預定`,
+            start: item[1],
+        };
+    });
+    console.log(events)
+    // 掛載日曆物件
     const calendarEl = document.getElementById('calendar');
     const calendar = new Calendar(calendarEl, {
         plugins: [dayGridPlugin],
@@ -132,49 +155,18 @@ onMounted(() => {
         timeZone: 'UTC',
         locale: 'zh-tw',
         height: 700,
-        headerToolbar: false,
+        // headerToolbar: false,
         events: [
             {
-                title: '上午:已預定',
-                start: '2023-08-29',
-            },
-            {
-                title: '下午:已預定',
-                start: '2023-08-29',
-            },
-            {
-                title: '晚上:已預定',
-                start: '2023-08-29',
-                url: 'http://google.com/',
-            },
-        ],
-        eventOrder: function (a, b) {
-            const order = { '早上:已預定': 1, '中午:已預定': 2, '晚上:已預定': 3 };
-            return order[a.title] - order[b.title];
-        },
+                title: 'morning',
+                start: '2023-8-25',
+            }], // 使用處理過的事件陣列
+        // eventOrder: function (a, b) {
+        //     const order = { '早上:已預定': 1, '中午:已預定': 2, '晚上:已預定': 3 };
+        //     return order[a.title] - order[b.title];
+        // },
     });
     calendar.render();
-
-
-
-    //日期只顯示下個月
-    const today = new Date();
-    const currentMonth = today.getMonth();
-    const currentYear = today.getFullYear();
-
-    let nextMonth = currentMonth + 1;
-    let nextYear = currentYear;
-
-    const daysInMonth = new Date(nextYear, nextMonth + 1, 0).getDate();
-
-    let nextMonthFormatted = (nextMonth + 1).toString().padStart(2, '0'); // 格式化為雙位數
-    let lastDayOfNextMonthFormatted = daysInMonth.toString().padStart(2, '0'); // 格式化為雙位數
-
-    const dateInput = document.getElementById('dateInput');
-    dateInput.min = `${nextYear}-${nextMonthFormatted}-01`; // 下個月的第一天
-    dateInput.max = `${nextYear}-${nextMonthFormatted}-${lastDayOfNextMonthFormatted}`; // 下個月的最後一天
-
-
 });
 
 </script>
