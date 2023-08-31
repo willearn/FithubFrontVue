@@ -43,9 +43,10 @@
                 <hr class="divider" />
                 <label class="fs-3">場地:</label>
                 <select class="form-select-lg me-sm-5">
-                    <option>攀岩教室</option>
-                    <option>有氧大教室</option>
-                    <option>有氧小教室</option>
+                    <option disabled selected>請選擇場地</option>
+                    <option v-for="classroom in openClassrooms" :key="classroom.name" :value="classroom.name">
+                        {{ classroom.classname }}
+                    </option>
                 </select>
                 <label class="fs-3">日期:</label>
                 <input type="date" class="form-control-lg me-sm-5" id="dateInput">
@@ -123,9 +124,8 @@ import { reactive, ref, onMounted } from 'vue'
 
 const url = import.meta.env.VITE_API_JAVAURL
 const events = ref([]);
-
-
-
+let allClassroomNameAndStatus = ref([])
+const openClassrooms = ref([]);
 
 // 從伺服器獲取 JSON 格式課堂資料
 const getfindAllclassDateAndclassTime = async () => {
@@ -166,38 +166,28 @@ const getfindAllclassDateAndclassTime = async () => {
 };
 
 
-// 從伺服器獲取 JSON 格式教室名稱和狀態
-const get = async () => {
+const getfindAllClassroomNameAndStatus = async () => {
     try {
+        const findAllClassroomNameAndStatus = await axios.get(`${url}/classroom/findAllClassroomNameAndStatus`);
+        const classroomData = findAllClassroomNameAndStatus.data;
 
-        // 取得class日期和時段
-        const findAllclassDateAndclassTime = await axios.get(`${url}/classes/findAllclassDateAndclassTime`); // 替換為實際的 API URL
-        const AllclassDateAndclassTime = findAllclassDateAndclassTime.data; //data為response物件的屬性，通常是返回的JSON格式資料
-        // console.log('AllclassDateAndclassTime:' + AllclassDateAndclassTime)
-
-        // 取得rentorder日期和時段
-        const findAllrentdateAndrenttime = await axios.get(`${url}/rent/findAllrentdateAndrenttime`); // 替換為實際的 API URL
-        const AllrentdateAndrenttime = findAllrentdateAndrenttime.data; //data為response物件的屬性，通常是返回的JSON格式資料
-        // console.log('AllrentdateAndrenttime:' + AllrentdateAndrenttime)
-
-
-        // 合併陣列去重
-        const combineAndDeduplicate = (arr1, arr2) => {
-            const combinedSet = new Set([...arr1, ...arr2].map(item => JSON.stringify(item)));
-            return Array.from(combinedSet).map(item => JSON.parse(item));
-        };
-
-        const combinedAndDeduplicatedItems = combineAndDeduplicate(AllclassDateAndclassTime, AllrentdateAndrenttime);
-        // console.log(combinedAndDeduplicatedItems);
-
-        // 處理 combinedAndDeduplicatedItems 的數據，生成 FullCalendar 的事件陣列
-        events.value = combinedAndDeduplicatedItems.map(item => {
+        // 處理教室數據，轉為物件陣列
+        const processedClassrooms = classroomData.map(data => {
             return {
-                title: `${item[1]}:已預定`,
-                start: item[0],
+                classname: data[0], // 教室名稱
+                status: data[1] // 教室狀態
             };
         });
-        // console.log(events.value)
+
+        // 將所有教室名字和狀態存儲到 allClassroomNameAndStatus
+        allClassroomNameAndStatus.value = processedClassrooms;
+
+        // 篩選出狀態為開放的教室
+        openClassrooms.value = allClassroomNameAndStatus.value.filter(classroom => {
+            return classroom.status === '開放';
+        });
+
+        // console.log(openClassrooms.value)
 
     } catch (error) {
         console.error('Error:', error);
@@ -205,7 +195,9 @@ const get = async () => {
 };
 
 
+
 onMounted(async () => {
+    getfindAllClassroomNameAndStatus();
     await getfindAllclassDateAndclassTime();
 
     // 固定日曆為下個月一號
@@ -219,11 +211,11 @@ onMounted(async () => {
     // 如果月份為 01，年份加 1
     if (month === '01') {
         year++;
-    } 
+    }
 
     const nextMonthFormatted = `${year}-${month}-${day}`;
 
-    //建立日曆
+    // 建立日曆
     const calendarEl = document.getElementById('calendar');
     const calendar = new Calendar(calendarEl, {
         plugins: [dayGridPlugin],
@@ -238,7 +230,7 @@ onMounted(async () => {
         locale: 'zh-tw',
         height: 700,
         events: events.value,
-        //將輸入的排序
+        // 將輸入的排序
         eventOrder: function (a, b) {
             const order = { 'morning:已預定': 1, 'afternoon:已預定': 2, 'night:已預定': 3 };
             return order[a.title] - order[b.title];
