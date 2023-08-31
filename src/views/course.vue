@@ -48,8 +48,11 @@
                     </svg>
                     <!-- <img src="..." class="card-img-top" alt="..."> -->
                     <div class="card-body">
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                            card's content.</p>
+                        <p class="card-text">課程名稱</p>
+                        <p class="card-text">教練姓名</p>
+                        <p class="card-text">價格</p>
+                        <button class="btn btn btn-primary">加入購物車</button>
+                        <i>加入願望清單</i>
                     </div>
                 </div>
 
@@ -125,25 +128,23 @@
 
             </div>
 
-            <div class="row justify-content-center">
-                <nav class="col mx-auto">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            <nav class="d-flex justify-content-center mt-3">
+                <ul class="pagination col-2">
+                    <li class=" page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
 
         </div>
