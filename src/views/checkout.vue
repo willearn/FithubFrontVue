@@ -38,7 +38,7 @@
         <div class="container">
             <div style="position:relative; top: 20%; left: 350px;">
                 <div class="position-relative m-5">
-                    <div class="progress" style="height: 15px;width: 1050px;">
+                    <div class="progress" style="height: 15px;width: 1150px;">
                         <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50"
                             aria-valuemin="0" aria-valuemax="100">50%
                         </div>
@@ -56,108 +56,120 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#"><u>我的折價券</u></a>
                             </li>
+                            <li style="position: relative; left: 24%;">
+                                <form class="row g-3">
+                                    <div class="col-auto">
+                                        <label for="inputPassword2" class="visually-hidden">促銷代碼</label>
+                                        <input type="text" class="form-control" id="inputPassword2" placeholder="促銷代碼">
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary mb-3">輸入</button>
+                                    </div>
+                                </form>
+                            </li>
                         </ul>
+
+
+
                     </div>
                     <div style="width: 12rem;position: absolute;right: 38%;">
-                        <div class="card text-center">
+                        <div class="card" style="width: 21rem;">
                             <div class="card-body">
-                                <h5 class="card-title">我的訂單</h5>
-                                <p class="card-text">總金額:</p>
-                                <a href="#" class="btn btn-primary">結帳</a>
+                                <h5 class="card-title">Total:</h5>
+                                <p class="card-text">NT$666</p>
+                                <div class="d-grid gap-3 col-12 mx-auto">
+                                <a href="#" class="btn btn-primary ">Checkout</a>
+                                </div>
+                            </div>
+                            <hr>                            
+                            <form class="row g-0" style="position: relative; right: -5%;">
+                                    <div class="col-auto">
+                                        <label for="inputPassword2" class="visually-hidden">促銷代碼</label>
+                                        <input type="text" class="form-control" id="inputPassword2" placeholder="促銷代碼">
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn btn-primary mb-3">輸入</button>
+                                    </div>
+                                </form>
+                        </div>                   
+                    </div>
+                        
+                        <div class="p-2 bg-light border">
+                            <table class="table align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">圖片</th>
+                                        <th scope="col">課程名稱</th>
+                                        <th scope="col">課程教練</th>
+                                        <th scope="col">課程時間</th>
+                                        <th scope="col">單價</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>
+                                            <img src="../assets/index/other/4.jpg" style="width: 200px;">
+                                        </td>
+                                        <td>Mark</td>
+                                        <td>Otto</td>
+                                        <td>@mdo</td>
+                                        <td>$2000</td>
+                                        <td>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16"
+                                                style="float: left: ;">
+                                                <path fill-rule="evenodd"
+                                                    d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                            </svg><br>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16"
+                                                style="float: left: ;">
+                                                <path
+                                                    d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                                            </svg>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>
+                                            <img src="../assets/index/other/4.jpg" style="width: 200px;">
+                                        </td>
+                                        <td>Jacob</td>
+                                        <td>Thornton</td>
+                                        <td>@fat</td>
+                                        <td>$2000</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>
+                                            <img src="../assets/index/other/4.jpg" style="width: 200px;">
+                                        </td>
+                                        <td colspan="2">Larry the Bird</td>
+                                        <td>@twitter</td>
+                                        <td>$2000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="p-2 bg-light border">
+                            <div class="form-floating">
+                                <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                    <option selected>選擇付款方式</option>
+                                    <option value="1">綠界金流</option>
+                                </select>
+                                <label for="floatingSelect">Pay with selects</label>
                             </div>
                         </div>
-                        <div style="position:relative; top: 20%; left: 50px;">
-
-                            <router-link class="btn btn-secondary mt-5" to="/course">繼續購物</router-link>
-                        </div>
                     </div>
-                    <div class="p-2 bg-light border">
-                        <table class="table align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">圖片</th>
-                                    <th scope="col">課程名稱</th>
-                                    <th scope="col">課程教練</th>
-                                    <th scope="col">課程時間</th>
-                                    <th scope="col">單價</th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>
-                                        <img src="../assets/index/other/4.jpg" style="width: 200px;">
-                                    </td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>$2000</td>
-                                    <td>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                            class="bi bi-heart-fill" viewBox="0 0 16 16" style="float: left: ;">
-                                            <path fill-rule="evenodd"
-                                                d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
-                                        </svg><br>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                            class="bi bi-trash3-fill" viewBox="0 0 16 16" style="float: left: ;">
-                                            <path
-                                                d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
-                                        </svg>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>
-                                        <img src="../assets/index/other/4.jpg" style="width: 200px;">
-                                    </td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>$2000</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>
-                                        <img src="../assets/index/other/4.jpg" style="width: 200px;">
-                                    </td>
-                                    <td colspan="2">Larry the Bird</td>
-                                    <td>@twitter</td>
-                                    <td>$2000</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="p-2 bg-light border">
-                        <div class="form-floating">
-                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                <option selected>選擇付款方式</option>
-                                <option value="1">綠界金流</option>
-                            </select>
-                            <label for="floatingSelect">Pay with selects</label>
-                        </div>
-                    </div>
-                    <form class="row g-3">
-                        <div class="col-auto">
-                            <label for="staticEmail2" class="visually-hidden">Email</label>
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail2"
-                                value="email@example.com">
-                        </div>
-                        <div class="col-auto">
-                            <label for="inputPassword2" class="visually-hidden">Password</label>
-                            <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
-                        </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-primary mb-3">Confirm identity</button>
-                        </div>
-                    </form>
-
-
+                </div>
+                <router-link class="btn btn-secondary mt-5" to="/ordercheck">訂單送出前檢查</router-link>
+                <div style="position:relative; top: 20%; left: 50px;">
+                    <router-link class="btn btn-secondary mt-5" to="/course">繼續購物</router-link>
                 </div>
             </div>
-            <router-link class="btn btn-secondary mt-5" to="/ordercheck">訂單送出前檢查</router-link>
-        </div>
     </section>
 </template>
 
