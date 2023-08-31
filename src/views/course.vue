@@ -33,18 +33,124 @@
         </div>
     </div>
 
-    <!-- 場地租借 -->
-    <section class="page-section" id="about">
+    <!-- 課程商品 -->
+    <section class="page-section" id="course">
         <div class="container">
-            <router-link class="btn btn-secondary" to="/course/single">課程詳細資訊</router-link>
-            <div class="col-lg-4 col-md-4">
-                123
+            <h1 class="text-center">課程</h1>
+            <div class="row justify-content-center">
+
+                <div class="card col-3 mx-4 my-4">
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="180"
+                        xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" focusable="false">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#868e96"></rect>
+                        <text x="40%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
+                    </svg>
+                    <!-- <img src="..." class="card-img-top" alt="..."> -->
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                            card's content.</p>
+                    </div>
+                </div>
+
+                <div class="card col-3 mx-4 my-4">
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="180"
+                        xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" focusable="false">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#868e96"></rect>
+                        <text x="40%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
+                    </svg>
+                    <!-- <img src="..." class="card-img-top" alt="..."> -->
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                            card's content.</p>
+                    </div>
+                </div>
+
+                <div class="card col-3 mx-4 my-4">
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="180"
+                        xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" focusable="false">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#868e96"></rect>
+                        <text x="40%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
+                    </svg>
+                    <!-- <img src="..." class="card-img-top" alt="..."> -->
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                            card's content.</p>
+                    </div>
+                </div>
+
+                <div class="card col-3 mx-4 my-4">
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="180"
+                        xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" focusable="false">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#868e96"></rect>
+                        <text x="40%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
+                    </svg>
+                    <!-- <img src="..." class="card-img-top" alt="..."> -->
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                            card's content.</p>
+                    </div>
+                </div>
+
+                <div class="card col-3 mx-4 my-4">
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="180"
+                        xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" focusable="false">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#868e96"></rect>
+                        <text x="40%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
+                    </svg>
+                    <!-- <img src="..." class="card-img-top" alt="..."> -->
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                            card's content.</p>
+                    </div>
+                </div>
+
+                <div class="card col-3 mx-4 my-4">
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="180"
+                        xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" focusable="false">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#868e96"></rect>
+                        <text x="40%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
+                    </svg>
+                    <!-- <img src="..." class="card-img-top" alt="..."> -->
+                    <div class="card-body">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                            card's content.</p>
+                    </div>
+                </div>
+
             </div>
-            <div class="col-lg-8 col-md-8" style="background-color: #FFBF3C;">
-                123
+
+            <div class="row justify-content-center">
+                <nav class="col mx-auto">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
+
+
         </div>
+
+
     </section>
+    <router-link class="btn btn-secondary mt-6" to="/course/single">課程詳細資訊</router-link>
 </template>
 
 <script setup>
