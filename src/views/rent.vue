@@ -173,7 +173,7 @@ onMounted(async () => {
     const today = new Date();
     const nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 1);
 
-    const year = nextMonth.getFullYear();
+    let year = nextMonth.getFullYear();
     const month = String(nextMonth.getMonth()).padStart(2, '0');
     const day = String(nextMonth.getDate()).padStart(2, '0');
 
