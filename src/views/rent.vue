@@ -122,13 +122,26 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import { reactive, ref, onMounted } from 'vue'
 
 const AllclassDateAndclassTime = ref([]);
+const events = ref([]);
 
-// 從伺服器獲取 JSON 格式教室資料
+
+
+// 從伺服器獲取 JSON 格式課堂資料
 const getfindAllclassDateAndclassTime = async () => {
     try {
         const response = await axios.get('http://localhost:8080/fithub/classes/findAllclassDateAndclassTime'); // 替換為實際的 API URL
         AllclassDateAndclassTime.value = response.data; //data為response物件的屬性，通常是返回的JSON格式資料
-        console.log(AllclassDateAndclassTime.value)
+        // console.log(AllclassDateAndclassTime.value)
+
+        // 處理 AllclassDateAndclassTime 的數據，生成 FullCalendar 的事件陣列
+        events.value = AllclassDateAndclassTime.value.map(item => {
+            return {
+                title: `${item[1]}:已預定`,
+                start: item[0],
+            };
+        });
+
+        // console.log(events.value)
 
     } catch (error) {
         console.error('Error getfindAllclassDateAndclassTime data:', error);
@@ -137,17 +150,9 @@ const getfindAllclassDateAndclassTime = async () => {
 
 
 onMounted(async () => {
+
     await getfindAllclassDateAndclassTime();
 
-    // 處理 AllclassDateAndclassTime 的數據，生成 FullCalendar 的事件陣列
-    const events = AllclassDateAndclassTime.value.map(item => {
-        return {
-            title: `${item[0]}:已預定`,
-            start: item[1],
-        };
-    });
-    console.log(events)
-    // 掛載日曆物件
     const calendarEl = document.getElementById('calendar');
     const calendar = new Calendar(calendarEl, {
         plugins: [dayGridPlugin],
@@ -155,16 +160,7 @@ onMounted(async () => {
         timeZone: 'UTC',
         locale: 'zh-tw',
         height: 700,
-        // headerToolbar: false,
-        events: [
-            {
-                title: 'morning',
-                start: '2023-8-25',
-            }], // 使用處理過的事件陣列
-        // eventOrder: function (a, b) {
-        //     const order = { '早上:已預定': 1, '中午:已預定': 2, '晚上:已預定': 3 };
-        //     return order[a.title] - order[b.title];
-        // },
+        events: events.value,
     });
     calendar.render();
 });
@@ -173,7 +169,7 @@ onMounted(async () => {
 
 <style scoped>
 .calendar {
-    background-color: #fefffa;
+    background-color: #f1f2db;
 }
 </style>
 
