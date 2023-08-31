@@ -166,6 +166,45 @@ const getfindAllclassDateAndclassTime = async () => {
 };
 
 
+// 從伺服器獲取 JSON 格式教室名稱和狀態
+const get = async () => {
+    try {
+
+        // 取得class日期和時段
+        const findAllclassDateAndclassTime = await axios.get(`${url}/classes/findAllclassDateAndclassTime`); // 替換為實際的 API URL
+        const AllclassDateAndclassTime = findAllclassDateAndclassTime.data; //data為response物件的屬性，通常是返回的JSON格式資料
+        // console.log('AllclassDateAndclassTime:' + AllclassDateAndclassTime)
+
+        // 取得rentorder日期和時段
+        const findAllrentdateAndrenttime = await axios.get(`${url}/rent/findAllrentdateAndrenttime`); // 替換為實際的 API URL
+        const AllrentdateAndrenttime = findAllrentdateAndrenttime.data; //data為response物件的屬性，通常是返回的JSON格式資料
+        // console.log('AllrentdateAndrenttime:' + AllrentdateAndrenttime)
+
+
+        // 合併陣列去重
+        const combineAndDeduplicate = (arr1, arr2) => {
+            const combinedSet = new Set([...arr1, ...arr2].map(item => JSON.stringify(item)));
+            return Array.from(combinedSet).map(item => JSON.parse(item));
+        };
+
+        const combinedAndDeduplicatedItems = combineAndDeduplicate(AllclassDateAndclassTime, AllrentdateAndrenttime);
+        // console.log(combinedAndDeduplicatedItems);
+
+        // 處理 combinedAndDeduplicatedItems 的數據，生成 FullCalendar 的事件陣列
+        events.value = combinedAndDeduplicatedItems.map(item => {
+            return {
+                title: `${item[1]}:已預定`,
+                start: item[0],
+            };
+        });
+        // console.log(events.value)
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
+
+
 onMounted(async () => {
     await getfindAllclassDateAndclassTime();
 
@@ -173,14 +212,14 @@ onMounted(async () => {
     const today = new Date();
     const nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 1);
 
-    const year = nextMonth.getFullYear();
-    const month = String(nextMonth.getMonth()).padStart(2, '0');
-    const day = String(nextMonth.getDate()).padStart(2, '0');
+    let year = nextMonth.getFullYear();
+    let month = String(nextMonth.getMonth()).padStart(2, '0');
+    let day = String(nextMonth.getDate()).padStart(2, '0');
 
     // 如果月份為 01，年份加 1
     if (month === '01') {
         year++;
-    }
+    } 
 
     const nextMonthFormatted = `${year}-${month}-${day}`;
 
