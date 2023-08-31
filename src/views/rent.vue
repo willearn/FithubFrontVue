@@ -121,46 +121,89 @@ import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { reactive, ref, onMounted } from 'vue'
 
-const AllclassDateAndclassTime = ref([]);
+const url = import.meta.env.VITE_API_JAVAURL
 const events = ref([]);
+
 
 
 
 // 從伺服器獲取 JSON 格式課堂資料
 const getfindAllclassDateAndclassTime = async () => {
     try {
-        const response = await axios.get('http://localhost:8080/fithub/classes/findAllclassDateAndclassTime'); // 替換為實際的 API URL
-        AllclassDateAndclassTime.value = response.data; //data為response物件的屬性，通常是返回的JSON格式資料
-        // console.log(AllclassDateAndclassTime.value)
 
-        // 處理 AllclassDateAndclassTime 的數據，生成 FullCalendar 的事件陣列
-        events.value = AllclassDateAndclassTime.value.map(item => {
+        // 取得class日期和時段
+        const findAllclassDateAndclassTime = await axios.get(`${url}/classes/findAllclassDateAndclassTime`); // 替換為實際的 API URL
+        const AllclassDateAndclassTime = findAllclassDateAndclassTime.data; //data為response物件的屬性，通常是返回的JSON格式資料
+        // console.log('AllclassDateAndclassTime:' + AllclassDateAndclassTime)
+
+        // 取得rentorder日期和時段
+        const findAllrentdateAndrenttime = await axios.get(`${url}/rent/findAllrentdateAndrenttime`); // 替換為實際的 API URL
+        const AllrentdateAndrenttime = findAllrentdateAndrenttime.data; //data為response物件的屬性，通常是返回的JSON格式資料
+        // console.log('AllrentdateAndrenttime:' + AllrentdateAndrenttime)
+
+
+        // 合併陣列去重
+        const combineAndDeduplicate = (arr1, arr2) => {
+            const combinedSet = new Set([...arr1, ...arr2].map(item => JSON.stringify(item)));
+            return Array.from(combinedSet).map(item => JSON.parse(item));
+        };
+
+        const combinedAndDeduplicatedItems = combineAndDeduplicate(AllclassDateAndclassTime, AllrentdateAndrenttime);
+        // console.log(combinedAndDeduplicatedItems);
+
+        // 處理 combinedAndDeduplicatedItems 的數據，生成 FullCalendar 的事件陣列
+        events.value = combinedAndDeduplicatedItems.map(item => {
             return {
                 title: `${item[1]}:已預定`,
                 start: item[0],
             };
         });
-
         // console.log(events.value)
 
     } catch (error) {
-        console.error('Error getfindAllclassDateAndclassTime data:', error);
+        console.error('Error:', error);
     }
 };
 
 
 onMounted(async () => {
-
     await getfindAllclassDateAndclassTime();
 
+    // 固定日曆為下個月一號
+    const today = new Date();
+    const nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 1);
+
+    const year = nextMonth.getFullYear();
+    const month = String(nextMonth.getMonth()).padStart(2, '0');
+    const day = String(nextMonth.getDate()).padStart(2, '0');
+
+    // 如果月份為 01，年份加 1
+    if (month === '01') {
+        year++;
+    }
+
+    const nextMonthFormatted = `${year}-${month}-${day}`;
+
+    //建立日曆
     const calendarEl = document.getElementById('calendar');
     const calendar = new Calendar(calendarEl, {
         plugins: [dayGridPlugin],
+        headerToolbar: {
+            left: '',
+            center: 'title',
+            right: '',
+        },
         initialView: 'dayGridMonth',
+        initialDate: nextMonthFormatted,
         timeZone: 'UTC',
         locale: 'zh-tw',
         height: 700,
         events: events.value,
+        //將輸入的排序
+        eventOrder: function (a, b) {
+            const order = { 'morning:已預定': 1, 'afternoon:已預定': 2, 'night:已預定': 3 };
+            return order[a.title] - order[b.title];
+        },
     });
     calendar.render();
 });
@@ -169,7 +212,7 @@ onMounted(async () => {
 
 <style scoped>
 .calendar {
-    background-color: #f1f2db;
+    background-color: white;
 }
 </style>
 
