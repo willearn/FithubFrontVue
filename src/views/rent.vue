@@ -42,8 +42,8 @@
                 <h1>場地租借</h1>
                 <hr class="divider" />
                 <label class="fs-3">場地:</label>
-                <select class="form-select-lg me-sm-5">
-                    <option disabled selected>請選擇場地</option>
+                <select class="form-select-lg me-sm-5" v-model="selectedOption" @change="handleOptionChange">
+                    <option disabled selected value="0">請選擇場地</option>
                     <option v-for="classroom in openClassrooms" :key="classroom.name" :value="classroom.classroomId">
                         {{ classroom.classroomName }}
                     </option>
@@ -57,7 +57,6 @@
                     <option>晚上</option>
                 </select>
                 <button type="submit" class="btn btn-primary btn-lg">預約</button>
-
                 <div id="calendar" class="calendar text-center mt-5">
                 </div>
             </div>
@@ -120,34 +119,13 @@
 import axios from 'axios'
 import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import { reactive, ref, onMounted } from 'vue'
+import { reactive, ref, onMounted, watch } from 'vue'
 
 const url = import.meta.env.VITE_API_JAVAURL
-let openClassrooms = ref([]);
+const selectedOption = ref(0); // 預設0
 const events = ref([]);
+let openClassrooms = ref([]);
 
-// 顯示日曆已預訂時段
-const getfindAllDateTimeFromRentOrderAndclass = async () => {
-    try {
-
-        // 取得rentorder日期-時段 class日期-時段
-        const findAllDateTimeFromRentOrderAndclass = await axios.get(`${url}/rent/list/1`); // 替換為實際的 API URL
-        const allDateTimeFromRentOrderAndclass = findAllDateTimeFromRentOrderAndclass.data; //data為response物件的屬性，通常是返回的JSON格式資料
-        // console.log('AllrentdateAndrenttime:' + AllrentdateAndrenttime)
-
-        // 處理 allDateTimeFromRentOrderAndclass 的數據，生成 FullCalendar 的事件陣列
-        events.value = allDateTimeFromRentOrderAndclass.map(item => {
-            return {
-                title: `${item[1]}:已預定`,
-                start: item[0],
-            };
-        });
-        // console.log(events.value)
-
-    } catch (error) {
-        console.error('Error:', error);
-    }
-};
 
 // 篩選狀態為開放的場地
 const getfindAllClassroomNameAndStatusAndId = async () => {
@@ -165,48 +143,110 @@ const getfindAllClassroomNameAndStatusAndId = async () => {
     }
 };
 
+// 監聽 selectedOption 的變化
+watch(selectedOption, (selectedValue) => {
+    getfindAllDateTimeFromRentOrderAndclass(selectedValue);
+});
+
+// 顯示日曆已預訂時段
+const getfindAllDateTimeFromRentOrderAndclass = async (selectedValue) => {
+    try {
+        // 取得rentorder日期-時段 class日期-時段
+        const findAllDateTimeFromRentOrderAndclass = await axios.get(`${url}/rent/list/${selectedValue}`); // 替換為實際的 API URL
+        const allDateTimeFromRentOrderAndclass = findAllDateTimeFromRentOrderAndclass.data; //data為response物件的屬性，通常是返回的JSON格式資料
+        // console.log('AllrentdateAndrenttime:' + AllrentdateAndrenttime)
+
+        // 處理 allDateTimeFromRentOrderAndclass 的數據，生成 FullCalendar 的事件陣列
+        events.value = allDateTimeFromRentOrderAndclass.map(item => {
+            return {
+                title: `${item[1]}:已預定`,
+                start: item[0],
+            };
+        });
+        console.log(events.value)
+
+        const today = new Date();
+        const nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 1);
+
+        let year = nextMonth.getFullYear();
+        let month = String(nextMonth.getMonth()).padStart(2, '0');
+        let day = String(nextMonth.getDate()).padStart(2, '0');
+
+        // 如果月份為 01，年份加 1
+        if (month === '01') {
+            year++;
+        }
+
+        const nextMonthFormatted = `${year}-${month}-${day}`;
+
+        // 建立日曆
+        const calendarEl = document.getElementById('calendar');
+        const calendar = new Calendar(calendarEl, {
+            plugins: [dayGridPlugin],
+            // headerToolbar: {
+            //     left: '',
+            //     center: 'title',
+            //     right: '',
+            // },
+            initialView: 'dayGridMonth',
+            initialDate: nextMonthFormatted,
+            timeZone: 'UTC',
+            locale: 'zh-tw',
+            height: 700,
+            events: events.value,
+            // 將輸入的排序
+            eventOrder: function (a, b) {
+                const order = { 'morning:已預定': 1, 'afternoon:已預定': 2, 'night:已預定': 3 };
+                return order[a.title] - order[b.title];
+            },
+        });
+        calendar.render();
+
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
 
 onMounted(async () => {
     getfindAllClassroomNameAndStatusAndId();
-    await getfindAllDateTimeFromRentOrderAndclass();
 
-    // 固定日曆為下個月一號
-    const today = new Date();
-    const nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 1);
+    // const today = new Date();
+    // const nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 1);
 
-    let year = nextMonth.getFullYear();
-    let month = String(nextMonth.getMonth()).padStart(2, '0');
-    let day = String(nextMonth.getDate()).padStart(2, '0');
+    // let year = nextMonth.getFullYear();
+    // let month = String(nextMonth.getMonth()).padStart(2, '0');
+    // let day = String(nextMonth.getDate()).padStart(2, '0');
 
-    // 如果月份為 01，年份加 1
-    if (month === '01') {
-        year++;
-    }
+    // // 如果月份為 01，年份加 1
+    // if (month === '01') {
+    //     year++;
+    // }
 
-    const nextMonthFormatted = `${year}-${month}-${day}`;
+    // const nextMonthFormatted = `${year}-${month}-${day}`;
 
-    // 建立日曆
-    const calendarEl = document.getElementById('calendar');
-    const calendar = new Calendar(calendarEl, {
-        plugins: [dayGridPlugin],
-        // headerToolbar: {
-        //     left: '',
-        //     center: 'title',
-        //     right: '',
-        // },
-        initialView: 'dayGridMonth',
-        initialDate: nextMonthFormatted,
-        timeZone: 'UTC',
-        locale: 'zh-tw',
-        height: 700,
-        events: events.value,
-        // 將輸入的排序
-        eventOrder: function (a, b) {
-            const order = { 'morning:已預定': 1, 'afternoon:已預定': 2, 'night:已預定': 3 };
-            return order[a.title] - order[b.title];
-        },
-    });
-    calendar.render();
+    // // 建立日曆
+    // const calendarEl = document.getElementById('calendar');
+    // const calendar = new Calendar(calendarEl, {
+    //     plugins: [dayGridPlugin],
+    //     // headerToolbar: {
+    //     //     left: '',
+    //     //     center: 'title',
+    //     //     right: '',
+    //     // },
+    //     initialView: 'dayGridMonth',
+    //     initialDate: nextMonthFormatted,
+    //     timeZone: 'UTC',
+    //     locale: 'zh-tw',
+    //     height: 700,
+    //     events: events.value,
+    //     // 將輸入的排序
+    //     eventOrder: function (a, b) {
+    //         const order = { 'morning:已預定': 1, 'afternoon:已預定': 2, 'night:已預定': 3 };
+    //         return order[a.title] - order[b.title];
+    //     },
+    // });
+    // calendar.render();
 });
 
 </script>
