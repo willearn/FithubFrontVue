@@ -35,28 +35,28 @@
     </div>
 
 
-    <!-- rent-->
+    <!-- rent -->
     <section class="page-section" id="rent">
         <div class="container text-center">
             <div class="col-lg-12 col-md-10">
                 <h1>場地租借</h1>
                 <hr class="divider" />
                 <label class="fs-3">場地:</label>
-                <select class="form-select-lg me-sm-5" v-model="selectedOption" @change="handleOptionChange">
+                <select class="form-select-lg me-sm-5" v-model="selectedClassroom" @change="handleOptionChange">
                     <option disabled selected value="0">請選擇場地</option>
                     <option v-for="classroom in openClassrooms" :key="classroom.name" :value="classroom.classroomId">
                         {{ classroom.classroomName }}
                     </option>
                 </select>
                 <label class="fs-3">日期:</label>
-                <input type="date" class="form-control-lg me-sm-5" id="dateInput">
+                <input type="date" class="form-control-lg me-sm-5" v-model="selectedDate">
                 <label class="fs-3">時段:</label>
-                <select class="form-select-lg me-sm-5">
-                    <option>上午</option>
+                <select class="form-select-lg me-sm-5" v-model="selectedTime">
+                    <option>早上</option>
                     <option>下午</option>
                     <option>晚上</option>
                 </select>
-                <button type="submit" class="btn btn-primary btn-lg">預約</button>
+                <button type="submit" class="btn btn-primary btn-lg" @click="reserve">預約</button>
                 <div id="calendar" class="calendar text-center mt-5">
                 </div>
             </div>
@@ -64,7 +64,7 @@
     </section>
 
 
-    <!-- rent-->
+    <!-- classroom -->
     <section class="page-section" id="rent">
         <div class="container text-center">
             <h1>場地介紹</h1>
@@ -122,10 +122,18 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import { reactive, ref, onMounted, watch } from 'vue'
 
 const url = import.meta.env.VITE_API_JAVAURL
-const selectedOption = ref(0); // 預設0
+const selectedClassroom = ref(0); // 預設0
+const selectedDate = ref('');
+const selectedTime = ref('');
 const events = ref([]);
 let openClassrooms = ref([]);
 
+//建立教室物件
+const selectedData = reactive({
+    classroomid: '',
+    rentdate: '',
+    renttime: '',
+});
 
 // 篩選狀態為開放的場地
 const getfindAllClassroomNameAndStatusAndId = async () => {
@@ -143,10 +151,45 @@ const getfindAllClassroomNameAndStatusAndId = async () => {
     }
 };
 
-// 監聽 selectedOption 的變化
-watch(selectedOption, (selectedValue) => {
+// 監聽 selectedClassroom 的變化
+watch(selectedClassroom, (selectedValue) => {
     getfindAllDateTimeFromRentOrderAndclass(selectedValue);
 });
+
+// 監聽 selectedDate 的變化
+watch(selectedDate, (selectedValue) => {
+    // console.log(selectedValue);
+});
+
+// 監聽 selectedTime 的變化
+watch(selectedTime, (selectedValue) => {
+    // console.log(selectedValue);
+});
+
+
+const reserve = async () => {
+    try {
+        if (selectedClassroom.value === 0) {
+            alert('請選擇場地')
+        } else if (selectedDate.value === '') {
+            alert('請選擇日期')
+        } else if (selectedTime.value === '') {
+            alert('請選擇時段')
+        } else {
+            selectedData.classroomid = selectedClassroom.value
+            selectedData.rentdate = selectedDate.value
+            selectedData.renttime = selectedTime.value
+            const response = await axios.post(`${url}/rent/checkRentOrder`, selectedData);
+            const responseData = response.data;
+            // console.log(responseData)
+            alert(responseData)
+        }
+        console.log(selectedData)
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
+
 
 // 顯示日曆已預訂時段
 const getfindAllDateTimeFromRentOrderAndclass = async (selectedValue) => {
@@ -154,7 +197,7 @@ const getfindAllDateTimeFromRentOrderAndclass = async (selectedValue) => {
         // 取得rentorder日期-時段 class日期-時段
         const findAllDateTimeFromRentOrderAndclass = await axios.get(`${url}/rent/list/${selectedValue}`); // 替換為實際的 API URL
         const allDateTimeFromRentOrderAndclass = findAllDateTimeFromRentOrderAndclass.data; //data為response物件的屬性，通常是返回的JSON格式資料
-        // console.log('AllrentdateAndrenttime:' + AllrentdateAndrenttime)
+        // console.log(allDateTimeFromRentOrderAndclass)
 
         // 處理 allDateTimeFromRentOrderAndclass 的數據，生成 FullCalendar 的事件陣列
         events.value = allDateTimeFromRentOrderAndclass.map(item => {
@@ -163,7 +206,7 @@ const getfindAllDateTimeFromRentOrderAndclass = async (selectedValue) => {
                 start: item[0],
             };
         });
-        console.log(events.value)
+        // console.log(events.value)
 
         const today = new Date();
         const nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 1);
@@ -208,45 +251,8 @@ const getfindAllDateTimeFromRentOrderAndclass = async (selectedValue) => {
     }
 };
 
-onMounted(async () => {
+onMounted(() => {
     getfindAllClassroomNameAndStatusAndId();
-
-    // const today = new Date();
-    // const nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 1);
-
-    // let year = nextMonth.getFullYear();
-    // let month = String(nextMonth.getMonth()).padStart(2, '0');
-    // let day = String(nextMonth.getDate()).padStart(2, '0');
-
-    // // 如果月份為 01，年份加 1
-    // if (month === '01') {
-    //     year++;
-    // }
-
-    // const nextMonthFormatted = `${year}-${month}-${day}`;
-
-    // // 建立日曆
-    // const calendarEl = document.getElementById('calendar');
-    // const calendar = new Calendar(calendarEl, {
-    //     plugins: [dayGridPlugin],
-    //     // headerToolbar: {
-    //     //     left: '',
-    //     //     center: 'title',
-    //     //     right: '',
-    //     // },
-    //     initialView: 'dayGridMonth',
-    //     initialDate: nextMonthFormatted,
-    //     timeZone: 'UTC',
-    //     locale: 'zh-tw',
-    //     height: 700,
-    //     events: events.value,
-    //     // 將輸入的排序
-    //     eventOrder: function (a, b) {
-    //         const order = { 'morning:已預定': 1, 'afternoon:已預定': 2, 'night:已預定': 3 };
-    //         return order[a.title] - order[b.title];
-    //     },
-    // });
-    // calendar.render();
 });
 
 </script>
