@@ -44,8 +44,8 @@
                 <label class="fs-3">場地:</label>
                 <select class="form-select-lg me-sm-5">
                     <option disabled selected>請選擇場地</option>
-                    <option v-for="classroom in openClassrooms" :key="classroom.name" :value="classroom.name">
-                        {{ classroom.classname }}
+                    <option v-for="classroom in openClassrooms" :key="classroom.name" :value="classroom.classroomId">
+                        {{ classroom.classroomName }}
                     </option>
                 </select>
                 <label class="fs-3">日期:</label>
@@ -123,36 +123,20 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import { reactive, ref, onMounted } from 'vue'
 
 const url = import.meta.env.VITE_API_JAVAURL
+let openClassrooms = ref([]);
 const events = ref([]);
-let allClassroomNameAndStatus = ref([])
-const openClassrooms = ref([]);
 
-// 從伺服器獲取 JSON 格式課堂資料
-const getfindAllclassDateAndclassTime = async () => {
+// 顯示日曆已預訂時段
+const getfindAllDateTimeFromRentOrderAndclass = async () => {
     try {
 
-        // 取得class日期和時段
-        const findAllclassDateAndclassTime = await axios.get(`${url}/classes/findAllclassDateAndclassTime`); // 替換為實際的 API URL
-        const AllclassDateAndclassTime = findAllclassDateAndclassTime.data; //data為response物件的屬性，通常是返回的JSON格式資料
-        // console.log('AllclassDateAndclassTime:' + AllclassDateAndclassTime)
-
-        // 取得rentorder日期和時段
-        const findAllrentdateAndrenttime = await axios.get(`${url}/rent/findAllrentdateAndrenttime`); // 替換為實際的 API URL
-        const AllrentdateAndrenttime = findAllrentdateAndrenttime.data; //data為response物件的屬性，通常是返回的JSON格式資料
+        // 取得rentorder日期-時段 class日期-時段
+        const findAllDateTimeFromRentOrderAndclass = await axios.get(`${url}/rent/list/1`); // 替換為實際的 API URL
+        const allDateTimeFromRentOrderAndclass = findAllDateTimeFromRentOrderAndclass.data; //data為response物件的屬性，通常是返回的JSON格式資料
         // console.log('AllrentdateAndrenttime:' + AllrentdateAndrenttime)
 
-
-        // 合併陣列去重
-        const combineAndDeduplicate = (arr1, arr2) => {
-            const combinedSet = new Set([...arr1, ...arr2].map(item => JSON.stringify(item)));
-            return Array.from(combinedSet).map(item => JSON.parse(item));
-        };
-
-        const combinedAndDeduplicatedItems = combineAndDeduplicate(AllclassDateAndclassTime, AllrentdateAndrenttime);
-        // console.log(combinedAndDeduplicatedItems);
-
-        // 處理 combinedAndDeduplicatedItems 的數據，生成 FullCalendar 的事件陣列
-        events.value = combinedAndDeduplicatedItems.map(item => {
+        // 處理 allDateTimeFromRentOrderAndclass 的數據，生成 FullCalendar 的事件陣列
+        events.value = allDateTimeFromRentOrderAndclass.map(item => {
             return {
                 title: `${item[1]}:已預定`,
                 start: item[0],
@@ -165,28 +149,15 @@ const getfindAllclassDateAndclassTime = async () => {
     }
 };
 
-
-const getfindAllClassroomNameAndStatus = async () => {
+// 篩選狀態為開放的場地
+const getfindAllClassroomNameAndStatusAndId = async () => {
     try {
-        const findAllClassroomNameAndStatus = await axios.get(`${url}/classroom/findAllClassroomNameAndStatus`);
-        const classroomData = findAllClassroomNameAndStatus.data;
+        const findAllClassroomNameAndStatusAndId = await axios.get(`${url}/classroom/findAllClassroomNameAndStatusAndId`);
+        const classroomData = findAllClassroomNameAndStatusAndId.data;
+        // console.log(classroomData)
 
-        // 處理教室數據，轉為物件陣列
-        const processedClassrooms = classroomData.map(data => {
-            return {
-                classname: data[0], // 教室名稱
-                status: data[1] // 教室狀態
-            };
-        });
-
-        // 將所有教室名字和狀態存儲到 allClassroomNameAndStatus
-        allClassroomNameAndStatus.value = processedClassrooms;
-
-        // 篩選出狀態為開放的教室
-        openClassrooms.value = allClassroomNameAndStatus.value.filter(classroom => {
-            return classroom.status === '開放';
-        });
-
+        // 使用Array.prototype.filter()篩選出classroomStatus為'開放'的對象 ref要使用.value接值才會被代理
+        openClassrooms.value = classroomData.filter(item => item.classroomStatus === '開放');
         // console.log(openClassrooms.value)
 
     } catch (error) {
@@ -195,10 +166,9 @@ const getfindAllClassroomNameAndStatus = async () => {
 };
 
 
-
 onMounted(async () => {
-    getfindAllClassroomNameAndStatus();
-    await getfindAllclassDateAndclassTime();
+    getfindAllClassroomNameAndStatusAndId();
+    await getfindAllDateTimeFromRentOrderAndclass();
 
     // 固定日曆為下個月一號
     const today = new Date();
@@ -219,11 +189,11 @@ onMounted(async () => {
     const calendarEl = document.getElementById('calendar');
     const calendar = new Calendar(calendarEl, {
         plugins: [dayGridPlugin],
-        headerToolbar: {
-            left: '',
-            center: 'title',
-            right: '',
-        },
+        // headerToolbar: {
+        //     left: '',
+        //     center: 'title',
+        //     right: '',
+        // },
         initialView: 'dayGridMonth',
         initialDate: nextMonthFormatted,
         timeZone: 'UTC',
