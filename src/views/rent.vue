@@ -43,7 +43,7 @@
                 <hr class="divider" />
                 <label class="fs-3">場地:</label>
                 <select class="form-select-lg me-sm-5" v-model="selectedClassroom" @change="handleOptionChange">
-                    <option disabled selected value="0">請選擇場地</option>
+                    <option disabled selected value="0">請先選擇場地</option>
                     <option v-for="classroom in openClassrooms" :key="classroom.name" :value="classroom.classroomId">
                         {{ classroom.classroomName }}
                     </option>
@@ -52,11 +52,13 @@
                 <input type="date" class="form-control-lg me-sm-5" v-model="selectedDate">
                 <label class="fs-3">時段:</label>
                 <select class="form-select-lg me-sm-5" v-model="selectedTime">
-                    <option>早上</option>
-                    <option>下午</option>
-                    <option>晚上</option>
+                    <option disabled selected value="0">請選擇時段</option>
+                    <option value="早上">早上9:00-12:00</option>
+                    <option value="下午">下午14:00-17:00</option>
+                    <option value="晚上">晚上18:00-21:00</option>
                 </select>
                 <button type="submit" class="btn btn-primary btn-lg" @click="reserve">預約</button>
+                <span>*僅開放預訂下個月</span>
                 <div id="calendar" class="calendar text-center mt-5">
                 </div>
             </div>
@@ -69,10 +71,10 @@
         <div class="container text-center">
             <h1>場地介紹</h1>
             <hr class="divider" />
-            <div class="col-lg-12 col-md-12 text-center">
+            <div class="col-lg-12 col-md-12">
             </div>
-            <div class="col-lg-12 col-md-12 text-center">
-                <table class="table table-bordered align-middle text-center">
+            <div class="col-lg-12 col-md-12">
+                <table class="table table-bordered align-middle">
                     <thead>
                         <tr class="table-success">
                             <th>教室名稱</th>
@@ -80,6 +82,7 @@
                             <th>介紹</th>
                             <th>租借價格</th>
                             <th>教室圖片</th>
+                            <th>狀態</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -90,14 +93,17 @@
                             <td class="col-lg-2 col-md-2">3000</td>
                             <td class="col-lg-2 col-md-2"><img src="../assets/index/classroom/攀岩教室.jpg" class="img-fluid">
                             </td>
+                            <td class="col-lg-2 col-md-2">開放</td>
                         </tr>
                         <tr>
                             <td class="col-lg-2 col-md-2">有氧大教室</td>
                             <td class="col-lg-2 col-md-2">60</td>
-                            <td class="col-lg-2 col-md-2">有氧運動、重量訓練、綜合體能、瑜珈、伸展、證照考試</td>
+                            <td class="col-lg-2 col-md-2">有氧運動、重量訓練、綜合體能、瑜珈、伸展、證照考試
+                            </td>
                             <td class="col-lg-2 col-md-2">12000</td>
                             <td class="col-lg-2 col-md-2"><img src="../assets/index/classroom/有氧大教室.jpg" class="img-fluid">
                             </td>
+                            <td class="col-lg-2 col-md-2">開放</td>
                         </tr>
                         <tr>
                             <td class="col-lg-2 col-md-2">有氧小教室</td>
@@ -106,6 +112,7 @@
                             <td class="col-lg-2 col-md-2">6000</td>
                             <td class="col-lg-2 col-md-2"><img src="../assets/index/classroom/有氧小教室.jpg" class="img-fluid">
                             </td>
+                            <td class="col-lg-2 col-md-2">開放</td>
                         </tr>
                     </tbody>
                 </table>
@@ -121,14 +128,28 @@ import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { reactive, ref, onMounted, watch } from 'vue'
 
+//取得下個月1號為日曆初始日期
+const today = new Date();
+const nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 1);
+let year = nextMonth.getFullYear();
+let month = String(nextMonth.getMonth()).padStart(2, '0');
+let day = String(nextMonth.getDate()).padStart(2, '0');
+
+// 如果月份為 01，年份加 1
+if (month === '01') {
+    year++;
+}
+const nextMonthFormatted = `${year}-${month}-${day}`;
+
+
 const url = import.meta.env.VITE_API_JAVAURL
 const selectedClassroom = ref(0); // 預設0
-const selectedDate = ref('');
-const selectedTime = ref('');
+const selectedDate = ref(nextMonthFormatted);
+const selectedTime = ref(0);
 const events = ref([]);
 let openClassrooms = ref([]);
 
-//建立教室物件
+//建立被選的教室物件
 const selectedData = reactive({
     classroomid: '',
     rentdate: '',
@@ -159,6 +180,7 @@ watch(selectedClassroom, (selectedValue) => {
 // 監聽 selectedDate 的變化
 watch(selectedDate, (selectedValue) => {
     // console.log(selectedValue);
+
 });
 
 // 監聽 selectedTime 的變化
@@ -179,8 +201,8 @@ const reserve = async () => {
             selectedData.classroomid = selectedClassroom.value
             selectedData.rentdate = selectedDate.value
             selectedData.renttime = selectedTime.value
-            const response = await axios.post(`${url}/rent/checkRentOrder`, selectedData);
-            const responseData = response.data;
+            const classroomAvailability = await axios.post(`${url}/rent/checkClassroomAvailability`, selectedData);
+            const responseData = classroomAvailability.data;
             // console.log(responseData)
             alert(responseData)
         }
@@ -207,20 +229,6 @@ const getfindAllDateTimeFromRentOrderAndclass = async (selectedValue) => {
             };
         });
         // console.log(events.value)
-
-        const today = new Date();
-        const nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 1);
-
-        let year = nextMonth.getFullYear();
-        let month = String(nextMonth.getMonth()).padStart(2, '0');
-        let day = String(nextMonth.getDate()).padStart(2, '0');
-
-        // 如果月份為 01，年份加 1
-        if (month === '01') {
-            year++;
-        }
-
-        const nextMonthFormatted = `${year}-${month}-${day}`;
 
         // 建立日曆
         const calendarEl = document.getElementById('calendar');
