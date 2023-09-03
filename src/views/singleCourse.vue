@@ -33,19 +33,85 @@
         </div>
     </div>
 
-    <!-- 場地租借 -->
-    <section class="page-section" id="about">
-        <div class="container">
-            <router-link class="btn btn-secondary" to="/cart">購物車</router-link>
-            <div class="col-lg-4 col-md-4">
-                123
+    <!-- singlePage -->
+    <div class="container">
+        <section class="page-section" id="about">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-5 mx-3">
+                        <svg class="bd-placeholder-img card-img-top mt-3" width="100%" height="180"
+                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap"
+                            focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#868e96"></rect>
+                            <text x="40%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
+                        </svg>
+                        <!-- <img src="..." class="card-img-top" alt="..."> -->
+                    </div>
+                    <div class="col-6 mx-3">
+                        <h2>課程名稱</h2>
+                        <div>授課教練（教練資訊查看）</div>
+                        <div class="my-3">
+                            <label for="courseDescription" class="form-label">課程說明</label>
+                            <textarea class="form-control" id="courseDescription" cols="30" rows="5">課程說明文字</textarea>
+                        </div>
+                        <div class="my-3">
+                            <label for="courseTime" class="form-label">課程時間</label>
+                            <select class="form-select" id="courseTime" aria-label="Default select example">
+                                <option selected style="display: none;" value="">請選擇</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+
+                        <span class="d-flex justify-content-end my-4 ">
+                            <button class="btn btn btn-primary mx-2 " data-bs-toggle="collapse" href="#collapseExample"
+                                role="button"><i type="button"
+                                    class="bi bi-calendar-check"></i>&nbsp;&nbsp;&nbsp;查看課表</button>
+                            <button class="btn btn btn-primary mx-2"><i type="button"
+                                    class="bi bi-cart4"></i>&nbsp;&nbsp;加入購物車</button>
+                            <button class="btn btn btn-primary mx-2"><i type="button"
+                                    class="bi bi-cart3"></i>&nbsp;&nbsp;直接購買</button>
+                        </span>
+
+                    </div>
+                </div>
+
+                <!-- 課表摺疊 -->
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                        I am a Calendar
+                    </div>
+                </div>
+
+                <hr>
+
+                <h2>推薦課程</h2>
+                <div class="row justify-content-center">
+                    <courseCard v-for="cardAmount in 3" class="col-3 mx-2 my-3" :isLike="isLike"></courseCard>
+                </div>
             </div>
-            <div class="col-lg-8 col-md-8" style="background-color: #FFBF3C;">
-                123
-            </div>
-        </div>
-    </section>
+        </section>
+        <router-link class="btn btn-secondary" to="/cart">購物車</router-link>
+    </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { Axios } from 'axios';
+import courseCard from '../components/course/courseCard.vue'
+let isLike = ref(false)
+
 </script>
+
+<style scoped>
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #FFC408;
+    --bs-btn-border-color: #fff;
+    --bs-btn-hover-bg: #E83015;
+    --bs-btn-hover-border-color: #c34e2e;
+    --bs-btn-active-bg: #c34e2e;
+}
+</style>

@@ -14,7 +14,7 @@
             <div class="card-text mb-1">教練：教練姓名</div>
             <div class="card-text mb-1">NT$ 100 </div>
             <div class="d-flex justify-content-end">
-                <button class="btn btn btn-primary"><i type="button" class="bi bi-cart4"></i>&nbsp;加入購物車</button>
+                <button class="btn btn btn-primary"><i type="button" class="bi bi-lightning-fill"></i>&nbsp;前往選課</button>
             </div>
         </div>
     </div>

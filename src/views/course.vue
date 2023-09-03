@@ -34,27 +34,27 @@
     </div>
 
 
-    <div class="container">
-        <!-- SideBar -->
-        <div class="row">
-            <div class="col-2">
-                <listGroup></listGroup>
-            </div>
+    <section class="page-section" id="course">
+        <div class="container">
+            <!-- SideBar -->
+            <div class="row">
+                <div class="col-2">
+                    <listGroup></listGroup>
+                </div>
 
-            <!-- cards for course -->
-            <div class="col-10">
-                <section class="page-section" style="border: 1px solid red;">
+                <!-- cards for course -->
+                <div class="col-10">
                     <h1 class="text-center">課程列表</h1>
                     <div class="row justify-content-center">
                         <courseCard v-for="cardAmount in 6" class="col-3 mx-2 my-3" :isLike="isLike"></courseCard>
                     </div>
 
-                </section>
+                    <pagination class="d-flex justify-content-center mt-3"></pagination>
+                </div>
             </div>
-        </div>
 
-        <pagination class="d-flex justify-content-center mt-3"></pagination>
-    </div>
+        </div>
+    </section>
 
     <router-link class="btn btn-secondary mt-6" to="/course/single">課程詳細資訊</router-link>
 </template>
