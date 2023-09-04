@@ -45,42 +45,28 @@
                     </div>
                 </div>
                 <div class="d-grid gap-3" style="width: 50%; height: 60%; ">
-                    <div class="p-2 bg-light border">
-                        <ul class="nav">
-                            <li class="nav-item">
-                                <a class="nav-link active disabled" aria-current="page" href="#"><u>購物車</u></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><u>我的願望清單</u></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><u>我的折價券</u></a>
-                            </li>
-                        </ul>
-                    </div>
                     <div style="width: 12rem;position: absolute;right: 38%;">
-                        <div class="card text-center">
+                        <div class="card" style="width: 15rem; ">
                             <div class="card-body">
-                                <h5 class="card-title">我的訂單</h5>
-                                <p class="card-text">總金額:</p>
-                                <a href="#" class="btn btn-primary">結帳</a>
+                                <h5 class="card-title">Total:</h5>
+                                <p class="card-text">NT$666</p>
+                                <div class="d-grid gap-3 col-12 mx-auto">
+                                    <router-link class="btn btn-primary" to="/">結帳</router-link>
+                                </div>
                             </div>
                         </div>
-                        <div style="position:relative; top: 20%; left: 50px;">
-
-                            <router-link class="btn btn-secondary mt-5" to="/course">繼續購物</router-link>
-                        </div>
                     </div>
-                    <div class="p-2 bg-light border">
-                        <table class="table align-middle">
+                    <div>
+                        <table class="table caption-top">
+                            <caption>訂單項目</caption>
                             <thead class="table-light">
                                 <tr>
-                                    <th scope="col">#</th>                                    
+                                    <th scope="col">#</th>
                                     <th scope="col">課程名稱</th>
                                     <th scope="col">課程教練</th>
                                     <th scope="col">課程時間</th>
                                     <th scope="col">單價</th>
-                                    <th scope="col"></th>
+                                    <th scope="col">折扣金額</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -108,15 +94,46 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="p-2 bg-light border">
-                        <div class="form-floating">
-                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                <option selected>綠界金流</option>                                
-                            </select>
-                            <label for="floatingSelect">Pay with :</label>
+                    <div style="width: 900px; display: inline-block;">
+                        <div style="display: inline-block;">
+                        <table class="table caption-top" style="width: 450px;">
+                            <caption>訂購人資訊</caption>
+                            <thead>
+
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">姓名</th>
+                                    <td>Mark</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">電話</th>
+                                    <td>Jacob</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">信箱</th>
+                                    <td>Larry the Bird</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                        <div style="display: inline-block;">                        
+                        <table class="table caption-top" style="width: 400px; position: relative;left: 10%;" >
+                            <caption>付款方式</caption>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <img src="../assets/index/other/ECPay.png" style="width: 200px;height: auto;">
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
                         </div>
                     </div>
-
                 </div>
             </div>
             <router-link class="btn btn-secondary mt-5" to="/">跳轉金流 結帳成功回首頁</router-link>

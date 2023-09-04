@@ -56,17 +56,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#"><u>我的折價券</u></a>
                             </li>
-                            <li style="position: relative; left: 24%;">
-                                <form class="row g-3">
-                                    <div class="col-auto">
-                                        <label for="inputPassword2" class="visually-hidden">促銷代碼</label>
-                                        <input type="text" class="form-control" id="inputPassword2" placeholder="促銷代碼">
-                                    </div>
-                                    <div class="col-auto">
-                                        <button type="submit" class="btn btn-primary mb-3">輸入</button>
-                                    </div>
-                                </form>
-                            </li>
                         </ul>
 
 
@@ -78,7 +67,7 @@
                                 <h5 class="card-title">Total:</h5>
                                 <p class="card-text">NT$666</p>
                                 <div class="d-grid gap-3 col-12 mx-auto">
-                                <a href="#" class="btn btn-primary ">Checkout</a>
+                                <router-link class="btn btn-primary " to="/ordercheck">結帳</router-link>
                                 </div>
                             </div>
                             <hr>                            
@@ -164,11 +153,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <router-link class="btn btn-secondary mt-5" to="/ordercheck">訂單送出前檢查</router-link>
-                <div style="position:relative; top: 20%; left: 50px;">
-                    <router-link class="btn btn-secondary mt-5" to="/course">繼續購物</router-link>
-                </div>
+                </div>             
             </div>
     </section>
 </template>
