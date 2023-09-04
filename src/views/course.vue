@@ -39,12 +39,13 @@
             <!-- SideBar -->
             <div class="row">
                 <div class="col-2">
-                    <listGroup></listGroup>
+                    <listGroup tabindex="0" v-focus></listGroup>
                 </div>
 
                 <!-- cards for course -->
                 <div class="col-10">
-                    <h1 class="text-center" v-autofocus>課程列表</h1>
+                    <h1 class="text-center">課程列表</h1>
+                    <!-- <input type="text" v-focus> -->
                     <div class="row justify-content-center">
                         <courseCard v-for="cardAmount in 6" class="col-3 mx-2 my-3" :isLike="isLike"></courseCard>
                     </div>
@@ -68,17 +69,10 @@ import { Axios } from 'axios';
 import courseCard from '../components/course/courseCard.vue'
 import pagination from '../components/util/pagination.vue'
 import listGroup from '../components/util/listGroup.vue'
+import { vFocus } from '../directives/vFocus'
 
 let isLike = ref(false)
 
-/*
-  directives
-*/
-const vAutofocus = {
-    mounted: (el) => {
-        el.focus()
-    }
-}
 
 </script>
 
