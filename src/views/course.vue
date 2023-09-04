@@ -44,7 +44,7 @@
 
                 <!-- cards for course -->
                 <div class="col-10">
-                    <h1 class="text-center">課程列表</h1>
+                    <h1 class="text-center" v-autofocus>課程列表</h1>
                     <div class="row justify-content-center">
                         <courseCard v-for="cardAmount in 6" class="col-3 mx-2 my-3" :isLike="isLike"></courseCard>
                     </div>
@@ -60,13 +60,25 @@
 </template>
 
 <script setup>
+/*
+  imports
+*/
 import { ref } from 'vue';
 import { Axios } from 'axios';
 import courseCard from '../components/course/courseCard.vue'
 import pagination from '../components/util/pagination.vue'
 import listGroup from '../components/util/listGroup.vue'
+
 let isLike = ref(false)
 
+/*
+  directives
+*/
+const vAutofocus = {
+    mounted: (el) => {
+        el.focus()
+    }
+}
 
 </script>
 

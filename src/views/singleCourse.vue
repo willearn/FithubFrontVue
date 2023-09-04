@@ -78,8 +78,17 @@
                     </div>
                 </div>
 
+                <!-- 購物車商品數 -->
+                <div class="position-relative">
+                    <RouterLink to="#">
+                        <button class="btn btn-primary btn-circle">
+                            <i type="button" class="bi bi-cart2"></i>
+                        </button>
+                    </RouterLink>
+                </div>
+
                 <!-- 課表摺疊 -->
-                <div class="collapse" id="collapseExample">
+                <div class="collapse my-4" id="collapseExample">
                     <div class="card card-body">
                         I am a Calendar
                     </div>
@@ -103,6 +112,15 @@ import { Axios } from 'axios';
 import courseCard from '../components/course/courseCard.vue'
 let isLike = ref(false)
 
+/*
+directives
+*/
+const vAutofocus = {
+    mounted: (el) => {
+        el.focus()
+    }
+}
+
 </script>
 
 <style scoped>
@@ -113,5 +131,15 @@ let isLike = ref(false)
     --bs-btn-hover-bg: #E83015;
     --bs-btn-hover-border-color: #c34e2e;
     --bs-btn-active-bg: #c34e2e;
+}
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
 }
 </style>
