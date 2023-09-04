@@ -65,8 +65,6 @@
         </div>
     </section>
 
-
-    <!-- classroom -->
     <section class="page-section" id="rent">
         <div class="container text-center">
             <h1>場地介紹</h1>
@@ -127,8 +125,25 @@ import axios from 'axios'
 import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { reactive, ref, onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useRentOrderStore } from "../stores/rentorder.js"
+import { storeToRefs } from 'pinia'
 
-//取得下個月1號為日曆初始日期
+// 使用函式表達式給變數countStore賦值，這邊變數會習慣用import進來的檔案名稱並去除use命名，只要看到Store就是與pinia有關。
+// const countStore = useCounterStore()
+// 使用解構的方式取得useCounterStore()內的函式
+// const { increment } = countStore
+// 也可以使用 countStore.increment()來執行函式
+// 使用useCounterStore()的變數，不能直接解構變數，會去除掉proxy也就是解包，會造成資料無法響應式，所以要用到storeToRefs這個方法把變數在塞回ref內
+// const { count, doubleCount } = storeToRefs(countStore)
+
+const rentOrderStore = useRentOrderStore();
+const { rentOrder } = storeToRefs(rentOrderStore);
+
+// 取得路由物件
+const router = useRouter();
+
+// 取得下個月1號為日曆初始日期
 const today = new Date();
 const nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 1);
 let year = nextMonth.getFullYear();
@@ -141,17 +156,21 @@ if (month === '01') {
 }
 const nextMonthFormatted = `${year}-${month}-${day}`;
 
-
 const url = import.meta.env.VITE_API_JAVAURL
 const selectedClassroom = ref(0); // 預設0
 const selectedDate = ref(nextMonthFormatted);
 const selectedTime = ref(0);
 const events = ref([]);
-let openClassrooms = ref([]);
+const classroomData = ref([]);
+const openClassrooms = ref([]);
+const classroomInfo = ref([])
 
-//建立被選的教室物件
+//建立被選的場地物件
 const selectedData = reactive({
     classroomid: '',
+    classroomName: '',
+    classroomPic: '',
+    classroomPrice: '',
     rentdate: '',
     renttime: '',
 });
@@ -159,13 +178,13 @@ const selectedData = reactive({
 // 篩選狀態為開放的場地
 const getfindAllClassroomNameAndStatusAndId = async () => {
     try {
-        const findAllClassroomNameAndStatusAndId = await axios.get(`${url}/classroom/findAllClassroomNameAndStatusAndId`);
-        const classroomData = findAllClassroomNameAndStatusAndId.data;
-        // console.log(classroomData)
+        const findAllClassroomNameAndStatusAndId = await axios.get(`${url}/classroom/getClassroomInfo`);
+        classroomData.value = findAllClassroomNameAndStatusAndId.data;
+        // console.log(classroomData.value);
 
-        // 使用Array.prototype.filter()篩選出classroomStatus為'開放'的對象 ref要使用.value接值才會被代理
-        openClassrooms.value = classroomData.filter(item => item.classroomStatus === '開放');
-        // console.log(openClassrooms.value)
+        // 使用Array.prototype.filter()篩選出classroomStatus為'開放'的對象 filter篩選出為陣列
+        openClassrooms.value = classroomData.value.filter(item => item.classroomStatus === '開放');
+        // console.log(openClassrooms.value);
 
     } catch (error) {
         console.error('Error:', error);
@@ -188,25 +207,54 @@ watch(selectedTime, (selectedValue) => {
     // console.log(selectedValue);
 });
 
-
+// 檢查預定場地是否被使用，將選擇的資料傳到訂單頁面
 const reserve = async () => {
     try {
+
         if (selectedClassroom.value === 0) {
             alert('請選擇場地')
+            return
+            //需修改
         } else if (selectedDate.value === '') {
             alert('請選擇日期')
-        } else if (selectedTime.value === '') {
+            return
+        } else if (selectedTime.value === 0) {
             alert('請選擇時段')
-        } else {
-            selectedData.classroomid = selectedClassroom.value
-            selectedData.rentdate = selectedDate.value
-            selectedData.renttime = selectedTime.value
-            const classroomAvailability = await axios.post(`${url}/rent/checkClassroomAvailability`, selectedData);
-            const responseData = classroomAvailability.data;
-            // console.log(responseData)
-            alert(responseData)
+            return
         }
-        console.log(selectedData)
+
+        //  使用場地id搜尋日期和時段是否使用 回傳BOOLEAN
+        selectedData.classroomid = selectedClassroom.value
+        selectedData.rentdate = selectedDate.value
+        selectedData.renttime = selectedTime.value
+        const classroomAvailability = await axios.post(`${url}/rent/checkClassroomAvailability`, selectedData);
+        const responseData = classroomAvailability.data;
+        // console.log(responseData)
+
+        if (responseData === true) {
+            alert('已被預訂')
+        } else {
+
+            // 篩選出選擇的場地資訊並傳到訂單頁面 find篩選出為物件(只返回第一個匹配的元素)
+            classroomInfo.value = classroomData.value.find(item => item.classroomId === selectedData.classroomid);
+            selectedData.classroomName = classroomInfo.value.classroomName;
+            selectedData.classroomPrice = classroomInfo.value.classroomPrice;
+            selectedData.classroomPic = classroomInfo.value.classroomPic;
+            // console.log(selectedData)
+
+            rentOrder.value = selectedData;
+            // 使用router.push query進行頁面跳轉資料存在網址 http://localhost:5173/rentorder?id=123
+            router.push({
+                path: "/rentorder",
+                // query: {
+                //     id: "123",
+                //     name: 'tigert'
+                // },
+            });
+            console.log(rentOrder.value)
+        }
+
+        // console.log(selectedData)
     } catch (error) {
         console.error('Error:', error);
     }

@@ -11,7 +11,12 @@ const router = createRouter({
     }, {
       path: '/rent',
       name: 'rent',
-      component: () => import('../views/rent.vue')
+      component: () => import('../views/rent.vue'),
+    },
+    {
+      path: '/rentorder',
+      name: 'rentorder',
+      component: () => import('../views/rentorder.vue')
     },
   ]
 })
