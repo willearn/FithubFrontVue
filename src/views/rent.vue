@@ -42,7 +42,7 @@
                 <h1>場地租借</h1>
                 <hr class="divider" />
                 <label class="fs-3">場地:</label>
-                <select class="form-select-lg me-sm-5" v-model="selectedClassroom" @change="handleOptionChange">
+                <select class="form-select-lg me-sm-5" v-model="selectedClassroomId" @change="handleOptionChange">
                     <option disabled selected value="0">請先選擇場地</option>
                     <option v-for="classroom in openClassrooms" :key="classroom.name" :value="classroom.classroomId">
                         {{ classroom.classroomName }}
@@ -138,7 +138,7 @@ import { storeToRefs } from 'pinia'
 // const { count, doubleCount } = storeToRefs(countStore)
 
 const rentOrderStore = useRentOrderStore();
-const { rentOrder } = storeToRefs(rentOrderStore);
+const { selectedClassroom } = storeToRefs(rentOrderStore);
 
 // 取得路由物件
 const router = useRouter();
@@ -157,7 +157,7 @@ if (month === '01') {
 const nextMonthFormatted = `${year}-${month}-${day}`;
 
 const url = import.meta.env.VITE_API_JAVAURL
-const selectedClassroom = ref(0); // 預設0
+const selectedClassroomId = ref(0); // 預設0
 const selectedDate = ref(nextMonthFormatted);
 const selectedTime = ref(0);
 const events = ref([]);
@@ -191,8 +191,8 @@ const getfindAllClassroomNameAndStatusAndId = async () => {
     }
 };
 
-// 監聽 selectedClassroom 的變化
-watch(selectedClassroom, (selectedValue) => {
+// 監聽 selectedClassroomId 的變化
+watch(selectedClassroomId, (selectedValue) => {
     getfindAllDateTimeFromRentOrderAndclass(selectedValue);
 });
 
@@ -211,7 +211,7 @@ watch(selectedTime, (selectedValue) => {
 const reserve = async () => {
     try {
 
-        if (selectedClassroom.value === 0) {
+        if (selectedClassroomId.value === 0) {
             alert('請選擇場地')
             return
             //需修改
@@ -224,7 +224,7 @@ const reserve = async () => {
         }
 
         //  使用場地id搜尋日期和時段是否使用 回傳BOOLEAN
-        selectedData.classroomid = selectedClassroom.value
+        selectedData.classroomid = selectedClassroomId.value
         selectedData.rentdate = selectedDate.value
         selectedData.renttime = selectedTime.value
         const classroomAvailability = await axios.post(`${url}/rent/checkClassroomAvailability`, selectedData);
@@ -242,7 +242,7 @@ const reserve = async () => {
             selectedData.classroomPic = classroomInfo.value.classroomPic;
             // console.log(selectedData)
 
-            rentOrder.value = selectedData;
+            selectedClassroom.value = selectedData;
             // 使用router.push query進行頁面跳轉資料存在網址 http://localhost:5173/rentorder?id=123
             router.push({
                 path: "/rentorder",
@@ -251,7 +251,7 @@ const reserve = async () => {
                 //     name: 'tigert'
                 // },
             });
-            console.log(rentOrder.value)
+            // console.log(rentOrder.value)
         }
 
         // console.log(selectedData)
@@ -295,7 +295,7 @@ const getfindAllDateTimeFromRentOrderAndclass = async (selectedValue) => {
             events: events.value,
             // 將輸入的排序
             eventOrder: function (a, b) {
-                const order = { 'morning:已預定': 1, 'afternoon:已預定': 2, 'night:已預定': 3 };
+                const order = { '早上:已預定': 1, '下午:已預定': 2, '晚上:已預定': 3 };
                 return order[a.title] - order[b.title];
             },
         });

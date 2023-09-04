@@ -56,39 +56,97 @@
                         <tr>
                             <td>1</td>
                             <td>
-                                <img :src="rentOrder.classroomPic" style="width: 400px;height: 400px;">
+                                <img :src="selectedClassroom.classroomPic" style="width: 400px;height: 400px;">
                             </td>
-                            <td>{{ rentOrder.classroomName }}</td>
-                            <td>{{ rentOrder.rentdate }}</td>
-                            <td>{{ rentOrder.renttime }}</td>
-                            <td>{{ rentOrder.classroomPrice }}</td>
+                            <td>{{ selectedClassroom.classroomName }}</td>
+                            <td>{{ selectedClassroom.rentdate }}</td>
+                            <td>{{ selectedClassroom.renttime }}</td>
+                            <td>{{ selectedClassroom.classroomPrice }}</td>
                         </tr>
                     </tbody>
                 </table>
-                <button type="submit" class="btn btn-primary btn-lg" @click="sendRentOrder">送出訂單</button>
+                <button type="submit" class="btn btn-primary btn-lg" @click="insertRentOrder">送出訂單</button>
             </div>
         </div>
     </section>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import axios from 'axios'
+import { onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router'
 import { useRentOrderStore } from "../stores/rentorder.js"
 import { storeToRefs } from 'pinia'
-
-const URL = import.meta.env.VITE_API_JAVAURL
-
-const rentOrderStore = useRentOrderStore();
-const { rentOrder } = storeToRefs(rentOrderStore);
-console.log(rentOrder.value)
-
-
 
 // 測試:使用query接值
 // const id = router.currentRoute.value.query.id;
 // const name = router.currentRoute.value.query.name;
 
+const url = import.meta.env.VITE_API_JAVAURL
+const rentOrderStore = useRentOrderStore();
+const { selectedClassroom } = storeToRefs(rentOrderStore);
+// console.log(selectedClassroom.value)
+
+
+const today = new Date();
+const year = today.getFullYear();
+let month = String(today.getMonth() + 1).padStart(2, '0');
+let day = String(today.getDate()).padStart(2, '0');
+let hours = String(today.getHours()).padStart(2, '0');
+const minutes = today.getMinutes(); // 
+const seconds = today.getSeconds(); // 
+// 金流日期需求格式
+const formattedDate = `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+
+
+const rentOrder = reactive({
+    memberid: '1',
+    classroomid: selectedClassroom.value.classroomid,
+    rentorderdate: formattedDate,
+    rentdate: selectedClassroom.value.rentdate,
+    renttime: selectedClassroom.value.renttime,
+    rentamount: selectedClassroom.value.classroomPrice,
+    rentstatus: '未付款',
+});
+// console.log(rentOrder)
+
+
+// 新增訂單
+const insertRentOrder = async () => {
+    try {
+        const response = await axios.post(`${url}/rent/insert`, rentOrder);
+        if (response.status === 200) {
+            // ecpay請求 會回傳字串form表單
+            const ecpayResponse = await axios.post(`${url}/ecpay/ecpayCheckout`, rentOrder);
+            const ecpayCheckout = ecpayResponse.data
+            console.log(ecpayCheckout)
+
+            // 建立一个隱藏的div元素，將表單內容放入
+            const hiddenDiv = document.createElement('div');
+            hiddenDiv.style.display = 'none'; // 隐藏这个元素
+            hiddenDiv.innerHTML = ecpayCheckout;
+
+            // 將隱藏的div添加到網頁中
+            document.body.appendChild(hiddenDiv);
+
+            // 找到表單元素
+            const form = hiddenDiv.querySelector('form');
+            if (form) {
+                // 觸發表單自動提交
+                form.submit();
+            } else {
+                console.error('找不到表单元素');
+            }
+
+
+        } else {
+            // 其他狀態碼，可能需要進行錯誤處理
+            console.error('請求失敗，狀態碼：', response.status);
+        }
+    } catch (error) {
+        console.error('insertRentOrder Error:', error);
+    }
+};
 
 onMounted(() => {
 
