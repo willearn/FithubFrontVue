@@ -38,7 +38,7 @@
         <section class="page-section" id="courseDetail">
             <div class="row justify-content-center">
                 <div class="col-5 mx-3">
-                    <svg class="bd-placeholder-img card-img-top mt-3" width="100%" height="180"
+                    <svg class="bd-placeholder-img card-img-top mt-3" width="100%" height="80%"
                         xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" focusable="false">
                         <title>Placeholder</title>
                         <rect width="100%" height="100%" fill="#868e96"></rect>
@@ -88,38 +88,71 @@
             <div class="collapse my-4" id="collapseExample">
                 <div class="card card-body">
                     I am a Calendar
-                    <div id="calendar" class="calendar text-center mt-5">
-                    </div>
+                    <!-- <div id="calendar" class="calendar text-center mt-5">
+                    </div> -->
+                    <!-- <FullCalendar></FullCalendar> -->
                 </div>
-
-                <hr>
-
-                <h2>推薦課程</h2>
-                <div class="row justify-content-center">
-                    <courseCard v-for="cardAmount in 3" class="col-3 mx-2 my-3" :isLike="isLike"></courseCard>
-                </div>
-
             </div>
+            <FullCalendar></FullCalendar>
+            <hr>
+
+            <h2>推薦課程</h2>
+            <div class="row justify-content-center">
+                <courseCard v-for="cardAmount in 3" class="col-3 mx-2 my-3" :isLike="isLike"></courseCard>
+            </div>
+
         </section>
         <router-link class="btn btn-secondary" to="/cart">購物車</router-link>
     </div>
 </template>
 
 <script setup>
+/*
+  imports
+*/
 import { ref } from 'vue';
 import { Axios } from 'axios';
+import { Calendar } from '@fullcalendar/core'
+import dayGridPlugin from '@fullcalendar/daygrid'
 import courseCard from '../components/course/courseCard.vue'
+import FullCalendar from '../components/course/courseCalendar.vue'
 import { vFocus } from '../directives/vFocus';
+
 let isLike = ref(false)
 
 /*
-directives
+  Build Calendar
 */
-const vAutofocus = {
-    mounted: (el) => {
-        el.focus()
-    }
-}
+// // 取得下個月1號為日曆初始日期
+// const today = new Date()
+// const nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 1)
+// let year = nextMonth.getFullYear()
+// let month = String(nextMonth.getMonth()).padStart(2, '0')
+// let day = String(nextMonth.getDate()).padStart(2, '0')
+
+// // 如果月份為 01，年份加 1
+// if (month === '01') {
+//     year++
+// }
+// const nextMonthFormatted = `${year}-${month}-${day}`
+
+// const calendarEl = document.getElementById('calendar')
+// const calendar = new Calendar(calendarEl, {
+//     plugins: [dayGridPlugin],
+//     // headerToolbar: {
+//     //     left: '',
+//     //     center: 'title',
+//     //     right: '',
+//     // },
+//     initialView: 'dayGridMonth',
+//     initialDate: nextMonthFormatted,
+//     timeZone: 'UTC',
+//     locale: 'zh-tw',
+//     height: 700,
+//     events: [],
+
+// })
+// calendar.render()
 
 </script>
 

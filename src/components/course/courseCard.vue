@@ -1,6 +1,6 @@
 <template>
     <div class="card" style="border: 1px solid red;">
-        <svg class="bd-placeholder-img card-img-top mt-3" width="100%" height="180" xmlns="http://www.w3.org/2000/svg"
+        <svg class="bd-placeholder-img card-img-top mt-3" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
             role="img" aria-label="Placeholder: Image cap" focusable="false">
             <title>Placeholder</title>
             <rect width="100%" height="100%" fill="#868e96"></rect>

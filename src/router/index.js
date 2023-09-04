@@ -19,9 +19,9 @@ const router = createRouter({
       component: () => import('../views/course.vue')
     },
     {
-      path: '/course/single',
-      name: 'singleCourse',
-      component: () => import('../views/singleCourse.vue')
+      path: '/course/detail',
+      name: 'courseDetail',
+      component: () => import('../views/courseDetail.vue')
     },
     {
       path: '/cart',
