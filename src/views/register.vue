@@ -16,10 +16,14 @@ const loginData = reactive({
   memberbirthday: "",
 });
 
+
+
 const verify = reactive({
   email: "",
   verificationcode: "",
 });
+
+const verifystatus = ref()
 
 const countdown = ref(0);
 let timer;
@@ -46,10 +50,16 @@ const register = async () => {
     return;
   }
 
-  const response = await axios.post(`${url}/members`, loginData);
+  if(!verifystatus){
+    alert("請驗證信箱")
+    return;
+  }
 
-  //   console.log(response.data);
-  //   console.log(response.status);
+  try {
+    const response = await axios.post(`${url}/members`, loginData);
+  } catch (error) {
+    
+  }
 };
 
 const sendVerificationCode = async () => {
@@ -59,40 +69,48 @@ const sendVerificationCode = async () => {
   }
   verify.email = loginData.memberemail;
 
-  const response = await axios.post(`${url}/verificationcode`, verify);
-  console.log(response.status);
-  startCountdown();
+  try {
+    const response = await axios.post(`${url}/verificationcode`, verify);
+    startCountdown();
+  } catch (error) {
+    alert("請輸入正確email")
+  }
 }
 
 const checkVerificationCode = async () => {
   if (!loginData.memberemail.trim() ||
-        !verify.verificationcode.trim()) {
+    !verify.verificationcode.trim()) {
     alert("請輸入email及驗證碼");
     return;
   }
   verify.email = loginData.memberemail;
 
-  const response = await axios.post(`${url}/verificationcode/check`, verify);
-  if(response.status == 200){
-    
+  try {
+    const response = await axios.post(`${url}/verificationcode/check`, verify);
+    console.log(response.status);
+    verifystatus.value = true;
+    console.log("test typeof")
+    console.log(typeof verifystatus.value)
+  } catch (error) {
+    verifystatus.value = false;
   }
-  console.log(response.status);
+
 }
 
 const startCountdown = () => {
-  
+
   countdown.value = 60; // 设置倒计时秒数
   timer = setInterval(() => {
     var verifybtn = document.getElementById('verifybtn')
     if (countdown.value > 0) {
       verifybtn.disabled = true;
-      verifybutton.button = "重新發送驗證碼(" + countdown.value + ")" 
+      verifybutton.button = "重新發送驗證碼(" + countdown.value + ")"
       countdown.value -= 1;
-      
+
     } else {
       clearInterval(timer); // 倒计时结束时清除定时器
-      verifybutton.button = "發送驗證碼" 
-      verifybtn.disabled = false; 
+      verifybutton.button = "發送驗證碼"
+      verifybtn.disabled = false;
     }
   }, 1000); // 每秒减少1秒
 };
@@ -139,42 +157,52 @@ const startCountdown = () => {
     <div class="container">
       <div class="col-lg-4 col-md-4">
         <label class="">信箱</label>
+        <span v-if="!loginData.memberemail" class="text-danger">*</span>
         <input type="email" class="form-control" v-model="loginData.memberemail" placeholder="name@example.com" />
-        <input type="button" v-model="verifybutton.button" @click="sendVerificationCode"  id="verifybtn">
+        <input type="button" v-model="verifybutton.button" @click="sendVerificationCode" id="verifybtn">
         <input type="text" placeholder="輸入驗證碼" v-model="verify.verificationcode">
         <input type="button" value="驗證" @click="checkVerificationCode">
+        <label v-if="verifystatus">驗證成功</label>
       </div>
       <div class="col-lg-4 col-md-4">
         <label class="">密碼</label>
+        <span v-if="!loginData.memberpassword" class="text-danger">*</span>
         <input type="password" class="form-control" v-model="loginData.memberpassword" />
       </div>
       <div class="col-lg-4 col-md-4">
         <label class="">手機號碼</label>
+        <span v-if="!loginData.memberphoneno" class="text-danger">*</span>
         <input type="email" class="form-control" v-model="loginData.memberphoneno" />
       </div>
       <div class="col-lg-4 col-md-4">
         <label class="">姓名</label>
+        <span v-if="!loginData.membername" class="text-danger">*</span>
         <input type="email" class="form-control" v-model="loginData.membername" />
       </div>
       <div class="col-lg-4 col-md-4">
         <label class="">性別</label>
+        <span v-if="!loginData.membergender" class="text-danger">*</span>
         <input type="radio" name="gender" value="男" v-model="loginData.membergender" />男
         <input type="radio" name="gender" value="女" v-model="loginData.membergender" />女
       </div>
       <div class="col-lg-4 col-md-4">
         <label class="">縣市</label>
+        <span v-if="!loginData.membercity" class="text-danger">*</span>
         <input type="text" class="form-control" v-model="loginData.membercity" />
       </div>
       <div class="col-lg-4 col-md-4">
         <label class="">地區</label>
+        <span v-if="!loginData.memberzone" class="text-danger">*</span>
         <input type="text" class="form-control" v-model="loginData.memberzone" />
       </div>
       <div class="col-lg-4 col-md-4">
         <label class="">地址</label>
+        <span v-if="!loginData.memberaddress" class="text-danger">*</span>
         <input type="text" class="form-control" v-model="loginData.memberaddress" />
       </div>
       <div class="col-lg-4 col-md-4">
         <label class="">生日</label>
+        <span v-if="!loginData.memberbirthday" class="text-danger">*</span>
         <input type="date" class="form-control" v-model="loginData.memberbirthday" />
       </div>
       <div class="col-lg-4 col-md-4">
