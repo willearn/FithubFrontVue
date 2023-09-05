@@ -12,7 +12,8 @@
           <li class="nav-item"><router-link class="nav-link" to="/rent">場地租借</router-link></li>
           <li class="nav-item"><router-link class="nav-link" to="/">最新消息</router-link></li>
           <li class="nav-item"><router-link class="nav-link" to="/">教練團隊</router-link></li>
-          <li class="nav-item"><router-link class="nav-link" to="/">登入</router-link></li>
+          <li class="nav-item"  v-if="!isLogin"><router-link class="nav-link" to="/login" >登入</router-link></li>
+          <li class="nav-item"  v-if="isLogin"><router-link class="nav-link" to="/login" @click="logout">登出</router-link></li>
         </ul>
       </div>
     </div>
@@ -20,5 +21,27 @@
 </template>
 
 <script setup>
+import router from "@/router"
+import { ref , reactive , onMounted , onBeforeMount, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted} from "vue";
+
+const isLogin = ref();
+
+onMounted(() => {
+  isLogin.value = window.localStorage.getItem("isLogin") === 'true';
+  console.log("onMounted");
+})
+
+
+const logout = () => {
+    window.localStorage.setItem("isLogin", "")
+    window.localStorage.setItem("token", "")
+    window.localStorage.setItem("memberid", "")
+    window.localStorage.setItem("memberemail", "")
+    window.localStorage.setItem("membername", "")
+};
+
+router.beforeResolve( to=>{
+  isLogin.value = window.localStorage.getItem("isLogin") === 'true';
+})
 
 </script>
