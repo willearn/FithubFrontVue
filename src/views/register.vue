@@ -16,6 +16,18 @@ const loginData = reactive({
   memberbirthday: "",
 });
 
+const verify = reactive({
+  email: "",
+  verificationcode: "",
+});
+
+const countdown = ref(0);
+let timer;
+
+const verifybutton = reactive({
+  button: "發送驗證碼",
+});
+
 const register = async () => {
   //  
 
@@ -34,83 +46,90 @@ const register = async () => {
     return;
   }
 
-  const response = await axios.post(`${url}/members`,loginData);
+  const response = await axios.post(`${url}/members`, loginData);
 
   //   console.log(response.data);
   //   console.log(response.status);
 };
 
-const sendVerificationCode = async() => {
-    const response = await axios.post(`${url}/members/sendVerificationCode`);
-    console.log(response.status);
+const sendVerificationCode = async () => {
+  if (!loginData.memberemail.trim()) {
+    alert("請輸入email");
+    return;
+  }
+  verify.email = loginData.memberemail;
+
+  const response = await axios.post(`${url}/verificationcode`, verify);
+  console.log(response.status);
+  startCountdown();
 }
 
+const checkVerificationCode = async () => {
+  if (!loginData.memberemail.trim() ||
+        !verify.verificationcode.trim()) {
+    alert("請輸入email及驗證碼");
+    return;
+  }
+  verify.email = loginData.memberemail;
 
+  const response = await axios.post(`${url}/verificationcode/check`, verify);
+  if(response.status == 200){
+    
+  }
+  console.log(response.status);
+}
+
+const startCountdown = () => {
+  
+  countdown.value = 60; // 设置倒计时秒数
+  timer = setInterval(() => {
+    var verifybtn = document.getElementById('verifybtn')
+    if (countdown.value > 0) {
+      verifybtn.disabled = true;
+      verifybutton.button = "重新發送驗證碼(" + countdown.value + ")" 
+      countdown.value -= 1;
+      
+    } else {
+      clearInterval(timer); // 倒计时结束时清除定时器
+      verifybutton.button = "發送驗證碼" 
+      verifybtn.disabled = false; 
+    }
+  }, 1000); // 每秒减少1秒
+};
 </script>
+
+
+
 
 <template>
   <div class="masthead">
     <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-indicators">
-        <button
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
-          data-bs-slide-to="0"
-          class="active"
-          aria-current="true"
-          aria-label="Slide 1"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
-          data-bs-slide-to="1"
-          aria-label="Slide 2"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
-          data-bs-slide-to="2"
-          aria-label="Slide 3"
-        ></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+          aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+          aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+          aria-label="Slide 3"></button>
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img
-            src="../assets/index/classroom/攀岩教室.jpg"
-            class="d-block w-100"
-            alt="..."
-          />
+          <img src="../assets/index/classroom/攀岩教室.jpg" class="d-block w-100" alt="..." />
         </div>
         <div class="carousel-item">
-          <img
-            src="../assets/index/classroom/有氧大教室.jpg"
-            class="d-block w-100"
-            alt="..."
-          />
+          <img src="../assets/index/classroom/有氧大教室.jpg" class="d-block w-100" alt="..." />
         </div>
         <div class="carousel-item">
-          <img
-            src="../assets/index/classroom/空中瑜珈.jpg"
-            class="d-block w-100"
-            alt="..."
-          />
+          <img src="../assets/index/classroom/空中瑜珈.jpg" class="d-block w-100" alt="..." />
         </div>
       </div>
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="prev"
-      >
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="next"
-      >
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
@@ -120,15 +139,10 @@ const sendVerificationCode = async() => {
     <div class="container">
       <div class="col-lg-4 col-md-4">
         <label class="">信箱</label>
-        <input
-          type="email"
-          class="form-control"
-          v-model="loginData.memberemail"
-          placeholder="name@example.com"
-        />
-        <input type="button" value="發送驗證碼" @click="sendVerificationCode">
-        <input type="text" placeholder="輸入驗證碼">
-        <input type="button" value="驗證">
+        <input type="email" class="form-control" v-model="loginData.memberemail" placeholder="name@example.com" />
+        <input type="button" v-model="verifybutton.button" @click="sendVerificationCode"  id="verifybtn">
+        <input type="text" placeholder="輸入驗證碼" v-model="verify.verificationcode">
+        <input type="button" value="驗證" @click="checkVerificationCode">
       </div>
       <div class="col-lg-4 col-md-4">
         <label class="">密碼</label>
@@ -164,7 +178,7 @@ const sendVerificationCode = async() => {
         <input type="date" class="form-control" v-model="loginData.memberbirthday" />
       </div>
       <div class="col-lg-4 col-md-4">
-        <input type="button" value="註冊" @click="register()" />
+        <input type="button" value="註冊" @click="register" />
       </div>
     </div>
   </section>

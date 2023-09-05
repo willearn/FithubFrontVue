@@ -2,27 +2,33 @@ import axios from "axios"
 const url = import.meta.env.VITE_API_JAVAURL
 
 //登入程式
-async function login(userName, password) {
+async function login(email, password) {
     const result = {
         status: 1,
         token: "",
-        loa: 0,
+        memberid: 0,
+        membername: "",
+        memberemail: "",
     }
 
     const data = {
-        memberemail: userName,
+        memberemail: email,
         memberpassword: password
     }
-    const res = await axios.post(`${url}/login`, data)
+    const res = await axios.post(`${url}/memberlogin`, data)
     if (res.data.status) {
         result.status = 0
         result.token = res.data.token
-        result.loa = res.data.loa
+        result.memberid = res.data.memberid
+        result.membername = res.data.membername
+        result.memberemail = res.data.memberemail
+        
         setLoginStore({
             isLogin: true,
             token: result.token,
-            userName: res.data.username,
-            loa: result.loa,
+            memberid: res.data.memberid,
+            membername: res.data.membername,
+            memberemail: res.data.memberemail,
         })
     }
 
@@ -35,8 +41,9 @@ async function authToken(token) {
     const result = {
         status: false,
         token: "",
-        userName: "",
-        loa: 0,
+        memberid: "",
+        membername: "",
+        memberemail: "",
     }
     const data = {
         token: token
@@ -48,21 +55,24 @@ async function authToken(token) {
         console.log('res.data:' + res.data)
         result.status = true
         result.token = res.data.token
-        result.userName = res.data.username
-        result.loa = res.data.loa
+        result.memberid = res.data.memberid
+        result.membername = res.data.membername
+        result.memberemail = res.data.memberemail
         setLoginStore({
             isLogin: true,
             token: result.token,
-            userName: result.userName,
-            loa: result.loa,
+            memberid: res.data.memberid,
+            membername: res.data.membername,
+            memberemail: res.data.memberemail,
         })
     } else {
         console.log('authToken2')
         setLoginStore({
             isLogin: false,
             token: "",
-            userName: "",
-            loa: result.loa,
+            memberid: "",
+            membername: "",
+            memberemail: "",
         })
     }
 
@@ -73,8 +83,9 @@ async function authToken(token) {
 function setLoginStore(options) {
     window.localStorage.setItem("isLogin", options.isLogin)
     window.localStorage.setItem("token", options.token)
-    window.localStorage.setItem("username", options.userName)
-    window.localStorage.setItem("loa", options.loa)
+    window.localStorage.setItem("memberid", options.memberid)
+    window.localStorage.setItem("membername", options.membername)
+    window.localStorage.setItem("memberemail", options.memberemail)
 }
 
 
