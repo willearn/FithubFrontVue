@@ -1,32 +1,30 @@
 <template>
     <div class="masthead">
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div id="carouselIndicators" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="0" class="active"
                     aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="1"
                     aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="2"
                     aria-label="Slide 3"></button>
             </div>
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="../assets/index/classroom/攀岩教室.jpg" class="d-block w-100" alt="...">
+                    <img src="https://picsum.photos/300/200?random=10" class="d-block w-100" alt="...">
                 </div>
                 <div class="carousel-item">
-                    <img src="../assets/index/classroom/有氧大教室.jpg" class="d-block w-100" alt="...">
+                    <img src="https://picsum.photos/300/200?random=11" class="d-block w-100" alt="...">
                 </div>
                 <div class="carousel-item">
-                    <img src="../assets/index/classroom/空中瑜珈.jpg" class="d-block w-100" alt="...">
+                    <img src="https://picsum.photos/300/200?random=12" class="d-block w-100" alt="...">
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="prev">
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndicators" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselIndicators" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
@@ -38,15 +36,15 @@
         <div class="container">
             <!-- SideBar -->
             <div class="row">
-                <div class="col-2">
-                    <listGroup tabindex="0" v-focus></listGroup>
+                <div class="col-2 ">
+                    <listGroup class="d-flex justify-content-center" tabindex="0" v-focus></listGroup>
                 </div>
 
                 <!-- cards for course -->
                 <div class="col-10">
                     <h1 class="text-center">課程列表</h1>
                     <!-- <input type="text" v-focus> -->
-                    <div class="row justify-content-center">
+                    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
                         <courseCard v-for="cardAmount in 6" class="col-3 mx-2 my-3" :cardAmount="cardAmount"
                             :isLike="isLike"></courseCard>
                     </div>

@@ -15,9 +15,11 @@ export default {
             calendarOptions: {
                 plugins: [dayGridPlugin],
                 initialView: 'dayGridMonth',
-                weekends: false,
+                weekends: true,
+                height: 600,
+                aspectRatio: 2,
                 // timeZone: 'UTC',
-                locale: 'zh-tw',
+                locale: 'en-us',
                 events: [
                     { title: 'Meeting', start: new Date() }
                 ],

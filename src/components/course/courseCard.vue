@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card h-100">
         <img :src="`https://picsum.photos/300/200?random=${cardAmount}`" class="card-img-top mt-3" alt="..." />
         <div class="card-body">
             <span v-if="isLike == true" type="button" class="bi bi-heart-fill mx-1 "></span>

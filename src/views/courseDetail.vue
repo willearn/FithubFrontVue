@@ -91,7 +91,8 @@
 
             <h2>推薦課程</h2>
             <div class="row justify-content-center">
-                <courseCard v-for="cardAmount in 3" class="col-3 mx-2 my-3" :isLike="isLike"></courseCard>
+                <courseCard v-for="cardAmount in 3" class="col-3 mx-2 my-3" :cardAmount="cardAmount" :isLike="isLike">
+                </courseCard>
             </div>
 
         </section>
