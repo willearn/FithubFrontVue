@@ -12,7 +12,7 @@
           <li class="nav-item"><router-link class="nav-link" to="/rent">場地租借</router-link></li>
           <li class="nav-item"><router-link class="nav-link" to="/">最新消息</router-link></li>
           <li class="nav-item"><router-link class="nav-link" to="/">教練團隊</router-link></li>
-          <li class="nav-item"><router-link class="nav-link" to="/">登入</router-link></li>
+          <li class="nav-item"><router-link class="nav-link" to="/login">登入</router-link></li>
         </ul>
       </div>
     </div>
