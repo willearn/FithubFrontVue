@@ -108,8 +108,6 @@
 */
 import { ref } from 'vue';
 import { Axios } from 'axios';
-import { Calendar } from '@fullcalendar/core'
-import dayGridPlugin from '@fullcalendar/daygrid'
 import courseCard from '../components/course/courseCard.vue'
 import FullCalendar from '../components/course/courseCalendar.vue'
 import CartIcon from '../components/util/icon-cart.vue'
