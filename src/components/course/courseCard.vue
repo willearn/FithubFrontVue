@@ -1,5 +1,5 @@
 <template>
-    <div class="card" style="border: 1px solid red;">
+    <div class="card" >
         <svg class="bd-placeholder-img card-img-top mt-3" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
             role="img" aria-label="Placeholder: Image cap" focusable="false">
             <title>Placeholder</title>
@@ -7,7 +7,7 @@
             <text x="27%" y="50%" fill="#dee2e6" dy=".3em" style="border: 1px solid red;">Image cap</text>
         </svg>
         <!-- <img src="..." class="card-img-top" alt="..."> -->
-        <div class="card-body" style="border: 1px solid red;">
+        <div class="card-body" >
             <span v-if="isLike == true" type="button" class="bi bi-heart-fill mx-1 "></span>
             <span v-else type="button" class="bi bi-heart mx-1"></span>
             <h5 class="card-text">課程名稱</h5>
