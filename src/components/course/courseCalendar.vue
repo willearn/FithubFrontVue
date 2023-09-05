@@ -27,9 +27,10 @@ const calendarOptions = ref({
     initialView: 'dayGridMonth',
     weekends: true,
     height: 600,
-    aspectRatio: 2,
+    aspectRatio: 1,
     // timeZone: 'UTC',
     locale: 'en-us',
+    buttonText: { today: '今日' },
     events: [
         { title: 'Meeting', start: new Date() }
     ],

@@ -32,17 +32,18 @@
     </div>
 
 
-    <section class="page-section" id="course">
+    <section class="page-section" id="courseView">
         <div class="container">
             <!-- SideBar -->
             <div class="row">
                 <div class="col-2 ">
-                    <listGroup class="d-flex justify-content-center" tabindex="0" v-focus></listGroup>
+                    <listGroup class="d-flex justify-content-center" :allCourseCategories="allCourseCategories" tabindex="0"
+                        v-focus></listGroup>
                 </div>
 
                 <!-- cards for course -->
                 <div class="col-10">
-                    <h1 class="text-center">課程列表</h1>
+                    <h1 class="text-center">全部課程列表</h1>
                     <!-- <input type="text" v-focus> -->
                     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
                         <courseCard v-for="cardAmount in 6" class="col-3 mx-2 my-3" :cardAmount="cardAmount"
@@ -63,15 +64,36 @@
 /*
   imports
 */
-import { ref } from 'vue';
-import { Axios } from 'axios';
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 import courseCard from '../components/course/courseCard.vue'
 import pagination from '../components/util/pagination.vue'
 import listGroup from '../components/util/listGroup.vue'
 import { vFocus } from '../directives/vFocus'
+const URL = import.meta.env.VITE_API_JAVAURL;
 
 let isLike = ref(false)
 
+/*
+  Load Datas
+*/
+
+// Load courseCategories data
+const allCourseCategories = ref([]);
+const loadAllCourseCategories = async () => {
+    const URLAPI = `${URL}/coursecategories/findAll`;
+    const response = await axios.get(URLAPI);
+    // console.log(response.data)
+
+    //取得所有分類放進allCourseCategories變數
+    allCourseCategories.value = response.data;
+    // console.log(allCourseCategories)
+
+};
+
+onMounted(() => {
+    loadAllCourseCategories()
+})
 
 </script>
 
