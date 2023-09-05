@@ -47,7 +47,8 @@
                     <h1 class="text-center">課程列表</h1>
                     <!-- <input type="text" v-focus> -->
                     <div class="row justify-content-center">
-                        <courseCard v-for="cardAmount in 6" class="col-3 mx-2 my-3" :isLike="isLike"></courseCard>
+                        <courseCard v-for="cardAmount in 6" class="col-3 mx-2 my-3" :cardAmount="cardAmount"
+                            :isLike="isLike"></courseCard>
                     </div>
 
                     <pagination class="d-flex justify-content-center mt-3"></pagination>

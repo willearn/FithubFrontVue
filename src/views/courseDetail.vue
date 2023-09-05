@@ -37,17 +37,12 @@
     <div class="container">
         <section class="page-section" id="courseDetail">
             <div class="row justify-content-center">
-                <div class="col-5 mx-3">
-                    <svg class="bd-placeholder-img card-img-top mt-3" width="100%" height="80%"
-                        xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" focusable="false">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="#868e96"></rect>
-                        <text x="40%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
-                    </svg>
-                    <!-- <img src="..." class="card-img-top" alt="..."> -->
+                <div class="col-4 mx-3">
+                    <img src="https://picsum.photos/300/200?random=10" class="card-img-top mt-3" alt="..." tabindex="0"
+                        v-focus />
                 </div>
                 <div class="col-6 mx-3">
-                    <h2 tabindex="0" v-focus>課程名稱</h2>
+                    <h2>課程名稱</h2>
                     <div>授課教練（教練資訊查看）</div>
                     <div class="my-3">
                         <label for="courseDescription" class="form-label">課程說明</label>
@@ -75,14 +70,8 @@
                 </div>
             </div>
 
-            <!-- 購物車圓形button+右上商品數 -->
-            <div class="position-relative">
-                <RouterLink to="#">
-                    <button class="btn btn-primary btn-circle">
-                        <i type="button" class="bi bi-cart2"></i>
-                    </button>
-                </RouterLink>
-            </div>
+
+
 
             <!-- 課表摺疊 -->
             <div class="collapse my-4" id="collapseExample">
@@ -93,7 +82,11 @@
                     <!-- <FullCalendar></FullCalendar> -->
                 </div>
             </div>
-            <FullCalendar></FullCalendar>
+            <div class="row">
+                <div class="col">
+                    <FullCalendar></FullCalendar>
+                </div>
+            </div>
             <hr>
 
             <h2>推薦課程</h2>
@@ -104,6 +97,8 @@
         </section>
         <router-link class="btn btn-secondary" to="/cart">購物車</router-link>
     </div>
+
+    <CartIcon></CartIcon>
 </template>
 
 <script setup>
@@ -116,6 +111,7 @@ import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import courseCard from '../components/course/courseCard.vue'
 import FullCalendar from '../components/course/courseCalendar.vue'
+import CartIcon from '../components/util/icon-cart.vue'
 import { vFocus } from '../directives/vFocus';
 
 let isLike = ref(false)
@@ -164,15 +160,5 @@ let isLike = ref(false)
     --bs-btn-hover-bg: #E83015;
     --bs-btn-hover-border-color: #c34e2e;
     --bs-btn-active-bg: #c34e2e;
-}
-
-.btn-circle {
-    width: 30px;
-    height: 30px;
-    padding: 6px 0px;
-    border-radius: 15px;
-    text-align: center;
-    font-size: 12px;
-    line-height: 1.42857;
 }
 </style>
