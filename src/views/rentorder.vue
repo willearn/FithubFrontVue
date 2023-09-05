@@ -75,6 +75,7 @@
 import axios from 'axios'
 import { onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router'
+import { useNow, useDateFormat } from '@vueuse/core'
 import { useRentOrderStore } from "../stores/rentorder.js"
 import { storeToRefs } from 'pinia'
 
@@ -87,22 +88,14 @@ const rentOrderStore = useRentOrderStore();
 const { selectedClassroom } = storeToRefs(rentOrderStore);
 // console.log(selectedClassroom.value)
 
-
-const today = new Date();
-const year = today.getFullYear();
-let month = String(today.getMonth() + 1).padStart(2, '0');
-let day = String(today.getDate()).padStart(2, '0');
-let hours = String(today.getHours()).padStart(2, '0');
-const minutes = today.getMinutes(); // 
-const seconds = today.getSeconds(); // 
 // 金流日期需求格式
-const formattedDate = `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
-
+const formatted = useDateFormat(useNow(), 'YYYY/MM/DD HH:mm:ss')
+console.log(formatted.value)
 
 const rentOrder = reactive({
-    memberid: '1',
+    memberid: '4',
     classroomid: selectedClassroom.value.classroomid,
-    rentorderdate: formattedDate,
+    rentorderdate: formatted.value,
     rentdate: selectedClassroom.value.rentdate,
     renttime: selectedClassroom.value.renttime,
     rentamount: selectedClassroom.value.classroomPrice,
@@ -110,17 +103,25 @@ const rentOrder = reactive({
 });
 // console.log(rentOrder)
 
+const ecpayRentOrder = reactive({
+    rentorderid: '',
+    rentorderdate: formatted.value,
+    rentamount: selectedClassroom.value.classroomPrice,
+    classroomname:selectedClassroom.value.classroomName
+});
 
 // 新增訂單
 const insertRentOrder = async () => {
     try {
-        const response = await axios.post(`${url}/rent/insert`, rentOrder);
-        if (response.status === 200) {
+        const rentOrderResponse = await axios.post(`${url}/rent/insert`, rentOrder);
+        ecpayRentOrder.rentorderid = rentOrderResponse.data;
+
+        if (rentOrderResponse.data !== null) {
             // ecpay請求 會回傳字串form表單
-            const ecpayResponse = await axios.post(`${url}/ecpay/ecpayCheckout`, rentOrder);
+            const ecpayResponse = await axios.post(`${url}/ecpay/ecpayCheckout`, ecpayRentOrder);
             const ecpayCheckout = ecpayResponse.data
             console.log(ecpayCheckout)
-
+    
             // 建立一个隱藏的div元素，將表單內容放入
             const hiddenDiv = document.createElement('div');
             hiddenDiv.style.display = 'none'; // 隐藏这个元素
