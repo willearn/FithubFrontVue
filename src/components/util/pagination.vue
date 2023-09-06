@@ -1,24 +1,44 @@
 <template>
     <nav>
         <ul class="pagination col-2">
+            <!-- 上一頁 -->
             <li class=" page-item">
-                <a class="page-link" href="#" aria-label="Previous">
+                <button class="page-link" @click="toNaborPage(-1)" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
-                </a>
+                </button>
             </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <!-- 挑選任意頁 -->
+            <li class="page-item" v-for="index in totalPages" @click="toAnyPage(index)">
+                <button class="page-link">{{ index }}</button>
+            </li>
+            <!-- 下一頁 -->
             <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
+                <button class="page-link" @click="toNaborPage(1)" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
-                </a>
+                </button>
             </li>
         </ul>
     </nav>
 </template>
     
 <script setup>
+const props = defineProps({
+    totalPages: Number,
+})
+// console.log(props.totalPages);
+
+const emit = defineEmits(['clickAnyCoursePage-emit', 'clickNaborCoursePage-emit'])
+
+const toNaborPage = (nextOrLast) => {
+    let pageChoose = 0
+    // 傳送event至parent componont
+    emit('clickNaborCoursePage-emit', nextOrLast, pageChoose)
+}
+const toAnyPage = (pageChoose) => {
+    let nextOrLast = 0
+    // 傳送event至parent componont
+    emit('clickAnyCoursePage-emit', nextOrLast, pageChoose)
+}
 
 </script>
     

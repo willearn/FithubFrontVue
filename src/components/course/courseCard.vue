@@ -4,9 +4,9 @@
         <div class="card-body">
             <span v-if="isLike == true" type="button" class="bi bi-heart-fill mx-1 "></span>
             <span v-else type="button" class="bi bi-heart mx-1"></span>
-            <h5 class="card-text">課程名稱</h5>
-            <div class="card-text mb-1">教練：教練姓名</div>
-            <div class="card-text mb-1">NT$ 100 </div>
+            <h5 class="card-text">課程名稱: {{ course.courseName }}</h5>
+            <div class="card-text mb-1">課程分類:{{ course.courseCategories.categoryName }}</div>
+            <div class="card-text mb-1">NT$ 100 起</div>
             <div class="d-flex justify-content-end">
                 <button class="btn btn btn-primary"><i type="button" class="bi bi-lightning-fill"></i>&nbsp;前往選課</button>
             </div>
@@ -15,7 +15,11 @@
 </template>
     
 <script setup>
-const props = defineProps(['isLike', 'cardAmount'])
+const props = defineProps({
+    isLike: Boolean,
+    cardAmount: Number,
+    course: Object,
+})
 // console.log(props.cardAmount);
 </script>
     

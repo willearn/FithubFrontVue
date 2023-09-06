@@ -43,14 +43,18 @@
 
                 <!-- cards for course -->
                 <div class="col-10">
-                    <h1 class="text-center">全部課程列表</h1>
+                    <h1 class="text-center mb-4">全部課程列表</h1>
                     <!-- <input type="text" v-focus> -->
                     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
-                        <courseCard v-for="cardAmount in 6" class="col-3 mx-2 my-3" :cardAmount="cardAmount"
-                            :isLike="isLike"></courseCard>
+                        <courseCard v-for="( course, index ) in pageCourses" class="col-3 mx-2 my-3" :cardAmount="index"
+                            :course="course" :isLike="isLike"></courseCard>
                     </div>
 
-                    <pagination class="d-flex justify-content-center mt-3"></pagination>
+                    <pagination v-if="paginationData.showPagination" :totalPages="paginationData.totalPages"
+                        class="d-flex justify-content-center mt-3"
+                        @clickNaborCoursePage-emit(nextOrLast,pageChoose)="changePage(nextOrLast, pageChoose)"
+                        @clickAnyCoursePage-emit(nextOrLast,pageChoose)="changePage(nextOrLast, pageChoose)">
+                    </pagination>
                 </div>
             </div>
 
@@ -88,19 +92,24 @@ const loadAllCourseCategories = async () => {
     //取得所有分類放進allCourseCategories變數
     allCourseCategories.value = response.data;
     // console.log(allCourseCategories)
-
 };
 
 // Load course data
 const pageCourses = ref([]);
-const totalPages = ref(1);
-const numberOfCourses = ref(6)
+const paginationData = reactive({
+    page: 1,
+    totalPages: 1,
+    numberOfCourses: 6,
+    showPagination: false,
+})
+// const totalPages = ref(1);
+// const numberOfCourses = ref(6)
 
 const loadPageCourses = async () => {
     const URLAPI = `${URL}/course/page`;
     const response = await axios.get(URLAPI, {
         params: {
-            p: 1,
+            p: paginationData.page,
         }
     });
 
@@ -108,9 +117,24 @@ const loadPageCourses = async () => {
     pageCourses.value = response.data;
 
     //取得所有課程頁數及單頁資料數放進courses變數
-    totalPages.value = response.headers['total-pages'];
-    numberOfCourses.value = response.headers['number-of-elements'];
+    paginationData.totalPages = parseInt(response.headers['total-pages']);
+    paginationData.numberOfCourses = parseInt(response.headers['number-of-elements']);
+    paginationData.showPagination = true // loadPageCourses後，v-if顯示pagination
 };
+
+//trigger @click pagination後換頁
+const changePage = (nextOrLast, pageChoose) => {
+
+    if (nextOrLast == 0) {
+        paginationData.page = pageChoose
+        loadPageCourses()
+    } else if (pageChoose == 0 && page != 1 && page != paginationData.totalPages) {
+        paginationData.page += nextOrLast
+        loadPageCourses()
+    } else {
+        alert('OOO')
+    }
+}
 
 onMounted(() => {
     loadAllCourseCategories()
