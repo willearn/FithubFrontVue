@@ -138,6 +138,11 @@
     </div>
   </section>
 
+
+  <div>
+    <h1>First Page</h1>
+    <button @click="goActivityDetail">123</button>
+  </div>
   <!-- activity-->
   <section class="page-section" id="activity">
     <div class="container px-4 text-center mybg-light">
@@ -274,14 +279,28 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router'
 import { GoogleMap, Marker, InfoWindow } from "vue3-google-map";
 
 const center = { lat: 22.62808625882824, lng: 120.29252321578828 };
-const infoWindow = { lat: 22.62808625882000, lng: 120.29252321578828 };
-
+// 取得路由物件
+const router = useRouter();
 const mybutton = ref(null);
 
-
+// 轉到活動內容
+const goActivityDetail = async () => {
+  try {
+    router.push({
+      path: "/activity",
+      query: {
+          activityid: "1",
+      },
+    });
+  }
+  catch (error) {
+    console.error('Error:', error);
+  }
+};
 
 
 //返回頁頂

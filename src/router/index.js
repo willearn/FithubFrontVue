@@ -19,6 +19,10 @@ const router = createRouter({
       name: 'rentorder',
       component: () => import('../views/rentorder.vue')
     }, {
+      path: '/activity',
+      name: 'activity',
+      component: () => import('../views/activity.vue')
+    }, {
       path: '/login',
       name: 'login',
       component: () => import('../views/login.vue')

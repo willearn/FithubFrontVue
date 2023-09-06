@@ -128,6 +128,7 @@ import { reactive, ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useRentOrderStore } from "../stores/rentorder.js"
 import { storeToRefs } from 'pinia'
+const url = import.meta.env.VITE_API_JAVAURL
 
 // 使用函式表達式給變數countStore賦值，這邊變數會習慣用import進來的檔案名稱並去除use命名，只要看到Store就是與pinia有關。
 // const countStore = useCounterStore()
@@ -156,7 +157,6 @@ if (month === '01') {
 }
 const nextMonthFormatted = `${year}-${month}-${day}`;
 
-const url = import.meta.env.VITE_API_JAVAURL
 const selectedClassroomId = ref(0); // 預設0
 const selectedDate = ref(nextMonthFormatted);
 const selectedTime = ref(0);
