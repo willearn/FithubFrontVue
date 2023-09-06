@@ -16,7 +16,7 @@
     
 <script setup>
 const props = defineProps(['isLike', 'cardAmount'])
-console.log(props.cardAmount);
+// console.log(props.cardAmount);
 </script>
     
 <style scoped>

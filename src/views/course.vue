@@ -64,7 +64,7 @@
 /*
   imports
 */
-import { ref, onMounted } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import axios from 'axios';
 import courseCard from '../components/course/courseCard.vue'
 import pagination from '../components/util/pagination.vue'
@@ -91,8 +91,30 @@ const loadAllCourseCategories = async () => {
 
 };
 
+// Load course data
+const pageCourses = ref([]);
+const totalPages = ref(1);
+const numberOfCourses = ref(6)
+
+const loadPageCourses = async () => {
+    const URLAPI = `${URL}/course/page`;
+    const response = await axios.get(URLAPI, {
+        params: {
+            p: 1,
+        }
+    });
+
+    //取得所有課程放進courses變數
+    pageCourses.value = response.data;
+
+    //取得所有課程頁數及單頁資料數放進courses變數
+    totalPages.value = response.headers['total-pages'];
+    numberOfCourses.value = response.headers['number-of-elements'];
+};
+
 onMounted(() => {
     loadAllCourseCategories()
+    loadPageCourses()
 })
 
 </script>
