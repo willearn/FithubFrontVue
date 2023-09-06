@@ -33,7 +33,7 @@
         </div>
         <div class="carousel-item">
           <img
-            src="https://picsum.photos/1400/900?random=11"
+            src="https://picsum.photos/1400/900?random=11&grayscale"
             class="d-block w-100"
             alt="..."
           />
@@ -127,10 +127,8 @@ import listGroup from "../components/util/listGroup.vue";
 import { vFocus } from "../directives/vFocus";
 const URL = import.meta.env.VITE_API_JAVAURL;
 
-let isLike = ref(false);
-
 /*
-  Load Datas
+Load Datas
 */
 
 // Load courseCategories data
@@ -147,6 +145,7 @@ const loadAllCourseCategories = async () => {
 
 // Load course data
 const pageCourses = ref([]);
+let isLike = ref(false); //可拿掉
 const paginationData = reactive({
   page: 1,
   totalPages: 1,
