@@ -93,7 +93,7 @@ const formatted = useDateFormat(useNow(), 'YYYY/MM/DD HH:mm:ss')
 console.log(formatted.value)
 
 const rentOrder = reactive({
-    memberid: '4',
+    memberid: localStorage.getItem('memberid'),
     classroomid: selectedClassroom.value.classroomid,
     rentorderdate: formatted.value,
     rentdate: selectedClassroom.value.rentdate,
@@ -107,7 +107,7 @@ const ecpayRentOrder = reactive({
     rentorderid: '',
     rentorderdate: formatted.value,
     rentamount: selectedClassroom.value.classroomPrice,
-    classroomname:selectedClassroom.value.classroomName
+    classroomname: selectedClassroom.value.classroomName
 });
 
 // 新增訂單
@@ -121,7 +121,7 @@ const insertRentOrder = async () => {
             const ecpayResponse = await axios.post(`${url}/ecpay/ecpayCheckout`, ecpayRentOrder);
             const ecpayCheckout = ecpayResponse.data
             console.log(ecpayCheckout)
-    
+
             // 建立一个隱藏的div元素，將表單內容放入
             const hiddenDiv = document.createElement('div');
             hiddenDiv.style.display = 'none'; // 隐藏这个元素
@@ -136,7 +136,7 @@ const insertRentOrder = async () => {
                 // 觸發表單自動提交
                 form.submit();
             } else {
-                console.error('找不到表单元素');
+                console.error('找不到表單元素');
             }
 
 

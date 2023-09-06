@@ -12,8 +12,19 @@
           <li class="nav-item"><router-link class="nav-link" to="/rent">場地租借</router-link></li>
           <li class="nav-item"><router-link class="nav-link" to="/">最新消息</router-link></li>
           <li class="nav-item"><router-link class="nav-link" to="/">教練團隊</router-link></li>
-          <li class="nav-item"  v-if="!isLogin"><router-link class="nav-link" to="/login" >登入</router-link></li>
-          <li class="nav-item"  v-if="isLogin"><router-link class="nav-link" to="/login" @click="logout">登出</router-link></li>
+          <li class="nav-item" v-if="!isLogin"><router-link class="nav-link" to="/login"><i
+                class="bi bi-person-fill"></i>會員登入</router-link></li>
+          <li class="nav-item dropdown" v-if="isLogin">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <i class="bi bi-person-fill"></i>
+              <sapn>{{ membername }}</sapn>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li><router-link class="dropdown-item" to="#">會員專區</router-link></li>
+              <li><router-link class="dropdown-item" to="/login" @click="logout">登出</router-link></li>
+            </ul>
+          </li>
         </ul>
       </div>
     </div>
@@ -22,25 +33,27 @@
 
 <script setup>
 import router from "@/router"
-import { ref , reactive , onMounted , onBeforeMount, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted} from "vue";
+import { ref, reactive, onMounted, onBeforeMount, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted } from "vue";
 
 const isLogin = ref();
+const membername = localStorage.getItem("membername")
 
 onMounted(() => {
   isLogin.value = window.localStorage.getItem("isLogin") === 'true';
+
   console.log("onMounted");
 })
 
 
 const logout = () => {
-    window.localStorage.setItem("isLogin", "")
-    window.localStorage.setItem("token", "")
-    window.localStorage.setItem("memberid", "")
-    window.localStorage.setItem("memberemail", "")
-    window.localStorage.setItem("membername", "")
+  window.localStorage.setItem("isLogin", "")
+  window.localStorage.setItem("token", "")
+  window.localStorage.setItem("memberid", "")
+  window.localStorage.setItem("memberemail", "")
+  window.localStorage.setItem("membername", "")
 };
 
-router.beforeResolve( to=>{
+router.beforeResolve(to => {
   isLogin.value = window.localStorage.getItem("isLogin") === 'true';
 })
 

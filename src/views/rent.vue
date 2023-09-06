@@ -243,14 +243,25 @@ const reserve = async () => {
             // console.log(selectedData)
 
             selectedClassroom.value = selectedData;
-            // 使用router.push query進行頁面跳轉資料存在網址 http://localhost:5173/rentorder?id=123
-            router.push({
-                path: "/rentorder",
-                // query: {
-                //     id: "123",
-                //     name: 'tigert'
-                // },
-            });
+
+            // 判斷是否有登入會員
+            const localStorageData = localStorage.getItem('isLogin');
+
+            if (localStorageData) {
+                // 使用router.push query進行頁面跳轉資料存在網址 http://localhost:5173/rentorder?id=123
+                router.push({
+                    path: "/rentorder",
+                    // query: {
+                    //     id: "123",
+                    //     name: 'tigert'
+                    // },
+                });
+            } else {
+                alert('請登入會員')
+                router.push({
+                    path: "/login",
+                });
+            }
             // console.log(rentOrder.value)
         }
 
