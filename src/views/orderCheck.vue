@@ -1,39 +1,5 @@
 <template>
-    <!-- <div class="masthead">
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                    aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="../assets/index/classroom/攀岩教室.jpg" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="../assets/index/classroom/有氧大教室.jpg" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="../assets/index/classroom/空中瑜珈.jpg" class="d-block w-100" alt="...">
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </div> -->
-
-    <!-- 場地租借 --><!-- 結帳頁面 -->
+<!-- 結帳頁面 -->
     <section class="page-section" id="about">
         <div class="container">
             <div style="position:relative; top: 20%; left: 350px;">
@@ -104,16 +70,16 @@
                             <tbody>
                                 <tr>
                                     <th scope="row">姓名</th>
-                                    <td>Mark</td>
+                                    <td>{{ member.membername }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">電話</th>
-                                    <td>Jacob</td>
+                                    <td>{{member.memberphoneno}}</td>
 
                                 </tr>
                                 <tr>
                                     <th scope="row">信箱</th>
-                                    <td>Larry the Bird</td>
+                                    <td>{{ member.memberemail }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -142,4 +108,38 @@
 </template>
 
 <script setup>
+import axios from 'axios'
+import { reactive, ref, onMounted } from 'vue'
+const URL = import.meta.env.VITE_API_JAVAURL
+//建立優惠券物件
+const member = reactive(
+    {
+        memberid: '',
+        memberphoneno: '',
+        membername: '',
+        memberemail: '',
+    });
+
+// 從伺服器獲取 JSON 格式優惠券資料
+const getmember = async () => {
+    try {
+        const response = await axios.get(`${URL}/members/18`);
+        // const response = await axios.get(`${URL}/members/${id}`); // 替換為實際的 API URL
+        member.value = response.data; //data為response物件的屬性，通常是返回的JSON格式資料
+        console.log(member.value)
+
+    } catch (error) {
+        console.error('Error getmember data:', error);
+    }
+};
+
+onMounted(() => {
+    getmember();
+
+});
 </script>
+<style scoped>
+.text-danger {
+    font-size: 8px;
+}
+</style>
