@@ -117,15 +117,54 @@
 
 <script setup>
 /*
+  docs
+*/
+
+/*
+  1.Whole course data / 單一 Course category data
+   - 利用 watcher 監控 url，url 中的 pageCourseCategoryId 決定 pageCourses 是那些 course data
+     進而決定要 render 那些資料
+
+  2.Pagination 分頁
+   - loadPageCourses() 或 loadPageCoursesOfSingleCategory() 在 Server 端取得的 response header，
+     totalPages、numberOfCourses 會決定 bootstrap pagination 元件要分成幾頁
+   - 點按 bootstrap pagination 元件，會透過emit 回傳 nextOrLast, pageChoose 兩個變數， 決定 page 在第幾頁
+     只要 page 數值改變 watcher 會決定要呼叫哪隻 Ajax ， 該 Ajax 會透過 page 決定要回傳哪一頁的資料，並重複
+     之前敘述的 render 動作
+*/
+
+/*
   imports
 */
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, watch } from "vue";
+import { useRoute } from "vue-router";
 import axios from "axios";
 import courseCard from "../components/course/courseCard.vue";
 import pagination from "../components/util/pagination.vue";
 import listGroup from "../components/util/listGroup.vue";
 import { vFocus } from "../directives/vFocus";
 const URL = import.meta.env.VITE_API_JAVAURL;
+
+/*
+  watcher for router
+*/
+
+const route = useRoute();
+const pageCourseCategoryId = ref(undefined);
+watch(
+  () => route.params["categoryid"],
+  async (newUrlCategoryId) => {
+    // console.log(newUrlCategoryId);
+    if (newUrlCategoryId == undefined) {
+      paginationData.page = 1; //每次換Category時 顯示所有資料的第一頁
+      await loadPageCourses();
+    } else {
+      paginationData.page = 1; //每次換Category時 顯示所有資料的第一頁
+      pageCourseCategoryId.value = newUrlCategoryId;
+      await loadPageCoursesOfSingleCategory();
+    }
+  }
+);
 
 /*
 Load Datas
@@ -136,14 +175,12 @@ const allCourseCategories = ref([]);
 const loadAllCourseCategories = async () => {
   const URLAPI = `${URL}/coursecategories/findAll`;
   const response = await axios.get(URLAPI);
-  // console.log(response.data)
 
   //取得所有分類放進allCourseCategories變數
   allCourseCategories.value = response.data;
-  // console.log(allCourseCategories)
 };
 
-// Load course data
+// Load course data of all categories
 const pageCourses = ref([]);
 let isLike = ref(false); //可拿掉
 const paginationData = reactive({
@@ -152,8 +189,6 @@ const paginationData = reactive({
   numberOfCourses: 6,
   showPagination: false,
 });
-// const totalPages = ref(1);
-// const numberOfCourses = ref(6)
 
 const loadPageCourses = async () => {
   const URLAPI = `${URL}/course/page`;
@@ -174,6 +209,33 @@ const loadPageCourses = async () => {
   paginationData.showPagination = true; // loadPageCourses後，v-if顯示pagination
 };
 
+// Load course data of single category
+const loadPageCoursesOfSingleCategory = async () => {
+  if (pageCourseCategoryId != undefined) {
+    console.log(pageCourseCategoryId);
+    const URLAPI = `${URL}/course/page/${pageCourseCategoryId.value}`;
+    const response = await axios.get(URLAPI, {
+      params: {
+        p: paginationData.page,
+      },
+    });
+
+    //取得所有課程放進courses變數
+    pageCourses.value = response.data;
+
+    //取得所有課程頁數及單頁資料數放進courses變數
+    paginationData.totalPages = parseInt(response.headers["total-pages"]);
+    paginationData.numberOfCourses = parseInt(
+      response.headers["number-of-elements"]
+    );
+    paginationData.showPagination = true; // loadPageCourses後，v-if顯示pagination
+  }
+};
+
+/*
+  Pagination
+*/
+
 //trigger @click pagination後換頁
 const changePage = (nextOrLast, pageChoose) => {
   console.log(
@@ -181,19 +243,35 @@ const changePage = (nextOrLast, pageChoose) => {
   );
   if (nextOrLast == 0 && paginationData.page != pageChoose) {
     paginationData.page = pageChoose;
-    loadPageCourses();
   } else if (
     pageChoose == 0 &&
     paginationData.page * nextOrLast != -1 &&
     paginationData.page + nextOrLast <= paginationData.totalPages
   ) {
     paginationData.page += nextOrLast;
-    loadPageCourses();
   } else {
     console.log("do nothing");
   }
 };
 
+/*
+  watcher for Pagination
+*/
+watch(
+  () => paginationData.page,
+  async () => {
+    // console.log(newUrlCategoryId);
+    if (route.params["categoryid"] == undefined) {
+      await loadPageCourses();
+    } else {
+      await loadPageCoursesOfSingleCategory();
+    }
+  }
+);
+
+/*
+  LifeCycle Hooks
+*/
 onMounted(() => {
   loadAllCourseCategories();
   loadPageCourses();

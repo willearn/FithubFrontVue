@@ -1,7 +1,7 @@
 <template>
     <div class="list-group d-flex justify-content-center my-5">
-        <RouterLink to="#" class="list-group-item list-group-item-action">全部課程</RouterLink>
-        <RouterLink v-for="{ categoryId, categoryName, index } in  allCourseCategories " to="#"
+        <RouterLink to="/course" class="list-group-item list-group-item-action">全部課程</RouterLink>
+        <RouterLink v-for="{ categoryId, categoryName, index } in  allCourseCategories " :to="`/course/${categoryId}`"
             class="list-group-item list-group-item-action">{{ categoryName }}</RouterLink>
     </div>
 </template>
