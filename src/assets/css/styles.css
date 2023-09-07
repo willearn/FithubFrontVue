@@ -12689,7 +12689,7 @@ hr.divider-light {
   }
 
   #mainNav .navbar-brand {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.8);
   }
 
   #mainNav .navbar-brand:hover {
@@ -12697,7 +12697,7 @@ hr.divider-light {
   }
 
   #mainNav .navbar-nav .nav-item .nav-link {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.8);
     padding: 0 1rem;
   }
 
@@ -12846,3 +12846,5 @@ header.masthead .h1 {
 .mybg-light {
   background-color: antiquewhite;
 }
+
+/* antiquewhite */
