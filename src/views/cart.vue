@@ -85,7 +85,7 @@
                                 <tr>
                                     <th scope="row">1</th>
                                     <td>
-                                        <img src="../assets/index/other/4.jpg" style="width: 200px;">
+                                        <img  src=https://picsum.photos/id/17/200    alt="..."  />
                                     </td>
                                     <td>Mark</td>
                                     <td>Otto</td>
@@ -107,7 +107,7 @@
                                 <tr>
                                     <th scope="row">2</th>
                                     <td>
-                                        <img src="../assets/index/other/4.jpg" style="width: 200px;">
+                                        <img  src=https://picsum.photos/id/10/200    alt="..."  />
                                     </td>
                                     <td>Jacob</td>
                                     <td>Thornton</td>
@@ -117,7 +117,7 @@
                                 <tr>
                                     <th scope="row">3</th>
                                     <td>
-                                        <img src="../assets/index/other/4.jpg" style="width: 200px;">
+                                        <img  src=https://picsum.photos/id/12/200    alt="..."  />
                                     </td>
                                     <td colspan="2">Larry the Bird</td>
                                     <td>@twitter</td>
