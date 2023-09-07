@@ -68,7 +68,7 @@ const loadDatas = async () => {
         信箱: {{ memberData.memberemail }}
     </div>
     <div class="mb-3">
-        性別: {{  memberData.gender }}
+        性別: {{  memberData.membergender }}
     </div>
     <div class="mb-3">
         縣市:{{  memberData.membercity }}
