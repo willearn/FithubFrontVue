@@ -24,18 +24,12 @@ const router = createRouter({
       component: () => import('../views/rentorder.vue'),
       beforeEnter: (to, from, next) => {
         const rentOrderStore = useRentOrderStore();
-        const { selectedClassroom ,checkOrder} = storeToRefs(rentOrderStore);
-        console.log(checkOrder.value);
-
-        const isLoggedIn = localStorage.getItem('isLogin');
-          // 執行會員登入檢查
-        if (isLoggedIn) {
-          // 如果會員已登入，繼續進入目標路由
+        const { selectedClassroom } = storeToRefs(rentOrderStore);
+        // 執行會員登入檢查
+        if (selectedClassroom.value !== null) {
           next();
         } else {
-          // 如果會員未登入，可以重定向到登入頁面或其他處理方式
-          alert('請登入會員')
-          next('/login'); // 例如，重定向到登入頁面
+          router.back();
         }
       }
     }, {

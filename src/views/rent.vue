@@ -139,8 +139,8 @@ const url = import.meta.env.VITE_API_JAVAURL
 // const { count, doubleCount } = storeToRefs(countStore)
 
 const rentOrderStore = useRentOrderStore();
-const { selectedClassroom,checkOrder } = storeToRefs(rentOrderStore);
-console.log(selectedClassroom.value)
+const { selectedClassroom } = storeToRefs(rentOrderStore);
+// console.log(selectedClassroom.value)
 
 // 取得路由物件
 const router = useRouter();
@@ -166,14 +166,26 @@ const classroomData = ref([]);
 const openClassrooms = ref([]);
 const classroomInfo = ref([])
 
-//建立被選的場地物件
+// 建立被選的場地物件
 const selectedData = reactive({
+    rentOrderid: '',
     classroomid: '',
     classroomName: '',
     classroomPic: '',
     classroomPrice: '',
     rentdate: '',
     renttime: '',
+});
+
+// 訂單
+const rentOrder = reactive({
+    memberid: localStorage.getItem('memberid'),
+    classroomid: '',
+    rentorderdate: today,
+    rentdate: '',
+    renttime: '',
+    rentamount: '',
+    rentstatus: '未付款',
 });
 
 // 篩選狀態為開放的場地
@@ -228,6 +240,9 @@ const reserve = async () => {
         selectedData.classroomid = selectedClassroomId.value
         selectedData.rentdate = selectedDate.value
         selectedData.renttime = selectedTime.value
+        // console.log(selectedData)
+
+
         const classroomAvailability = await axios.post(`${url}/rent/checkClassroomAvailability`, selectedData);
         const responseData = classroomAvailability.data;
         // console.log(responseData)
@@ -238,35 +253,43 @@ const reserve = async () => {
 
             // 篩選出選擇的場地資訊並傳到訂單頁面 find篩選出為物件(只返回第一個匹配的元素)
             classroomInfo.value = classroomData.value.find(item => item.classroomId === selectedData.classroomid);
+            // console.log(classroomInfo.value)
+
             selectedData.classroomName = classroomInfo.value.classroomName;
             selectedData.classroomPrice = classroomInfo.value.classroomPrice;
             selectedData.classroomPic = classroomInfo.value.classroomPic;
             // console.log(selectedData)
 
+            // 將訂單頁面需要的資料都賦給pinia
             selectedClassroom.value = selectedData;
-            
-            // 判斷是否有登入會員
-            // const localStorageData = localStorage.getItem('isLogin');
 
-            // if (localStorageData) {
+            // 建立訂單
+            rentOrder.classroomid = selectedClassroomId.value;
+            rentOrder.rentdate = selectedDate.value;
+            rentOrder.renttime = selectedTime.value;
+            rentOrder.rentamount = classroomInfo.value.classroomPrice;
+            // console.log(rentOrder)
+
+            // 判斷是否有登入會員
+            const localStorageData = localStorage.getItem('isLogin');
+
+
+            if (localStorageData) {
+                // 新增訂單
+                const response = await axios.post(`${url}/rent/insert`, rentOrder);
+                selectedData.rentOrderid = response.data;
+
                 // 使用router.push query進行頁面跳轉資料存在網址 http://localhost:5173/rentorder?id=123
                 router.push({
                     path: "/rentorder",
-                    // query: {
-                    //     id: "123",
-                    //     name: 'tigert'
-                    // },
                 });
-            // } else {
-            //     alert('請登入會員')
-            //     router.push({
-            //         path: "/login",
-            //     });
-            // }
-            // console.log(rentOrder.value)
+            } else {
+                alert('請登入會員')
+                router.push({
+                    path: "/login",
+                });
+            }
         }
-
-        // console.log(selectedData)
     } catch (error) {
         console.error('Error:', error);
     }

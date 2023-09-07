@@ -240,7 +240,6 @@
   </section>
 
   <button ref="mybutton" class="btn btn-primary " id="btn-back-to-top">TOP</button>
-  
 </template>
 
 
@@ -269,8 +268,6 @@ const formData = reactive({
   subject: ''
 })
 
-
-
 // 寄信聯絡我們
 const submitForm = async () => {
   try {
@@ -283,7 +280,7 @@ const submitForm = async () => {
       formData.subject === ''
     ) {
       // 如果有任何一個字段為空，執行錯誤處理邏輯
-      alert('輸入不完整，請填寫全部欄位');
+      alert('請填寫全部欄位');
       return
     }
 

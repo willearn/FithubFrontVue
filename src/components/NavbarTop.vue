@@ -18,7 +18,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
               <i class="bi bi-person-fill"></i>
-              <span>{{ membername }}</span>
+              {{ membername }}
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <li><router-link class="dropdown-item" to="#">會員專區</router-link></li>
@@ -41,7 +41,7 @@ const membername = localStorage.getItem("membername")
 onMounted(() => {
   isLogin.value = window.localStorage.getItem("isLogin") === 'true';
 
-  console.log("onMounted");
+  // console.log("onMounted");
 })
 
 

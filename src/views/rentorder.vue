@@ -98,16 +98,6 @@ console.log(selectedClassroom.value)
 const formatted = useDateFormat(useNow(), 'YYYY/MM/DD HH:mm:ss')
 // console.log(formatted.value)
 
-const rentOrder = reactive({
-    memberid: localStorage.getItem('memberid'),
-    classroomid: selectedClassroom.value.classroomid,
-    rentorderdate: formatted.value,
-    rentdate: selectedClassroom.value.rentdate,
-    renttime: selectedClassroom.value.renttime,
-    rentamount: selectedClassroom.value.classroomPrice,
-    rentstatus: '未付款',
-});
-// console.log(rentOrder)
 
 const ecpayRentOrder = reactive({
     rentorderid: '',
@@ -119,37 +109,31 @@ const ecpayRentOrder = reactive({
 // 新增訂單
 const insertRentOrder = async () => {
     try {
-        const rentOrderResponse = await axios.post(`${url}/rent/insert`, rentOrder);
-        ecpayRentOrder.rentorderid = rentOrderResponse.data;
 
-        if (rentOrderResponse.data !== null) {
-            // ecpay請求 會回傳字串form表單
-            const ecpayResponse = await axios.post(`${url}/ecpay/ecpayCheckout`, ecpayRentOrder);
-            const ecpayCheckout = ecpayResponse.data
-            console.log(ecpayCheckout)
+        ecpayRentOrder.rentorderid = selectedClassroom.value.rentOrderid;
 
-            // 建立一个隱藏的div元素，將表單內容放入
-            const hiddenDiv = document.createElement('div');
-            hiddenDiv.style.display = 'none'; // 隐藏这个元素
-            hiddenDiv.innerHTML = ecpayCheckout;
+        // ecpay請求 會回傳字串form表單
+        const ecpayResponse = await axios.post(`${url}/ecpay/ecpayCheckout`, ecpayRentOrder);
+        const ecpayCheckout = ecpayResponse.data
+        console.log(ecpayCheckout)
 
-            // 將隱藏的div添加到網頁中
-            document.body.appendChild(hiddenDiv);
+        // 建立一个隱藏的div元素，將表單內容放入
+        const hiddenDiv = document.createElement('div');
+        hiddenDiv.style.display = 'none'; // 隐藏这个元素
+        hiddenDiv.innerHTML = ecpayCheckout;
 
-            // 找到表單元素
-            const form = hiddenDiv.querySelector('form');
-            if (form) {
-                // 觸發表單自動提交
-                form.submit();
-            } else {
-                console.error('找不到表單元素');
-            }
+        // 將隱藏的div添加到網頁中
+        document.body.appendChild(hiddenDiv);
 
-
+        // 找到表單元素
+        const form = hiddenDiv.querySelector('form');
+        if (form) {
+            // 觸發表單自動提交
+            form.submit();
         } else {
-            // 其他狀態碼，可能需要進行錯誤處理
-            console.error('請求失敗，狀態碼：', response.status);
+            console.error('找不到表單元素');
         }
+
     } catch (error) {
         console.error('insertRentOrder Error:', error);
     }
@@ -159,9 +143,9 @@ const insertRentOrder = async () => {
 // 取消訂單
 const cancleRentOrder = async () => {
     try {
-        // const response = await axios.post(`${url}/rent/insert`, rentOrder);
-        // const cancleRenorder = response.data;
-        selectedClassroom = null;
+        const response = await axios.delete(`${url}/rent/delete/${selectedClassroom.value.rentOrderid}`);
+        console.log(response.data);
+        selectedClassroom.value = null;
         router.back();
     } catch (error) {
         console.error('cancleRentOrder Error:', error);
