@@ -70,61 +70,93 @@
   <!-- singlePage -->
   <div class="container">
     <section class="page-section" id="courseDetail">
-      <div class="row justify-content-center">
-        <div class="col-4 mx-3">
-          <img
-            src="https://picsum.photos/300/200?random=10"
-            class="card-img-top mt-3"
-            alt="..."
-            tabindex="0"
-            v-focus
-          />
-        </div>
-        <div class="col-6 mx-3">
-          <h2>課程名稱</h2>
-          <div>授課教練（教練資訊查看）</div>
-          <div class="my-3">
-            <label for="courseDescription" class="form-label">課程說明</label>
-            <textarea
-              class="form-control"
-              id="courseDescription"
-              cols="30"
-              rows="5"
-            >
-課程說明文字</textarea
-            >
+      <h1 class="row justify-content-center">
+        {{ pageCourse.courseName }}課程
+      </h1>
+      <div class="card h-100">
+        <div class="row justify-content-center align-items-center">
+          <div class="col-5 mx-3">
+            <img
+              src="https://picsum.photos/300/200?random=10"
+              class="card-img-top mt-3"
+              alt="..."
+              tabindex="0"
+              v-focus
+            />
           </div>
-          <div class="my-3">
-            <label for="courseTime" class="form-label">課程時間</label>
-            <select
-              class="form-select"
-              id="courseTime"
-              aria-label="Default select example"
-            >
-              <option selected style="display: none" value="">請選擇</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
-          </div>
+          <div class="col-6 mx-3">
+            <div class="my-3">
+              <h4>授課教練</h4>
+              <div class="row align-items-center">
+                <div class="col-12 col-md-5 col-lg-6">
+                  <select class="form-select" id="courseCoach" v-focus>
+                    <option selected style="display: none" value="">
+                      請選擇
+                    </option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+                <div class="col-12 col-md-5 col-lg-6">
+                  <button class="btn btn-secondary btn-sm">
+                    <i class="bi bi-lightbulb-fill"></i>&nbsp;&nbsp;教練專長
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="my-3">
+              <h4>課程時間:</h4>
+              <div class="row">
+                <div class="col-12 col-md-5 col-lg-5">
+                  <label for="courseDate" class="mb-1">日期</label>
+                  <select class="form-select" id="courseDate">
+                    <option selected style="display: none" value="">
+                      請選擇
+                    </option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                  </select>
+                </div>
+                <div class="col-12 col-md-5 col-lg-5">
+                  <label for="courseTime" class="mb-1">時段</label>
+                  <select class="form-select" id="courseTime">
+                    <option selected style="display: none" value="">
+                      請選擇
+                    </option>
+                    <option value="早上">早上</option>
+                    <option value="下午">下午</option>
+                    <option value="晚上">晚上</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="ml-2 my-3">
+              <h4>課程說明:</h4>
+              <p class="fs-6">
+                {{ pageCourse.courseDescription }}
+              </p>
+            </div>
 
-          <span class="d-flex justify-content-end my-4">
-            <button
-              class="btn btn btn-primary mx-2"
-              data-bs-toggle="collapse"
-              href="#collapseExample"
-              role="button"
-            >
-              <i type="button" class="bi bi-calendar-check"></i
-              >&nbsp;&nbsp;&nbsp;查看課表
-            </button>
-            <button class="btn btn btn-primary mx-2">
-              <i type="button" class="bi bi-cart4"></i>&nbsp;&nbsp;加入購物車
-            </button>
-            <button class="btn btn btn-primary mx-2">
-              <i type="button" class="bi bi-cart3"></i>&nbsp;&nbsp;直接購買
-            </button>
-          </span>
+            <span class="d-flex justify-content-end my-4">
+              <button
+                class="btn btn btn-primary mx-2"
+                data-bs-toggle="collapse"
+                href="#collapseExample"
+                role="button"
+              >
+                <i type="button" class="bi bi-calendar-check"></i
+                >&nbsp;&nbsp;&nbsp;查看課表
+              </button>
+              <button class="btn btn btn-primary mx-2">
+                <i type="button" class="bi bi-cart4"></i>&nbsp;&nbsp;加入購物車
+              </button>
+              <button class="btn btn btn-primary mx-2">
+                <i type="button" class="bi bi-cart3"></i>&nbsp;&nbsp;直接購買
+              </button>
+            </span>
+          </div>
         </div>
       </div>
 
@@ -167,8 +199,8 @@
   imports
 */
 
-import { ref, onMounted } from "vue";
-import { RouterLink } from "vue-router";
+import { ref, onMounted, watch } from "vue";
+import { RouterLink, useRoute } from "vue-router";
 import axios from "axios";
 import courseCard from "../components/course/courseCard.vue";
 import FullCalendar from "../components/course/courseCalendar.vue";
@@ -177,10 +209,40 @@ import { vFocus } from "../directives/vFocus";
 const URL = import.meta.env.VITE_API_JAVAURL;
 
 /*
+  router
+*/
+const route = useRoute();
+
+/*
+  watcher for router
+*/
+
+// const pageCourseId = ref(route.params["courseid"]);
+watch(
+  () => route.params["courseid"],
+  async (newUrlCourseId) => {
+    // console.log(newUrlCourseId);
+    await loadPageCourse();
+  }
+);
+
+/*
 Load datas
 */
 
-// Load course data
+// Load single course data
+const pageCourse = ref({});
+const loadPageCourse = async () => {
+  const URLAPI = `${URL}/course/${route.params["courseid"]}`;
+  console.log(URLAPI);
+  const response = await axios.get(URLAPI).catch((error) => {
+    console.log(error.toJSON());
+  });
+  pageCourse.value = response.data;
+  console.log(pageCourse);
+};
+
+// Load recommended courses data
 const recommendedCourses = ref([]);
 let isLike = ref(false); //可拿掉
 const loadRecommendedCourses = async () => {
@@ -200,6 +262,7 @@ const loadRecommendedCourses = async () => {
   LifeCycle Hooks
 */
 onMounted(() => {
+  loadPageCourse();
   loadRecommendedCourses();
 });
 
@@ -246,5 +309,10 @@ onMounted(() => {
   --bs-btn-hover-bg: #e83015;
   --bs-btn-hover-border-color: #c34e2e;
   --bs-btn-active-bg: #c34e2e;
+}
+p {
+  text-align: justify;
+  /* padding: 1em; */
+  text-indent: 2em;
 }
 </style>
