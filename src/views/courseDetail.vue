@@ -168,6 +168,7 @@
 */
 
 import { ref, onMounted } from "vue";
+import { RouterLink } from "vue-router";
 import axios from "axios";
 import courseCard from "../components/course/courseCard.vue";
 import FullCalendar from "../components/course/courseCalendar.vue";

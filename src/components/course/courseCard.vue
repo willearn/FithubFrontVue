@@ -18,15 +18,26 @@
       </div>
       <div class="card-text mb-1">NT$ 100 起</div>
       <div class="d-flex justify-content-end">
-        <button class="btn btn btn-primary">
+        <RouterLink
+          :to="`/course/detail/${course.courseId}`"
+          class="btn btn btn-primary"
+        >
           <i type="button" class="bi bi-lightning-fill"></i>&nbsp;前往選課
-        </button>
+        </RouterLink>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+/*
+  imports
+*/
+import { RouterLink } from "vue-router";
+
+/*
+  props
+*/
 const props = defineProps({
   isLike: Boolean,
   cardAmount: Number,

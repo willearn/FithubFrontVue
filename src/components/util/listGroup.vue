@@ -19,7 +19,15 @@
 </template>
 
 <script setup>
+/*
+  imports
+*/
 import { RouterLink } from "vue-router";
+
+/*
+  props
+*/
+
 const props = defineProps({
   urlPattern: String,
   allCourseCategories: Object,
