@@ -70,8 +70,6 @@
             <h1>場地介紹</h1>
             <hr class="divider" />
             <div class="col-lg-12 col-md-12">
-            </div>
-            <div class="col-lg-12 col-md-12">
                 <table class="table table-bordered align-middle">
                     <thead>
                         <tr class="table-success">
@@ -79,38 +77,19 @@
                             <th>容納人數</th>
                             <th>介紹</th>
                             <th>租借價格</th>
-                            <th>教室圖片</th>
                             <th>狀態</th>
+                            <th>圖片</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="col-lg-2 col-md-2">攀岩教室</td>
-                            <td class="col-lg-2 col-md-2">15</td>
-                            <td class="col-lg-2 col-md-2">攀岩場</td>
-                            <td class="col-lg-2 col-md-2">3000</td>
-                            <td class="col-lg-2 col-md-2"><img src="../assets/index/classroom/攀岩教室.jpg" class="img-fluid">
+                        <tr v-for="(classroom, classroomindex) in classroomData" :key="classroomindex">
+                            <td class="col-lg-2 col-md-2">{{ classroom.classroomName }}</td>
+                            <td class="col-lg-2 col-md-2">{{ classroom.classroomCapacity }}</td>
+                            <td class="col-lg-2 col-md-2">{{ classroom.classroomDescription }}</td>
+                            <td class="col-lg-2 col-md-2">{{ classroom.classroomPrice }}</td>
+                            <td class="col-lg-2 col-md-2">{{ classroom.classroomStatus }}</td>
+                            <td class="col-lg-2 col-md-2"><img :src="classroom.classroomPic" class="img-fluid" alt="維修中">
                             </td>
-                            <td class="col-lg-2 col-md-2">開放</td>
-                        </tr>
-                        <tr>
-                            <td class="col-lg-2 col-md-2">有氧大教室</td>
-                            <td class="col-lg-2 col-md-2">60</td>
-                            <td class="col-lg-2 col-md-2">有氧運動、重量訓練、綜合體能、瑜珈、伸展、證照考試
-                            </td>
-                            <td class="col-lg-2 col-md-2">12000</td>
-                            <td class="col-lg-2 col-md-2"><img src="../assets/index/classroom/有氧大教室.jpg" class="img-fluid">
-                            </td>
-                            <td class="col-lg-2 col-md-2">開放</td>
-                        </tr>
-                        <tr>
-                            <td class="col-lg-2 col-md-2">有氧小教室</td>
-                            <td class="col-lg-2 col-md-2">30</td>
-                            <td class="col-lg-2 col-md-2">有氧運動、重量訓練、綜合體能、瑜珈、伸展</td>
-                            <td class="col-lg-2 col-md-2">6000</td>
-                            <td class="col-lg-2 col-md-2"><img src="../assets/index/classroom/有氧小教室.jpg" class="img-fluid">
-                            </td>
-                            <td class="col-lg-2 col-md-2">開放</td>
                         </tr>
                     </tbody>
                 </table>
@@ -158,12 +137,21 @@ if (month === '01') {
 }
 const nextMonthFormatted = `${year}-${month}-${day}`;
 
+// 選擇的場地 日期 時段
 const selectedClassroomId = ref(0); // 預設0
 const selectedDate = ref(nextMonthFormatted);
 const selectedTime = ref(0);
+
+// 日曆
 const events = ref([]);
+
+// 取得全部教室資料
 const classroomData = ref([]);
+
+// 篩選狀態為開放的教室
 const openClassrooms = ref([]);
+
+// 訂單頁面需要的場地資料
 const classroomInfo = ref([])
 
 // 建立被選的場地物件
@@ -188,12 +176,12 @@ const rentOrder = reactive({
     rentstatus: '未付款',
 });
 
+
 // 篩選狀態為開放的場地
 const getfindAllClassroomNameAndStatusAndId = async () => {
     try {
-        const findAllClassroomNameAndStatusAndId = await axios.get(`${url}/classroom/getClassroomInfo`);
+        const findAllClassroomNameAndStatusAndId = await axios.get(`${url}/classroom/list`);
         classroomData.value = findAllClassroomNameAndStatusAndId.data;
-        // console.log(classroomData.value);
 
         // 使用Array.prototype.filter()篩選出classroomStatus為'開放'的對象 filter篩選出為陣列
         openClassrooms.value = classroomData.value.filter(item => item.classroomStatus === '開放');

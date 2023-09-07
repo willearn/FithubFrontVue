@@ -91,8 +91,7 @@ const router = useRouter();
 // 取得pinia全域
 const rentOrderStore = useRentOrderStore();
 const { selectedClassroom } = storeToRefs(rentOrderStore);
-console.log(selectedClassroom.value)
-// console.log(checkOrder)
+// console.log(selectedClassroom.value)
 
 // 金流日期需求格式
 const formatted = useDateFormat(useNow(), 'YYYY/MM/DD HH:mm:ss')
@@ -142,13 +141,19 @@ const insertRentOrder = async () => {
 
 // 取消訂單
 const cancleRentOrder = async () => {
-    try {
-        const response = await axios.delete(`${url}/rent/delete/${selectedClassroom.value.rentOrderid}`);
-        console.log(response.data);
-        selectedClassroom.value = null;
-        router.back();
-    } catch (error) {
-        console.error('cancleRentOrder Error:', error);
+    const checkDelete = window.confirm('確定要取消訂單嗎？');
+    if (checkDelete) {
+        try {
+            alert('已取消')
+            const response = await axios.delete(`${url}/rent/delete/${selectedClassroom.value.rentOrderid}`);
+            console.log(response.data);
+            selectedClassroom.value = null;
+            router.back();
+        } catch (error) {
+            console.error('cancleRentOrder Error:', error);
+        }
+    } else {
+
     }
 };
 
