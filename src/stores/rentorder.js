@@ -3,7 +3,8 @@ import { defineStore } from 'pinia'
 
 export const useRentOrderStore = defineStore('rentorder', () => {
 
-  const selectedClassroom = ref()
+  const selectedClassroom = ref(null);
+  const checkOrder = ref(false);
 
-  return { selectedClassroom }
+  return { selectedClassroom , checkOrder}
 })

@@ -65,7 +65,8 @@
                         </tr>
                     </tbody>
                 </table>
-                <button type="submit" class="btn btn-primary btn-lg" @click="insertRentOrder">送出訂單</button>
+                <button type="submit" class="btn btn-primary btn-lg" @click="cancleRentOrder">取消返回</button>
+                <button type="submit" class="btn btn-primary btn-lg offset-1" @click="insertRentOrder">送出訂單</button>
             </div>
         </div>
     </section>
@@ -78,19 +79,24 @@ import { useRouter } from 'vue-router'
 import { useNow, useDateFormat } from '@vueuse/core'
 import { useRentOrderStore } from "../stores/rentorder.js"
 import { storeToRefs } from 'pinia'
+const url = import.meta.env.VITE_API_JAVAURL
 
 // 測試:使用query接值
 // const id = router.currentRoute.value.query.id;
 // const name = router.currentRoute.value.query.name;
 
-const url = import.meta.env.VITE_API_JAVAURL
+// 取得路由物件
+const router = useRouter();
+
+// 取得pinia全域
 const rentOrderStore = useRentOrderStore();
 const { selectedClassroom } = storeToRefs(rentOrderStore);
-// console.log(selectedClassroom.value)
+console.log(selectedClassroom.value)
+// console.log(checkOrder)
 
 // 金流日期需求格式
 const formatted = useDateFormat(useNow(), 'YYYY/MM/DD HH:mm:ss')
-console.log(formatted.value)
+// console.log(formatted.value)
 
 const rentOrder = reactive({
     memberid: localStorage.getItem('memberid'),
@@ -148,6 +154,20 @@ const insertRentOrder = async () => {
         console.error('insertRentOrder Error:', error);
     }
 };
+
+
+// 取消訂單
+const cancleRentOrder = async () => {
+    try {
+        // const response = await axios.post(`${url}/rent/insert`, rentOrder);
+        // const cancleRenorder = response.data;
+        selectedClassroom = null;
+        router.back();
+    } catch (error) {
+        console.error('cancleRentOrder Error:', error);
+    }
+};
+
 
 onMounted(() => {
 

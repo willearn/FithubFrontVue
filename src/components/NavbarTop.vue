@@ -18,7 +18,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
               <i class="bi bi-person-fill"></i>
-              <sapn>{{ membername }}</sapn>
+              <span>{{ membername }}</span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <li><router-link class="dropdown-item" to="#">會員專區</router-link></li>

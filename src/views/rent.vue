@@ -139,7 +139,8 @@ const url = import.meta.env.VITE_API_JAVAURL
 // const { count, doubleCount } = storeToRefs(countStore)
 
 const rentOrderStore = useRentOrderStore();
-const { selectedClassroom } = storeToRefs(rentOrderStore);
+const { selectedClassroom,checkOrder } = storeToRefs(rentOrderStore);
+console.log(selectedClassroom.value)
 
 // 取得路由物件
 const router = useRouter();
@@ -243,11 +244,11 @@ const reserve = async () => {
             // console.log(selectedData)
 
             selectedClassroom.value = selectedData;
-
+            
             // 判斷是否有登入會員
-            const localStorageData = localStorage.getItem('isLogin');
+            // const localStorageData = localStorage.getItem('isLogin');
 
-            if (localStorageData) {
+            // if (localStorageData) {
                 // 使用router.push query進行頁面跳轉資料存在網址 http://localhost:5173/rentorder?id=123
                 router.push({
                     path: "/rentorder",
@@ -256,12 +257,12 @@ const reserve = async () => {
                     //     name: 'tigert'
                     // },
                 });
-            } else {
-                alert('請登入會員')
-                router.push({
-                    path: "/login",
-                });
-            }
+            // } else {
+            //     alert('請登入會員')
+            //     router.push({
+            //         path: "/login",
+            //     });
+            // }
             // console.log(rentOrder.value)
         }
 
