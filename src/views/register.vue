@@ -117,7 +117,7 @@ const startCountdown = () => {
 </script>
 
 <template>
-  <section class="vh-100" style="background-color: #c1c1ae;">
+  <section class="vh-100" style="background-color: #E8E1D4;">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col col-xl-10">
