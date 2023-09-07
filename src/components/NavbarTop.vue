@@ -21,7 +21,7 @@
               <sapn>{{ membername }}</sapn>
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <li><router-link class="dropdown-item" to="#">會員專區</router-link></li>
+              <li><router-link class="dropdown-item" to="/member">會員專區</router-link></li>
               <li><router-link class="dropdown-item" to="/login" @click="logout">登出</router-link></li>
             </ul>
           </li>

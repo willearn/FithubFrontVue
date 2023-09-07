@@ -1,10 +1,19 @@
 <script setup>
 import axios from "axios";
-import { login } from "@/api/login"
+import { login , googleLogin} from "@/api/login"
 import router from "@/router"
 import { ref, reactive, onMounted } from "vue";
+import { GoogleLogin, decodeCredential } from 'vue3-google-login'
+import { googleAuthCodeLogin } from "vue3-google-login"
+import { googleTokenLogin } from "vue3-google-login"
 
 const url = import.meta.env.VITE_API_JAVAURL
+
+const data = ref()
+
+// const callback = (response) => {
+//   data.value = response
+// }
 
 const loginData = reactive({
   memberemail: "",
@@ -17,6 +26,34 @@ const submit = async () => {
     router.push({ name: "home" })
   }
 }
+
+// const loginq = () => {
+//   googleAuthCodeLogin().then((response) => {
+//     console.log("Handle the response", response)
+//   })
+// }
+
+// const loginq = () => {
+//   googleTokenLogin().then((response) => {
+//     console.log("Handle the response", response)
+//   })
+// }
+
+const callback = async (response) => {
+  // This callback will be triggered when the user selects or login to
+  // his Google account from the popup
+  console.log("Handle the response", response)
+
+  const userData = decodeCredential(response.credential)
+  console.log("Handle the userData", userData.email)
+  console.log("Handle the userData", userData.name)
+
+  let res = await googleLogin(userData.email , userData.name)
+  if(res.status == 0){
+    router.push({ name: "home" })
+  }
+}
+
 
 </script>
 
@@ -67,7 +104,17 @@ const submit = async () => {
       <div class="col-lg-4 col-md-4">
         <input type="button" value="登入" @click="submit()" />
         <router-link to="/register">註冊</router-link>
-      </div>
+        <GoogleLogin :callback="callback" />
+        <!-- <button @click="loginq">Login Using Google</button> -->
+      </div>  
     </div>
   </section>
+  
 </template>
+
+<style scoped>
+p {
+  margin-top: 12px;
+  word-break: break-all;
+}
+</style>

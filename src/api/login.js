@@ -35,6 +35,39 @@ async function login(email, password) {
     return result
 }
 
+async function googleLogin(email, name) {
+    const result = {
+        status: 1,
+        token: "",
+        memberid: 0,
+        membername: "",
+        memberemail: "",
+    }
+
+    const data = {
+        memberemail: email,
+        membername: name
+    }
+    const res = await axios.post(`${url}/memberGooglelogin`, data)
+    if (res.data.status) {
+        result.status = 0
+        result.token = res.data.token
+        result.memberid = res.data.memberid
+        result.membername = res.data.membername
+        result.memberemail = res.data.memberemail
+        
+        setLoginStore({
+            isLogin: true,
+            token: result.token,
+            memberid: res.data.memberid,
+            membername: res.data.membername,
+            memberemail: res.data.memberemail,
+        })
+    }
+
+    return result
+}
+
 
 
 async function authToken(token) {
@@ -89,4 +122,4 @@ function setLoginStore(options) {
 }
 
 
-export { login, authToken }
+export { login, googleLogin, authToken }
