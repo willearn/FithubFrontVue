@@ -118,7 +118,7 @@
     </div>
   </section>
 
-  <router-link class="btn btn-secondary mt-6" to="/course/detail"
+  <router-link class="btn btn-secondary mt-6" to="/course/detail/2"
     >課程詳細資訊</router-link
   >
 </template>
