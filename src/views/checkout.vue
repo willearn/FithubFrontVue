@@ -1,38 +1,4 @@
 <template>
-    <!-- <div class="masthead">
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                    aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="../assets/index/classroom/攀岩教室.jpg" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="../assets/index/classroom/有氧大教室.jpg" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="../assets/index/classroom/空中瑜珈.jpg" class="d-block w-100" alt="...">
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </div> -->
-
     <!-- 結帳頁面 -->
     <section class="page-section" id="about">
         <div class="container">
@@ -67,80 +33,80 @@
                                 <h5 class="card-title">Total:</h5>
                                 <p class="card-text">NT$666</p>
                                 <div class="d-grid gap-3 col-12 mx-auto">
-                                <router-link class="btn btn-primary " to="/ordercheck">結帳</router-link>
+                                    <router-link class="btn btn-primary " to="/ordercheck">結帳</router-link>
                                 </div>
                             </div>
-                            <hr>                            
+                            <hr>
                             <form class="row g-0" style="position: relative; right: -5%;">
-                                    <div class="col-auto">
-                                        <label for="inputPassword2" class="visually-hidden">促銷代碼</label>
-                                        <input type="text" class="form-control" id="inputPassword2" placeholder="促銷代碼">
-                                    </div>
-                                    <div class="col-auto">
-                                        <button type="submit" class="btn btn-primary mb-3">輸入</button>
-                                    </div>
-                                </form>
-                        </div>                   
-                    </div>
-                        
-                        <div class="p-2 bg-light border">
-                            <table class="table align-middle">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">圖片</th>
-                                        <th scope="col">課程名稱</th>
-                                        <th scope="col">課程教練</th>
-                                        <th scope="col">課程時間</th>
-                                        <th scope="col">單價</th>
-                                        <th scope="col"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>
-                                            <img src="../assets/index/other/4.jpg" style="width: 200px;">
-                                        </td>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        <td>$2000</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>
-                                            <img src="../assets/index/other/4.jpg" style="width: 200px;">
-                                        </td>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                        <td>$2000</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td>
-                                            <img src="../assets/index/other/4.jpg" style="width: 200px;">
-                                        </td>
-                                        <td colspan="2">Larry the Bird</td>
-                                        <td>@twitter</td>
-                                        <td>$2000</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="p-2 bg-light border">
-                            <div class="form-floating">
-                                <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                    <option selected>選擇付款方式</option>
-                                    <option value="1">綠界金流</option>
-                                </select>
-                                <label for="floatingSelect">Pay with selects</label>
-                            </div>
+                                <div class="col-auto">
+                                    <label for="inputPassword2" class="visually-hidden">促銷代碼</label>
+                                    <input type="text" class="form-control" id="inputPassword2" placeholder="促銷代碼">
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary mb-3">輸入</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                </div>             
+
+                    <div class="p-2 bg-light border">
+                        <table class="table align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">圖片</th>
+                                    <th scope="col">課程名稱</th>
+                                    <th scope="col">課程教練</th>
+                                    <th scope="col">課程時間</th>
+                                    <th scope="col">單價</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>
+                                        <img src="../assets/index/other/4.jpg" style="width: 200px;">
+                                    </td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>$2000</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>
+                                        <img src="../assets/index/other/4.jpg" style="width: 200px;">
+                                    </td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                    <td>$2000</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>
+                                        <img src="../assets/index/other/4.jpg" style="width: 200px;">
+                                    </td>
+                                    <td colspan="2">Larry the Bird</td>
+                                    <td>@twitter</td>
+                                    <td>$2000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="p-2 bg-light border">
+                        <div class="form-floating">
+                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                <option selected>選擇付款方式</option>
+                                <option value="1">綠界金流</option>
+                            </select>
+                            <label for="floatingSelect">Pay with selects</label>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
     </section>
 </template>
 
