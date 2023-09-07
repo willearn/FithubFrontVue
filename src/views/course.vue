@@ -75,6 +75,7 @@
           <listGroup
             class="d-flex justify-content-center"
             :allCourseCategories="allCourseCategories"
+            :pageCourseCategoryId="pageCourseCategoryId"
             tabindex="0"
             v-focus
           ></listGroup>
@@ -82,7 +83,14 @@
 
         <!-- cards for course -->
         <div class="col-10">
-          <h1 class="text-center mb-4">全部課程列表</h1>
+          <h1 v-if="pageCourseCategoryId != 0" class="text-center mb-4">
+            {{
+              allCourseCategories.find((item) => {
+                return item.categoryId == pageCourseCategoryId;
+              }).categoryName
+            }}課程列表
+          </h1>
+          <h1 v-else class="text-center mb-4">全部課程列表</h1>
           <!-- <input type="text" v-focus> -->
           <div
             class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center"
@@ -150,13 +158,14 @@ const URL = import.meta.env.VITE_API_JAVAURL;
 */
 
 const route = useRoute();
-const pageCourseCategoryId = ref(undefined);
+const pageCourseCategoryId = ref(0);
 watch(
   () => route.params["categoryid"],
   async (newUrlCategoryId) => {
     // console.log(newUrlCategoryId);
     if (newUrlCategoryId == undefined) {
       paginationData.page = 1; //每次換Category時 顯示所有資料的第一頁
+      pageCourseCategoryId.value = 0;
       await loadPageCourses();
     } else {
       paginationData.page = 1; //每次換Category時 顯示所有資料的第一頁
@@ -211,7 +220,7 @@ const loadPageCourses = async () => {
 
 // Load course data of single category
 const loadPageCoursesOfSingleCategory = async () => {
-  if (pageCourseCategoryId != undefined) {
+  if (pageCourseCategoryId != 0) {
     console.log(pageCourseCategoryId);
     const URLAPI = `${URL}/course/page/${pageCourseCategoryId.value}`;
     const response = await axios.get(URLAPI, {
