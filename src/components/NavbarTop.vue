@@ -8,7 +8,7 @@
         aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ms-auto my-2 my-lg-0">
-          <li class="nav-item"><router-link class="nav-link" to="/">課程</router-link></li>
+          <li class="nav-item"><router-link class="nav-link" to="/course">課程</router-link></li>
           <li class="nav-item"><router-link class="nav-link" to="/rent">場地租借</router-link></li>
           <li class="nav-item"><router-link class="nav-link" to="/">最新消息</router-link></li>
           <li class="nav-item"><router-link class="nav-link" to="/">教練團隊</router-link></li>
