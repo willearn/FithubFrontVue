@@ -117,7 +117,7 @@ const URL = import.meta.env.VITE_API_JAVAURL
 // 根據你的資料結構組合需要的資料
 const dataToSend = {    
     orderDate: '',
-    orderCondition: '未付款', // 寫死
+    orderCondition: '未付款', // 寫死!!
     memberId: 5, 
     orderTotalAmount: 100, // for (課程-折扣)
     orderPaymentMethod: 'Credit Card', // 先寫死
