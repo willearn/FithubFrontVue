@@ -70,122 +70,136 @@
   <!-- singlePage -->
   <div class="container">
     <section class="page-section" id="courseDetail">
-      <h1 class="row justify-content-center">
-        {{ pageCourse.courseName }}課程
-      </h1>
-      <div class="card h-100">
-        <div class="row justify-content-center align-items-center">
-          <div class="col-5 mx-3">
-            <img
-              src="https://picsum.photos/300/200?random=10"
-              class="card-img-top mt-3"
-              alt="..."
-              tabindex="0"
-              v-focus
-            />
-          </div>
-          <div class="col-6 mx-3">
-            <div class="my-3">
-              <h4>授課教練</h4>
-              <div class="row align-items-center">
-                <div class="col-12 col-md-5 col-lg-6">
-                  <select class="form-select" id="courseCoach" v-focus>
-                    <option selected style="display: none" value="">
-                      請選擇
-                    </option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-                <div class="col-12 col-md-5 col-lg-6">
-                  <button class="btn btn-secondary btn-sm">
-                    <i class="bi bi-lightbulb-fill"></i>&nbsp;&nbsp;教練專長
-                  </button>
+      <div class="row justify-content-center">
+        <h1 class="col-12 text-center">{{ pageCourse.courseName }}課程</h1>
+        <div class="card col-12 col-md-11 col-lg-10 h-100 mb-4">
+          <div class="row justify-content-center align-items-center">
+            <div class="col-5 mx-3">
+              <img
+                src="https://picsum.photos/300/200?random=10"
+                class="card-img-top mt-3"
+                alt="..."
+                tabindex="0"
+                v-focus
+              />
+            </div>
+            <div class="col-6 mx-3">
+              <div class="my-3">
+                <h4>授課教練</h4>
+                <div class="row align-items-center">
+                  <div class="col-12 col-md-5 col-lg-6">
+                    <select class="form-select" id="courseCoach" v-focus>
+                      <option selected style="display: none" value="">
+                        請選擇
+                      </option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                  </div>
+                  <div class="col-12 col-md-5 col-lg-6">
+                    <button class="btn btn-secondary btn-sm">
+                      <i class="bi bi-lightbulb-fill"></i>&nbsp;&nbsp;教練專長
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="my-3">
-              <h4>課程時間:</h4>
-              <div class="row">
-                <div class="col-12 col-md-5 col-lg-5">
-                  <label for="courseDate" class="mb-1">日期</label>
-                  <select class="form-select" id="courseDate">
-                    <option selected style="display: none" value="">
-                      請選擇
-                    </option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-                <div class="col-12 col-md-5 col-lg-5">
-                  <label for="courseTime" class="mb-1">時段</label>
-                  <select class="form-select" id="courseTime">
-                    <option selected style="display: none" value="">
-                      請選擇
-                    </option>
-                    <option value="早上">早上</option>
-                    <option value="下午">下午</option>
-                    <option value="晚上">晚上</option>
-                  </select>
+              <div class="my-3">
+                <h4>課程時間:</h4>
+                <div class="row">
+                  <div class="col-12 col-md-5 col-lg-5">
+                    <label for="courseDate" class="mb-1">日期</label>
+                    <select class="form-select" id="courseDate">
+                      <option selected style="display: none" value="">
+                        請選擇
+                      </option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                  </div>
+                  <div class="col-12 col-md-5 col-lg-5">
+                    <label for="courseTime" class="mb-1">時段</label>
+                    <select class="form-select" id="courseTime">
+                      <option selected style="display: none" value="">
+                        請選擇
+                      </option>
+                      <option value="早上">早上</option>
+                      <option value="下午">下午</option>
+                      <option value="晚上">晚上</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="ml-2 my-3">
-              <h4>課程說明:</h4>
-              <p class="fs-6">
-                {{ pageCourse.courseDescription }}
-              </p>
-            </div>
+              <div class="ml-2 my-3">
+                <h4>課程說明:</h4>
+                <p class="fs-6">
+                  {{ pageCourse.courseDescription }}
+                </p>
+              </div>
 
-            <span class="d-flex justify-content-end my-4">
-              <button
-                class="btn btn btn-primary mx-2"
-                data-bs-toggle="collapse"
-                href="#collapseExample"
-                role="button"
-              >
-                <i type="button" class="bi bi-calendar-check"></i
-                >&nbsp;&nbsp;&nbsp;查看課表
-              </button>
-              <button class="btn btn btn-primary mx-2">
-                <i type="button" class="bi bi-cart4"></i>&nbsp;&nbsp;加入購物車
-              </button>
-              <button class="btn btn btn-primary mx-2">
-                <i type="button" class="bi bi-cart3"></i>&nbsp;&nbsp;直接購買
-              </button>
-            </span>
+              <span class="d-flex justify-content-end my-4">
+                <button
+                  class="btn btn btn-primary mx-2"
+                  data-bs-toggle="collapse"
+                  href="#collapseExample"
+                  role="button"
+                >
+                  <i type="button" class="bi bi-calendar-check"></i
+                  >&nbsp;&nbsp;&nbsp;查看課表
+                </button>
+                <button class="btn btn btn-primary mx-2">
+                  <i type="button" class="bi bi-heart-fill"></i
+                  >&nbsp;&nbsp;加入願望清單
+                </button>
+                <button class="btn btn btn-primary mx-2">
+                  <i type="button" class="bi bi-cart4"></i
+                  >&nbsp;&nbsp;加入購物車
+                </button>
+                <button class="btn btn btn-primary mx-2">
+                  <i type="button" class="bi bi-cart3"></i>&nbsp;&nbsp;直接購買
+                </button>
+              </span>
+            </div>
           </div>
         </div>
       </div>
+
+      <hr />
 
       <!-- 課表摺疊 -->
-      <div class="collapse my-4" id="collapseExample">
-        <div class="card card-body">
-          I am a Calendar
-          <!-- <div id="calendar" class="calendar text-center mt-5">
-                    </div> -->
-          <!-- <FullCalendar></FullCalendar> -->
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-10">
+          <div class="collapse my-4" id="collapseExample">
+            I am calendar !!!
+            <!-- <FullCalendar></FullCalendar> -->
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-10">
           <FullCalendar></FullCalendar>
         </div>
       </div>
+
       <hr />
 
-      <h2>推薦課程</h2>
       <div class="row justify-content-center">
-        <courseCard
-          v-for="(course, index) in recommendedCourses"
-          class="col-3 mx-2 my-3"
-          :cardAmount="index"
-          :course="course"
-          :isLike="isLike"
-        >
-        </courseCard>
+        <div class="col-12 col-md-10 col-lg-10">
+          <h2 class="text-center">推薦課程</h2>
+          <div
+            class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center"
+          >
+            <courseCard
+              v-for="(course, index) in recommendedCourses"
+              class="col-3 mx-2 my-3"
+              :cardAmount="index"
+              :course="course"
+              :isLike="isLike"
+            >
+            </courseCard>
+          </div>
+        </div>
       </div>
     </section>
     <router-link class="btn btn-secondary" to="/cart">購物車</router-link>
