@@ -218,7 +218,7 @@ import { RouterLink, useRoute } from "vue-router";
 import axios from "axios";
 import courseCard from "../components/course/courseCard.vue";
 import FullCalendar from "../components/course/courseCalendar.vue";
-import CartIcon from "../components/util/icon-cart.vue";
+import CartIcon from "../components/course/util/icon-cart.vue";
 import { vFocus } from "../directives/vFocus";
 const URL = import.meta.env.VITE_API_JAVAURL;
 

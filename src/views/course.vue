@@ -148,8 +148,8 @@ import { ref, reactive, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 import courseCard from "../components/course/courseCard.vue";
-import pagination from "../components/util/pagination.vue";
-import listGroup from "../components/util/listGroup.vue";
+import pagination from "../components/course/util/pagination.vue";
+import listGroup from "../components/course/util/listGroup.vue";
 import { vFocus } from "../directives/vFocus";
 const URL = import.meta.env.VITE_API_JAVAURL;
 
