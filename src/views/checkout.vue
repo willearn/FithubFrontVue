@@ -1,44 +1,10 @@
 <template>
-    <!-- <div class="masthead">
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                    aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="../assets/index/classroom/攀岩教室.jpg" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="../assets/index/classroom/有氧大教室.jpg" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="../assets/index/classroom/空中瑜珈.jpg" class="d-block w-100" alt="...">
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </div> -->
-
     <!-- 結帳頁面 -->
     <section class="page-section" id="about">
         <div class="container">
             <div style="position:relative; top: 20%; left: 350px;">
                 <div class="position-relative m-5">
-                    <div class="progress" style="height: 15px;width: 1050px;">
+                    <div class="progress" style="height: 15px;width: 1150px;">
                         <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50"
                             aria-valuemin="0" aria-valuemax="100">50%
                         </div>
@@ -57,20 +23,32 @@
                                 <a class="nav-link" href="#"><u>我的折價券</u></a>
                             </li>
                         </ul>
+
+
+
                     </div>
                     <div style="width: 12rem;position: absolute;right: 38%;">
-                        <div class="card text-center">
+                        <div class="card" style="width: 21rem;">
                             <div class="card-body">
-                                <h5 class="card-title">我的訂單</h5>
-                                <p class="card-text">總金額:</p>
-                                <a href="#" class="btn btn-primary">結帳</a>
+                                <h5 class="card-title">Total:</h5>
+                                <p class="card-text">NT$666</p>
+                                <div class="d-grid gap-3 col-12 mx-auto">
+                                    <router-link class="btn btn-primary " to="/ordercheck">結帳</router-link>
+                                </div>
                             </div>
-                        </div>
-                        <div style="position:relative; top: 20%; left: 50px;">
-
-                            <router-link class="btn btn-secondary mt-5" to="/course">繼續購物</router-link>
+                            <hr>
+                            <form class="row g-0" style="position: relative; right: -5%;">
+                                <div class="col-auto">
+                                    <label for="inputPassword2" class="visually-hidden">促銷代碼</label>
+                                    <input type="text" class="form-control" id="inputPassword2" placeholder="促銷代碼">
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary mb-3">輸入</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
+
                     <div class="p-2 bg-light border">
                         <table class="table align-middle">
                             <thead class="table-light">
@@ -94,18 +72,6 @@
                                     <td>Otto</td>
                                     <td>@mdo</td>
                                     <td>$2000</td>
-                                    <td>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                            class="bi bi-heart-fill" viewBox="0 0 16 16" style="float: left: ;">
-                                            <path fill-rule="evenodd"
-                                                d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
-                                        </svg><br>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                            class="bi bi-trash3-fill" viewBox="0 0 16 16" style="float: left: ;">
-                                            <path
-                                                d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
-                                        </svg>
-                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row">2</th>
@@ -138,25 +104,8 @@
                             <label for="floatingSelect">Pay with selects</label>
                         </div>
                     </div>
-                    <form class="row g-3">
-                        <div class="col-auto">
-                            <label for="staticEmail2" class="visually-hidden">Email</label>
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail2"
-                                value="email@example.com">
-                        </div>
-                        <div class="col-auto">
-                            <label for="inputPassword2" class="visually-hidden">Password</label>
-                            <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
-                        </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-primary mb-3">Confirm identity</button>
-                        </div>
-                    </form>
-
-
                 </div>
             </div>
-            <router-link class="btn btn-secondary mt-5" to="/ordercheck">訂單送出前檢查</router-link>
         </div>
     </section>
 </template>
