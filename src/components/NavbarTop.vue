@@ -18,7 +18,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
               <i class="bi bi-person-fill"></i>
-              <sapn>{{ membername }}</sapn>
+              {{ membername }}
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <li><router-link class="dropdown-item" to="/member">會員專區</router-link></li>
@@ -36,12 +36,13 @@ import router from "@/router"
 import { ref, onMounted} from "vue";
 
 const isLogin = ref();
-const membername = localStorage.getItem("membername")
+const membername = ref();
 
 onMounted(() => {
   isLogin.value = window.localStorage.getItem("isLogin") === 'true';
 
-  console.log("onMounted");
+  
+  // console.log("onMounted");
 })
 
 
@@ -55,6 +56,7 @@ const logout = () => {
 
 router.beforeResolve(to => {
   isLogin.value = window.localStorage.getItem("isLogin") === 'true';
+  membername.value =  localStorage.getItem("membername");
 })
 
 </script>

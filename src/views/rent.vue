@@ -70,8 +70,6 @@
             <h1>場地介紹</h1>
             <hr class="divider" />
             <div class="col-lg-12 col-md-12">
-            </div>
-            <div class="col-lg-12 col-md-12">
                 <table class="table table-bordered align-middle">
                     <thead>
                         <tr class="table-success">
@@ -79,38 +77,19 @@
                             <th>容納人數</th>
                             <th>介紹</th>
                             <th>租借價格</th>
-                            <th>教室圖片</th>
                             <th>狀態</th>
+                            <th>圖片</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="col-lg-2 col-md-2">攀岩教室</td>
-                            <td class="col-lg-2 col-md-2">15</td>
-                            <td class="col-lg-2 col-md-2">攀岩場</td>
-                            <td class="col-lg-2 col-md-2">3000</td>
-                            <td class="col-lg-2 col-md-2"><img src="../assets/index/classroom/攀岩教室.jpg" class="img-fluid">
+                        <tr v-for="(classroom, classroomindex) in classroomData" :key="classroomindex">
+                            <td class="col-lg-2 col-md-2">{{ classroom.classroomName }}</td>
+                            <td class="col-lg-2 col-md-2">{{ classroom.classroomCapacity }}</td>
+                            <td class="col-lg-2 col-md-2">{{ classroom.classroomDescription }}</td>
+                            <td class="col-lg-2 col-md-2">{{ classroom.classroomPrice }}</td>
+                            <td class="col-lg-2 col-md-2">{{ classroom.classroomStatus }}</td>
+                            <td class="col-lg-2 col-md-2"><img :src="classroom.classroomPic" class="img-fluid" alt="維修中">
                             </td>
-                            <td class="col-lg-2 col-md-2">開放</td>
-                        </tr>
-                        <tr>
-                            <td class="col-lg-2 col-md-2">有氧大教室</td>
-                            <td class="col-lg-2 col-md-2">60</td>
-                            <td class="col-lg-2 col-md-2">有氧運動、重量訓練、綜合體能、瑜珈、伸展、證照考試
-                            </td>
-                            <td class="col-lg-2 col-md-2">12000</td>
-                            <td class="col-lg-2 col-md-2"><img src="../assets/index/classroom/有氧大教室.jpg" class="img-fluid">
-                            </td>
-                            <td class="col-lg-2 col-md-2">開放</td>
-                        </tr>
-                        <tr>
-                            <td class="col-lg-2 col-md-2">有氧小教室</td>
-                            <td class="col-lg-2 col-md-2">30</td>
-                            <td class="col-lg-2 col-md-2">有氧運動、重量訓練、綜合體能、瑜珈、伸展</td>
-                            <td class="col-lg-2 col-md-2">6000</td>
-                            <td class="col-lg-2 col-md-2"><img src="../assets/index/classroom/有氧小教室.jpg" class="img-fluid">
-                            </td>
-                            <td class="col-lg-2 col-md-2">開放</td>
                         </tr>
                     </tbody>
                 </table>
@@ -140,6 +119,7 @@ const url = import.meta.env.VITE_API_JAVAURL
 
 const rentOrderStore = useRentOrderStore();
 const { selectedClassroom } = storeToRefs(rentOrderStore);
+// console.log(selectedClassroom.value)
 
 // 取得路由物件
 const router = useRouter();
@@ -157,16 +137,26 @@ if (month === '01') {
 }
 const nextMonthFormatted = `${year}-${month}-${day}`;
 
+// 選擇的場地 日期 時段
 const selectedClassroomId = ref(0); // 預設0
 const selectedDate = ref(nextMonthFormatted);
 const selectedTime = ref(0);
+
+// 日曆
 const events = ref([]);
+
+// 取得全部教室資料
 const classroomData = ref([]);
+
+// 篩選狀態為開放的教室
 const openClassrooms = ref([]);
+
+// 訂單頁面需要的場地資料
 const classroomInfo = ref([])
 
-//建立被選的場地物件
+// 建立被選的場地物件
 const selectedData = reactive({
+    rentOrderid: '',
     classroomid: '',
     classroomName: '',
     classroomPic: '',
@@ -175,12 +165,23 @@ const selectedData = reactive({
     renttime: '',
 });
 
+// 訂單
+const rentOrder = reactive({
+    memberid: localStorage.getItem('memberid'),
+    classroomid: '',
+    rentorderdate: today,
+    rentdate: '',
+    renttime: '',
+    rentamount: '',
+    rentstatus: '未付款',
+});
+
+
 // 篩選狀態為開放的場地
 const getfindAllClassroomNameAndStatusAndId = async () => {
     try {
-        const findAllClassroomNameAndStatusAndId = await axios.get(`${url}/classroom/getClassroomInfo`);
+        const findAllClassroomNameAndStatusAndId = await axios.get(`${url}/classroom/list`);
         classroomData.value = findAllClassroomNameAndStatusAndId.data;
-        // console.log(classroomData.value);
 
         // 使用Array.prototype.filter()篩選出classroomStatus為'開放'的對象 filter篩選出為陣列
         openClassrooms.value = classroomData.value.filter(item => item.classroomStatus === '開放');
@@ -227,6 +228,9 @@ const reserve = async () => {
         selectedData.classroomid = selectedClassroomId.value
         selectedData.rentdate = selectedDate.value
         selectedData.renttime = selectedTime.value
+        // console.log(selectedData)
+
+
         const classroomAvailability = await axios.post(`${url}/rent/checkClassroomAvailability`, selectedData);
         const responseData = classroomAvailability.data;
         // console.log(responseData)
@@ -237,24 +241,35 @@ const reserve = async () => {
 
             // 篩選出選擇的場地資訊並傳到訂單頁面 find篩選出為物件(只返回第一個匹配的元素)
             classroomInfo.value = classroomData.value.find(item => item.classroomId === selectedData.classroomid);
+            // console.log(classroomInfo.value)
+
             selectedData.classroomName = classroomInfo.value.classroomName;
             selectedData.classroomPrice = classroomInfo.value.classroomPrice;
             selectedData.classroomPic = classroomInfo.value.classroomPic;
             // console.log(selectedData)
 
+            // 將訂單頁面需要的資料都賦給pinia
             selectedClassroom.value = selectedData;
+
+            // 建立訂單
+            rentOrder.classroomid = selectedClassroomId.value;
+            rentOrder.rentdate = selectedDate.value;
+            rentOrder.renttime = selectedTime.value;
+            rentOrder.rentamount = classroomInfo.value.classroomPrice;
+            // console.log(rentOrder)
 
             // 判斷是否有登入會員
             const localStorageData = localStorage.getItem('isLogin');
 
+
             if (localStorageData) {
+                // 新增訂單
+                const response = await axios.post(`${url}/rent/insert`, rentOrder);
+                selectedData.rentOrderid = response.data;
+
                 // 使用router.push query進行頁面跳轉資料存在網址 http://localhost:5173/rentorder?id=123
                 router.push({
                     path: "/rentorder",
-                    // query: {
-                    //     id: "123",
-                    //     name: 'tigert'
-                    // },
                 });
             } else {
                 alert('請登入會員')
@@ -262,10 +277,7 @@ const reserve = async () => {
                     path: "/login",
                 });
             }
-            // console.log(rentOrder.value)
         }
-
-        // console.log(selectedData)
     } catch (error) {
         console.error('Error:', error);
     }

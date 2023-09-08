@@ -13,4 +13,5 @@ app.use(vue3GoogleLogin, {
     clientId: '1052054161616-ierb817mjstfe847c2diep8911njsgap.apps.googleusercontent.com'
   })
 
+  
 app.mount('#app')

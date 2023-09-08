@@ -65,7 +65,8 @@
                         </tr>
                     </tbody>
                 </table>
-                <button type="submit" class="btn btn-primary btn-lg" @click="insertRentOrder">送出訂單</button>
+                <button type="submit" class="btn btn-primary btn-lg" @click="cancleRentOrder">取消返回</button>
+                <button type="submit" class="btn btn-primary btn-lg offset-1" @click="insertRentOrder">送出訂單</button>
             </div>
         </div>
     </section>
@@ -78,76 +79,84 @@ import { useRouter } from 'vue-router'
 import { useNow, useDateFormat } from '@vueuse/core'
 import { useRentOrderStore } from "../stores/rentorder.js"
 import { storeToRefs } from 'pinia'
+const url = import.meta.env.VITE_API_JAVAURL
 
 // 測試:使用query接值
 // const id = router.currentRoute.value.query.id;
 // const name = router.currentRoute.value.query.name;
 
-const url = import.meta.env.VITE_API_JAVAURL
+// 取得路由物件
+const router = useRouter();
+
+// 取得pinia全域
 const rentOrderStore = useRentOrderStore();
 const { selectedClassroom } = storeToRefs(rentOrderStore);
 // console.log(selectedClassroom.value)
 
-// 金流日期需求格式
-const formatted = useDateFormat(useNow(), 'YYYY/MM/DD HH:mm:ss')
-console.log(formatted.value)
-
-const rentOrder = reactive({
-    memberid: localStorage.getItem('memberid'),
-    classroomid: selectedClassroom.value.classroomid,
-    rentorderdate: formatted.value,
-    rentdate: selectedClassroom.value.rentdate,
-    renttime: selectedClassroom.value.renttime,
-    rentamount: selectedClassroom.value.classroomPrice,
-    rentstatus: '未付款',
-});
-// console.log(rentOrder)
-
-const ecpayRentOrder = reactive({
-    rentorderid: '',
-    rentorderdate: formatted.value,
-    rentamount: selectedClassroom.value.classroomPrice,
-    classroomname: selectedClassroom.value.classroomName
-});
 
 // 新增訂單
 const insertRentOrder = async () => {
     try {
-        const rentOrderResponse = await axios.post(`${url}/rent/insert`, rentOrder);
-        ecpayRentOrder.rentorderid = rentOrderResponse.data;
 
-        if (rentOrderResponse.data !== null) {
-            // ecpay請求 會回傳字串form表單
-            const ecpayResponse = await axios.post(`${url}/ecpay/ecpayCheckout`, ecpayRentOrder);
-            const ecpayCheckout = ecpayResponse.data
-            console.log(ecpayCheckout)
+        // 金流日期需求格式
+        const formatted = useDateFormat(useNow(), 'YYYY/MM/DD HH:mm:ss')
+        
+        // 建立綠界需要的訂單資訊
+        const ecpayRentOrder = reactive({
+            rentorderid: '',
+            rentorderdate: formatted.value,
+            rentamount: selectedClassroom.value.classroomPrice,
+            classroomname: selectedClassroom.value.classroomName
+        });
 
-            // 建立一个隱藏的div元素，將表單內容放入
-            const hiddenDiv = document.createElement('div');
-            hiddenDiv.style.display = 'none'; // 隐藏这个元素
-            hiddenDiv.innerHTML = ecpayCheckout;
+        ecpayRentOrder.rentorderid = selectedClassroom.value.rentOrderid;
 
-            // 將隱藏的div添加到網頁中
-            document.body.appendChild(hiddenDiv);
+        // ecpay請求 會回傳字串form表單
+        const ecpayResponse = await axios.post(`${url}/ecpay/ecpayCheckout`, ecpayRentOrder);
+        const ecpayCheckout = ecpayResponse.data
+        console.log(ecpayCheckout)
 
-            // 找到表單元素
-            const form = hiddenDiv.querySelector('form');
-            if (form) {
-                // 觸發表單自動提交
-                form.submit();
-            } else {
-                console.error('找不到表單元素');
-            }
+        // 建立一个隱藏的div元素，將表單內容放入
+        const hiddenDiv = document.createElement('div');
+        hiddenDiv.style.display = 'none'; // 隐藏这个元素
+        hiddenDiv.innerHTML = ecpayCheckout;
 
+        // 將隱藏的div添加到網頁中
+        document.body.appendChild(hiddenDiv);
 
+        // 找到表單元素
+        const form = hiddenDiv.querySelector('form');
+        if (form) {
+            // 觸發表單自動提交
+            form.submit();
         } else {
-            // 其他狀態碼，可能需要進行錯誤處理
-            console.error('請求失敗，狀態碼：', response.status);
+            console.error('找不到表單元素');
         }
+
     } catch (error) {
         console.error('insertRentOrder Error:', error);
     }
 };
+
+
+// 取消訂單
+const cancleRentOrder = async () => {
+    const checkDelete = window.confirm('確定要取消訂單嗎？');
+    if (checkDelete) {
+        try {
+            alert('已取消')
+            const response = await axios.delete(`${url}/rent/delete/${selectedClassroom.value.rentOrderid}`);
+            console.log(response.data);
+            selectedClassroom.value = null;
+            router.back();
+        } catch (error) {
+            console.error('cancleRentOrder Error:', error);
+        }
+    } else {
+
+    }
+};
+
 
 onMounted(() => {
 

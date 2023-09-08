@@ -27,18 +27,6 @@ const submit = async () => {
   }
 }
 
-// const loginq = () => {
-//   googleAuthCodeLogin().then((response) => {
-//     console.log("Handle the response", response)
-//   })
-// }
-
-// const loginq = () => {
-//   googleTokenLogin().then((response) => {
-//     console.log("Handle the response", response)
-//   })
-// }
-
 const callback = async (response) => {
   // This callback will be triggered when the user selects or login to
   // his Google account from the popup
@@ -54,62 +42,48 @@ const callback = async (response) => {
   }
 }
 
-
 </script>
 
 <template>
-  <div class="masthead">
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-          aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-          aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-          aria-label="Slide 3"></button>
-      </div>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="../assets/index/classroom/攀岩教室.jpg" class="d-block w-100" alt="..." />
+ <section class="vh-100 pt-5" style="background-color: #E8E1D4;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-8">
+          <div class="card" style="border-radius: 1rem;">
+            <div class="row g-0">
+              <div class=" col-md-6 col-lg-5 d-none d-md-block" style="background-image: url('src/assets/index/other/4.jpg');background-size: cover;">
+                <!-- <img src="../assets/index/other/4.jpg" alt="login form" class="img-fluid"
+                  style="border-radius: 1rem 0 0 1rem;" /> -->
+              </div>
+              <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                <div class="card-body p-4 p-lg-5 text-black">
+                  <h2 class="pb-5" style="letter-spacing: 1px;">Sign into your account</h2>
+                  <div class="mb-4">
+                    <label class="form-label">Email address</label>
+                    <input type="email" class="form-control form-control-lg" v-model="loginData.memberemail"
+                      placeholder="abc123456@example.com" />
+                  </div>
+                  <label class="form-label">Password</label>
+                  <div class="form-outline mb-4">
+                    <input type="password" class="form-control form-control-lg" v-model="loginData.memberpassword" />
+                  </div>
+                  <div class="pt-1 mb-4">
+                    <button class="btn btn-dark btn-lg btn-block" type="button" @click="submit()">登入</button>
+                  </div>
+                  <a class="small text-muted" href="#!">忘記密碼</a>
+                  <p class="pb-lg-2 mb-5">還沒有會員?<router-link to="/register">立即註冊</router-link>
+                <div>
+                  <GoogleLogin :callback="callback"></GoogleLogin>
+                </div>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="carousel-item">
-          <img src="../assets/index/classroom/有氧大教室.jpg" class="d-block w-100" alt="..." />
-        </div>
-        <div class="carousel-item">
-          <img src="../assets/index/classroom/空中瑜珈.jpg" class="d-block w-100" alt="..." />
-        </div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
-  </div>
-  <section class="page-section" id="about">
-    <div class="container">
-      <div class="col-lg-4 col-md-4">
-        <label class="">Email address</label>
-        <input type="email" class="form-control" v-model="loginData.memberemail" placeholder="name@example.com" />
-      </div>
-      <div class="col-lg-4 col-md-4">
-        <label class="">password</label>
-        <input type="password" class="form-control" v-model="loginData.memberpassword" />
-      </div>
-      <div class="col-lg-4 col-md-4">
-        <input type="button" value="登入" @click="submit()" />
-        <router-link to="/register">註冊</router-link>
-        <GoogleLogin :callback="callback" />
-        <!-- <button @click="loginq">Login Using Google</button> -->
-      </div>  
     </div>
   </section>
-  
 </template>
 
 <style scoped>

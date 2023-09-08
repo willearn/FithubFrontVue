@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/index.vue';
 import { authToken } from '@/api/login'
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -9,7 +10,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: Home
-    }, 
+    },
     {
       path: '/rent',
       name: 'rent',
@@ -18,7 +19,7 @@ const router = createRouter({
     {
       path: '/rentorder',
       name: 'rentorder',
-      component: () => import('../views/rentorder.vue')
+      component: () => import('../views/rentorder.vue'),
     }, {
       path: '/activity',
       name: 'activity',
@@ -53,7 +54,12 @@ const router = createRouter({
         needLogin: true
       } 
     },
-  ]
+  ],scrollBehavior (to, from, savedPosition) {
+    if(savedPosition && to.meta.keepAlive){
+      return savedPosition;
+    }
+    return{left:0,top:0};
+  }
 })
 
 router.beforeResolve( async to=>{

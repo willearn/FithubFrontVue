@@ -174,9 +174,8 @@
   <section class="page-section" id="contact">
     <div class="container px-4 px-lg-5">
       <div class="row gx-4 gx-lg-5 justify-content-center">
-
-
         <div class="col-lg-6 col-xl-6">
+          <!-- GoogleMap -->
           <GoogleMap api-key="AIzaSyB3Hjtldwb3Ep_QOvoCs1UZAtkmWNDCJyA" style="width: 100%; height: 100%" :center="center"
             :zoom="15">
             <Marker :options="{ position: center }">
@@ -191,39 +190,49 @@
             </Marker>
           </GoogleMap>
         </div>
-
-
         <div class="col-lg-6 col-xl-6 text-center">
           <div class="pt-1">
             <h2 class="mt-0">聯絡我們</h2>
             <hr class="divider" />
           </div>
           <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
-            <form>
-              <!-- Name input-->
+            <div>
+              <!-- Name input -->
               <div class="form-floating mb-4">
-                <input class="form-control" id="name" type="text" placeholder="Enter your name..." required />
+                <input class="form-control" id="name" type="text" v-model="formData.name" />
                 <label for="name">Full Name</label>
               </div>
-              <!-- Email address input-->
+              <!-- Email address input -->
               <div class="form-floating mb-4">
-                <input class="form-control" id="email" type="email" placeholder="name@example.com" required />
+                <input class="form-control" id="email" type="email" v-model="formData.email" />
                 <label for="email">Email</label>
               </div>
-              <!-- Phone number input-->
+              <!-- Phone number input -->
               <div class="form-floating mb-4">
-                <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" required />
+                <input class="form-control" id="phone" type="tel" v-model="formData.phone" />
                 <label for="phone">Phone number</label>
               </div>
-              <!-- Message input-->
+              <!-- subject input -->
               <div class="form-floating mb-4">
-                <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..."
-                  style="height: 10rem" required></textarea>
+                <select v-model="formData.subject" id="subject" class="form-control">
+                  <option>訂單疑問</option>
+                  <option>場地租借</option>
+                  <option>課程相關</option>
+                  <option>廠商洽談</option>
+                  <option>其他</option>
+                </select>
+                <label for="subject">subject</label>
+              </div>
+              <!-- Message input -->
+              <div class="form-floating mb-4">
+                <textarea class="form-control" id="message" type="text" style="height: 10rem"
+                  v-model="formData.message"></textarea>
                 <label for="message">Message</label>
               </div>
-              <!-- Submit Button-->
-              <div><button class="btn btn-primary btn-xl" id="submitButton" type="submit">Submit</button></div>
-            </form>
+              <!-- Submit Button -->
+              <div><button class="btn btn-primary btn-xl" id="submitButton" type="submit"
+                  @click="submitForm">Submit</button></div>
+            </div>
           </div>
         </div>
       </div>
@@ -235,14 +244,59 @@
 
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import axios from 'axios'
+import { ref, onMounted, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
 import { GoogleMap, Marker, InfoWindow } from "vue3-google-map";
+const url = import.meta.env.VITE_API_JAVAURL
 
+// 設定GoogleMap
 const center = { lat: 22.62808625882824, lng: 120.29252321578828 };
+
 // 取得路由物件
 const router = useRouter();
+
+// Top按鈕
 const mybutton = ref(null);
+
+//取得表單內容
+const formData = reactive({
+  name: '',
+  email: '',
+  phone: '',
+  message: '',
+  subject: ''
+})
+
+// 寄信聯絡我們
+const submitForm = async () => {
+  try {
+
+    if (
+      formData.name === '' ||
+      formData.email === '' ||
+      formData.phone === '' ||
+      formData.message === '' ||
+      formData.subject === ''
+    ) {
+      // 如果有任何一個字段為空，執行錯誤處理邏輯
+      alert('請填寫全部欄位');
+      return
+    }
+
+    const response = await axios.post(`${url}/index/sendEmail`, formData);
+
+    if (response.status === 200) {
+      alert('送出成功')
+    } else {
+      alert('送出失敗')
+    }
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
 
 
 // 轉到活動內容
@@ -279,9 +333,10 @@ function scrollFunction() {
 }
 
 onMounted(() => {
-  mybutton.value.addEventListener('click', backToTop);
-  window.addEventListener('scroll', scrollFunction);
-  scrollFunction(); // 初始化時檢查滾動位置以設置按鈕的初始狀態
+  // mybutton.value.addEventListener('click', backToTop);
+  // mybutton.value.style.display = 'block';
+  // window.addEventListener('scroll', scrollFunction);
+  // scrollFunction(); // 初始化時檢查滾動位置以設置按鈕的初始狀態
 });
 
 </script>
