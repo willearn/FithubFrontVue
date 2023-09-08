@@ -93,21 +93,21 @@ const rentOrderStore = useRentOrderStore();
 const { selectedClassroom } = storeToRefs(rentOrderStore);
 // console.log(selectedClassroom.value)
 
-// 金流日期需求格式
-const formatted = useDateFormat(useNow(), 'YYYY/MM/DD HH:mm:ss')
-// console.log(formatted.value)
-
-
-const ecpayRentOrder = reactive({
-    rentorderid: '',
-    rentorderdate: formatted.value,
-    rentamount: selectedClassroom.value.classroomPrice,
-    classroomname: selectedClassroom.value.classroomName
-});
 
 // 新增訂單
 const insertRentOrder = async () => {
     try {
+
+        // 金流日期需求格式
+        const formatted = useDateFormat(useNow(), 'YYYY/MM/DD HH:mm:ss')
+        
+        // 建立綠界需要的訂單資訊
+        const ecpayRentOrder = reactive({
+            rentorderid: '',
+            rentorderdate: formatted.value,
+            rentamount: selectedClassroom.value.classroomPrice,
+            classroomname: selectedClassroom.value.classroomName
+        });
 
         ecpayRentOrder.rentorderid = selectedClassroom.value.rentOrderid;
 

@@ -59,7 +59,7 @@ const register = async () => {
   try {
     const response = await axios.post(`${url}/members`, loginData);
 
-    if(response.status == 200){
+    if (response.status == 200) {
       alert("註冊成功，請登入")
       router.push({ name: "login" })
     }
@@ -82,13 +82,13 @@ const sendVerificationCode = async () => {
     const response = await axios.post(`${url}/verificationcode`, verify);
 
     console.log(response.status)
-    if(response.status == 200){
+    if (response.status == 200) {
       startCountdown();
-    }else{
+    } else {
       alert("email已使用")
     }
 
-    
+
   } catch (error) {
     alert("請輸入正確email")
   }
@@ -131,17 +131,23 @@ const startCountdown = () => {
     }
   }, 1000); // 每秒减少1秒
 };
+
+
+const goBack = () => {
+  router.back();
+}
 </script>
 
 <template>
+  <div style="height: 100px;background-color: #E8E1D4;"></div>
   <section class="vh-100" style="background-color: #E8E1D4;">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col col-xl-10">
+        <div class="col-lg-6">
           <div class="card" style="border-radius: 1rem;">
             <div class="row g-0">
-              <div class="col-md-6 col-lg-7 d-flex align-items-center">
-                <div class="card-body p-4 p-lg-5 text-black">
+              <div class="col-lg-12 d-flex align-items-center">
+                <div class="card-body  text-black">
                   <!-- 信箱 -->
                   <div>
                     <label class="form-label mb-1">信箱</label><span v-if="!loginData.memberemail"
@@ -212,15 +218,12 @@ const startCountdown = () => {
                     <input type="date" class="form-control" v-model="loginData.memberbirthday" />
                   </div>
 
-                  <div class="pt-1 mb-1">
-                    <button class="btn btn-dark btn-lg btn-block" type="button" @click="register">註冊</button>
+                  <div class="pt-1 mb-1 mt-3">
+                    <button class="btn btn-dark btn-lg btn-block" type="button" @click="goBack" >返回</button>
+                    <button class="btn btn-dark btn-lg btn-block ms-1" type="button" @click="register">註冊</button>
                   </div>
-                  
+
                 </div>
-              </div>
-              <div class="col-md-6 col-lg-5 d-none d-md-block">
-                <img src="../assets/index/other/4.jpg" alt="login form" class="img-fluid"
-                  style="border-radius: 0 1rem 1rem 0;" />
               </div>
             </div>
           </div>
@@ -228,67 +231,4 @@ const startCountdown = () => {
       </div>
     </div>
   </section>
-
-
-
-  <!-- <section class="page-section" id="about">
-    <div class="container">
-      <div class="col-lg-4 col-md-4">
-        <label class="">信箱</label>
-        <span v-if="!loginData.memberemail" class="text-danger">*</span>
-        <input type="email" class="form-control" v-model="loginData.memberemail" placeholder="name@example.com" />
-        <input type="button" v-model="verifybutton.button" @click="sendVerificationCode" id="verifybtn">
-        <input type="text" placeholder="輸入驗證碼" v-model="verify.verificationcode">
-        <input type="button" value="驗證" @click="checkVerificationCode">
-        <label v-if="verifystatus">驗證成功</label>
-      </div>
-
-      <div class="col-lg-4 col-md-4">
-        <label class="">密碼</label>
-        <span v-if="!loginData.memberpassword" class="text-danger">*</span>
-        <input type="password" class="form-control" v-model="loginData.memberpassword" />
-      </div>
-
-      <div class="col-lg-4 col-md-4">
-        <label class="">手機號碼</label>
-        <span v-if="!loginData.memberphoneno" class="text-danger">*</span>
-        <input type="email" class="form-control" v-model="loginData.memberphoneno" />
-      </div>
-      <div class="col-lg-4 col-md-4">
-        <label class="">姓名</label>
-        <span v-if="!loginData.membername" class="text-danger">*</span>
-        <input type="email" class="form-control" v-model="loginData.membername" />
-      </div>
-
-      <div class="col-lg-4 col-md-4">
-        <label class="">性別</label>
-        <span v-if="!loginData.membergender" class="text-danger">*</span>
-        <input type="radio" name="gender" value="男" v-model="loginData.membergender" />男
-        <input type="radio" name="gender" value="女" v-model="loginData.membergender" />女
-      </div>
-      <div class="col-lg-4 col-md-4">
-        <label class="">縣市</label>
-        <span v-if="!loginData.membercity" class="text-danger">*</span>
-        <input type="text" class="form-control" v-model="loginData.membercity" />
-      </div>
-      <div class="col-lg-4 col-md-4">
-        <label class="">地區</label>
-        <span v-if="!loginData.memberzone" class="text-danger">*</span>
-        <input type="text" class="form-control" v-model="loginData.memberzone" />
-      </div>
-      <div class="col-lg-4 col-md-4">
-        <label class="">地址</label>
-        <span v-if="!loginData.memberaddress" class="text-danger">*</span>
-        <input type="text" class="form-control" v-model="loginData.memberaddress" />
-      </div>
-      <div class="col-lg-4 col-md-4">
-        <label class="">生日</label>
-        <span v-if="!loginData.memberbirthday" class="text-danger">*</span>
-        <input type="date" class="form-control" v-model="loginData.memberbirthday" />
-      </div>
-      <div class="col-lg-4 col-md-4">
-        <input type="button" value="註冊" @click="register" />
-      </div>
-    </div>
-  </section> -->
 </template>

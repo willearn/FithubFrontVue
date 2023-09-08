@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia'
 
 
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -45,7 +46,12 @@ const router = createRouter({
       name: 'register',
       component: () => import('../views/register.vue')
     },
-  ]
+  ],scrollBehavior (to, from, savedPosition) {
+    if(savedPosition && to.meta.keepAlive){
+      return savedPosition;
+    }
+    return{left:0,top:0};
+  }
 })
 
 export default router

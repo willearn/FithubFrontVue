@@ -37,15 +37,15 @@ const callback = async (response) => {
 </script>
 
 <template>
-  <section class="vh-100" style="background-color: #E2DACA;">
+  <section class="vh-100 pt-5" style="background-color: #E8E1D4;">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col col-xl-10">
+        <div class="col-lg-8">
           <div class="card" style="border-radius: 1rem;">
             <div class="row g-0">
-              <div class="col-md-6 col-lg-5 d-none d-md-block">
-                <img src="../assets/index/other/4.jpg" alt="login form" class="img-fluid"
-                  style="border-radius: 1rem 0 0 1rem;" />
+              <div class=" col-md-6 col-lg-5 d-none d-md-block" style="background-image: url('src/assets/index/other/4.jpg');background-size: cover;">
+                <!-- <img src="../assets/index/other/4.jpg" alt="login form" class="img-fluid"
+                  style="border-radius: 1rem 0 0 1rem;" /> -->
               </div>
               <div class="col-md-6 col-lg-7 d-flex align-items-center">
                 <div class="card-body p-4 p-lg-5 text-black">
@@ -63,9 +63,10 @@ const callback = async (response) => {
                     <button class="btn btn-dark btn-lg btn-block" type="button" @click="submit()">登入</button>
                   </div>
                   <a class="small text-muted" href="#!">忘記密碼</a>
-
                   <p class="pb-lg-2 mb-5">還沒有會員?<router-link to="/register">立即註冊</router-link>
-                    <GoogleLogin :callback="callback"></GoogleLogin>
+                <div>
+                  <GoogleLogin :callback="callback"></GoogleLogin>
+                </div>
                   </p>
                 </div>
               </div>
@@ -75,16 +76,4 @@ const callback = async (response) => {
       </div>
     </div>
   </section>
-
-  <!-- <div class="col-lg-4 col-md-4">
-    <label class="">Email address</label>
-    <input type="email" class="form-control" v-model="loginData.memberemail" placeholder="name@example.com" />
-  </div>
-  <div class="col-lg-4 col-md-4">
-    <label class="">password</label>
-    <input type="password" class="form-control" v-model="loginData.memberpassword" />
-  </div>
-
-  <input type="button" value="登入" @click="submit()" />
-  <router-link to="/register">註冊</router-link> -->
 </template>
