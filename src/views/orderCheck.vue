@@ -109,16 +109,19 @@
 <script setup>
 import axios from 'axios'
 import { reactive, ref, onMounted } from 'vue'
+import { useNow, useDateFormat } from '@vueuse/core'
 const URL = import.meta.env.VITE_API_JAVAURL
 
+
+
 // 根據你的資料結構組合需要的資料
-const dataToSend = {
-    orderDate: '2023-09-06',
-    orderCondition: 'Pending',
-    memberId: 5,
-    orderTotalAmount: 100,
-    orderPaymentMethod: 'Credit Card',
-    orderstate: 1,
+const dataToSend = {    
+    orderDate: '',
+    orderCondition: '未付款', // 寫死
+    memberId: 5, 
+    orderTotalAmount: 100, // for (課程-折扣)
+    orderPaymentMethod: 'Credit Card', // 先寫死
+    orderstate: 1, //寫死
     orderItem: [
         {
             classId: 1,
@@ -135,14 +138,26 @@ const dataToSend = {
 
 const postDataToApi = async () => {
     try {
+        // 時間為訂單成立時間,使用vueuse套件生成        
+        const formatted = useDateFormat(useNow(), 'YYYY/MM/DD HH:mm:ss')
+        console.log(formatted.value)
+        // 生成後將值，塞給dataToSend.orderDate
+        dataToSend.orderDate = formatted.value;
+
         // 發送 POST 請求到後端 API
         const response = await axios.post('http://localhost:8080/fithub/orders', dataToSend);
-        if (response.status === 200) {
-            const responseData = response.data;
-            console.log(responseData);
-            const ecpayorderitem = {
-                orderId: responseData.orderId
+        console.log(response.data)
+        // 建立傳送給綠界的物件
+        // 並把新增order的response傳給ecpayorderitem        
+        const responseData = response.data
+        const ecpayorderitem = {
+                orderId: responseData.orderId,
+                orderdate: responseData.orderDate                
             };
+        console.log(ecpayorderitem);
+            
+        if (response.status === 200) {            
+
             // ecpay請求 會回傳字串form表單
             const ecpayResponse = await axios.post(`${URL}/ecpay/ecpayCheckoutOrder`, ecpayorderitem);
             const ecpayCheckout = ecpayResponse.data
@@ -172,27 +187,6 @@ const postDataToApi = async () => {
         console.error('發生錯誤', error);
     }
 };
-//建立優惠券物件
-// const member = reactive(
-//     {
-//         memberid: '',
-//         memberphoneno: '',
-//         membername: '',
-//         memberemail: '',
-//     });
-
-// 從伺服器獲取 JSON 格式優惠券資料
-// const getmember = async () => {
-//     try {
-//         const response = await axios.get(`${URL}/members/18`);
-//         // const response = await axios.get(`${URL}/members/${id}`); // 替換為實際的 API URL
-//         member.value = response.data; //data為response物件的屬性，通常是返回的JSON格式資料
-//         console.log(member.value)
-
-//     } catch (error) {
-//         console.error('Error getmember data:', error);
-//     }
-// };
 
 
 </script>
