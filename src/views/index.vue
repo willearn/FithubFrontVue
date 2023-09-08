@@ -144,12 +144,13 @@
     <div class="container px-4 text-center mybg-light">
       <div class="text-center pt-1">
         <h2>活動消息</h2>
-        <hr class="divider"/>
+        <hr class="divider" />
       </div>
       <div class="row gx-4 gx-lg-5">
         <div class="col-lg-3 col-md-3" v-for="(activity, activityindex) in activitys" :key="activityindex">
-          <img :src="activity.activitypic" style="width: 400px;height: 330px; cursor: pointer;" alt="維修中" @click="handleImageClick(activity)">
-          <p>{{activity.activityname}}</p>
+          <img :src="activity.activitypic" style="width: 400px;height: 330px; cursor: pointer;" alt="維修中"
+            @click="handleImageClick(activity)">
+          <p>{{ activity.activityname }}</p>
         </div>
       </div>
     </div>
@@ -260,10 +261,10 @@ const formData = reactive({
 // 取得活動資料並排序和篩選是否顯示
 const getActivitys = async () => {
   try {
-    const response = await axios.get(`${url}/activity/list`);
+    const response = await axios.get(`${url}/activity/filteredAndSortedActivities`);
     activitys.value = response.data;
-    // console.log(activitys.value);
-    
+    console.log(activitys.value);
+
   } catch (error) {
     console.error('Error:', error);
   }
