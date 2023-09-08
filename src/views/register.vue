@@ -1,6 +1,7 @@
 <script setup>
 import axios from "axios";
 import { ref, reactive, onMounted } from "vue";
+import router from "@/router";
 
 const url = import.meta.env.VITE_API_JAVAURL;
 
@@ -57,6 +58,12 @@ const register = async () => {
 
   try {
     const response = await axios.post(`${url}/members`, loginData);
+
+    if(response.status == 200){
+      alert("註冊成功，請登入")
+      router.push({ name: "login" })
+    }
+
   } catch (error) {
 
   }
@@ -70,8 +77,18 @@ const sendVerificationCode = async () => {
   verify.email = loginData.memberemail;
 
   try {
+    console.log(verify)
+
     const response = await axios.post(`${url}/verificationcode`, verify);
-    startCountdown();
+
+    console.log(response.status)
+    if(response.status == 200){
+      startCountdown();
+    }else{
+      alert("email已使用")
+    }
+
+    
   } catch (error) {
     alert("請輸入正確email")
   }
@@ -196,8 +213,9 @@ const startCountdown = () => {
                   </div>
 
                   <div class="pt-1 mb-1">
-                    <button class="btn btn-dark btn-lg btn-block" type="button" @click="submit()">註冊</button>
+                    <button class="btn btn-dark btn-lg btn-block" type="button" @click="register">註冊</button>
                   </div>
+                  
                 </div>
               </div>
               <div class="col-md-6 col-lg-5 d-none d-md-block">

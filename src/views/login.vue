@@ -1,8 +1,9 @@
 <script setup>
 import axios from "axios";
-import { login } from "@/api/login"
+import { login , googleLogin } from "@/api/login"
 import router from "@/router"
 import { ref, reactive, onMounted } from "vue";
+import { GoogleLogin, decodeCredential } from 'vue3-google-login';
 
 const url = import.meta.env.VITE_API_JAVAURL
 
@@ -13,6 +14,21 @@ const loginData = reactive({
 
 const submit = async () => {
   let res = await login(loginData.memberemail, loginData.memberpassword)
+  if (res.status == 0) {
+    router.push({ name: "home" })
+  }
+}
+
+const callback = async (response) => {
+  // This callback will be triggered when the user selects or login to
+  // his Google account from the popup
+  console.log("Handle the response", response)
+
+  const userData = decodeCredential(response.credential)
+  console.log("Handle the userData", userData.email)
+  console.log("Handle the userData", userData.name)
+
+  let res = await googleLogin(userData.email, userData.name)
   if (res.status == 0) {
     router.push({ name: "home" })
   }
@@ -47,7 +63,9 @@ const submit = async () => {
                     <button class="btn btn-dark btn-lg btn-block" type="button" @click="submit()">登入</button>
                   </div>
                   <a class="small text-muted" href="#!">忘記密碼</a>
+
                   <p class="pb-lg-2 mb-5">還沒有會員?<router-link to="/register">立即註冊</router-link>
+                    <GoogleLogin :callback="callback"></GoogleLogin>
                   </p>
                 </div>
               </div>
