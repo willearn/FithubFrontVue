@@ -85,7 +85,8 @@ async function authToken(token) {
     console.log('res.status:' + res.data.status)
     if (res.data.status) {
         console.log('authToken1')
-        console.log('res.data:' + res.data)
+        console.log('res.data:' + res.data.memberid)
+        console.log(res.data)
         result.status = true
         result.token = res.data.token
         result.memberid = res.data.memberid

@@ -2,10 +2,8 @@
 import axios from "axios";
 import { login , googleLogin} from "@/api/login"
 import router from "@/router"
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive } from "vue";
 import { GoogleLogin, decodeCredential } from 'vue3-google-login'
-import { googleAuthCodeLogin } from "vue3-google-login"
-import { googleTokenLogin } from "vue3-google-login"
 
 const url = import.meta.env.VITE_API_JAVAURL
 
@@ -70,7 +68,7 @@ const callback = async (response) => {
                   <div class="pt-1 mb-4">
                     <button class="btn btn-dark btn-lg btn-block" type="button" @click="submit()">登入</button>
                   </div>
-                  <a class="small text-muted" href="#!">忘記密碼</a>
+                  <a class="small text-muted" ><router-link to="/forgotpassword">忘記密碼</router-link></a>
                   <p class="pb-lg-2 mb-5">還沒有會員?<router-link to="/register">立即註冊</router-link>
                 <div>
                   <GoogleLogin :callback="callback"></GoogleLogin>

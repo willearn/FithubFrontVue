@@ -53,6 +53,14 @@ const router = createRouter({
       meta:{
         needLogin: true
       } 
+    },{
+      path: '/forgotpassword',
+      name: 'forgotpassword',
+      component: () => import('../views/forgotpassword.vue'),
+    },{
+      path: '/resetpassword/:token',
+      name: 'resetpassword',
+      component: () => import('../views/resetpassword.vue'),
     },
   ],scrollBehavior (to, from, savedPosition) {
     if(savedPosition && to.meta.keepAlive){

@@ -5,7 +5,7 @@ import router from "@/router";
 const url = import.meta.env.VITE_API_JAVAURL
 
 onMounted(() => {
-    loadDatas()
+    // loadDatas()
 });
 
 const localStorageEmail = ref({})
@@ -14,9 +14,9 @@ const memberData = ref({})
 
 const checkpassword = reactive({
     check: true,
-    oldpassword:'',
+    oldpassword: '',
     newpassword: '',
-    againpassword:'',
+    againpassword: '',
 });
 
 const loadDatas = async () => {
@@ -31,17 +31,39 @@ const loadDatas = async () => {
 }
 
 const submit = async () => {
-    const response = await axios.put(`${url}/members/${memberData.value.memberid}`, memberData.value)
+    try {
+        const memberid = window.localStorage.getItem("memberid")
 
-    if (response.status == 200) {
+        if (!checkpassword.newpassword.trim() ||
+            !checkpassword.againpassword.trim()) {
+            console.log("trim")
+            return;
+        }
+
+        if (!checkpassword.check) {
+            return;
+        }
+
+        const response = await axios.put(`${url}/members/changepassword/${memberid}`, checkpassword)
         alert("修改成功")
+    } catch (error) {
+        alert("修改失敗")
     }
 
-    console.log(response)
+
+    // console.log(response)
 }
 
 const cancel = async () => {
     router.push({ name: "member" })
+}
+
+const inputpassword = () => {
+    if (checkpassword.newpassword === checkpassword.againpassword) {
+        checkpassword.check = true
+    } else {
+        checkpassword.check = false
+    }
 }
 
 </script>
@@ -84,18 +106,20 @@ const cancel = async () => {
     <br>
     <router-link to="/editpassword">重設密碼</router-link>
     <div class="mb-3">
-        輸入舊密碼
+        輸入舊密碼(若是google登入沒有設置過密碼則不用輸入)
         <span v-if="!checkpassword.oldpassword" class="text-danger">*</span>
-        <input type="text" class="form-control" v-model="checkpassword.oldpassword">
+        <input type="password" class="form-control" v-model="checkpassword.oldpassword">
     </div>
     <div class="mb-3">
-        <span v-if="!checkpassword.newpassword" class="text-danger">*</span>
-        <input type="text" class="form-control" v-model="checkpassword.newpassword">
+        輸入新密碼<span v-if="!checkpassword.newpassword" class="text-danger">*</span>
+        <input type="password" class="form-control" v-model="checkpassword.newpassword" @keyup="inputpassword">
     </div>
     <div class="mb-3">
-        <span v-if="!checkpassword.againpassword" class="text-danger">*</span>
-        <input type="text" class="form-control" v-model="checkpassword.againpassword">
+        再次確認密碼<span v-if="!checkpassword.againpassword" class="text-danger">*</span>
+        <input type="password" class="form-control" v-model="checkpassword.againpassword" @keyup="inputpassword">
+        <span v-if="!checkpassword.check" class="text-danger">密碼不相符</span>
     </div>
+
 
     <input type="button" value="儲存" @click="submit">
     <input type="button" value="取消" @click="cancel">
