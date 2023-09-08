@@ -69,21 +69,24 @@ const loadDatas = async () => {
         信箱: {{ memberData.memberemail }}
     </div>
     <div class="mb-3">
-        性別: {{  memberData.membergender }}
+        性別:
+        <input type="radio" name="gender" value="男" v-model="memberData.membergender" />男
+        <input type="radio" name="gender" value="女" v-model="memberData.membergender" />女
     </div>
     <div class="mb-3">
-        縣市:{{  memberData.membercity }}
+        縣市:<input type="text" class="form-control" v-model="memberData.membercity">
     </div>
     <div class="mb-3">
-        地區:{{  memberData.memberzone }}
+        地區:<input type="text" class="form-control" v-model="memberData.memberzone">
     </div>
     <div class="mb-3">
-        地址:{{  memberData.memberaddress }}
+        地址:<input type="text" class="form-control" v-model="memberData.memberaddress">
     </div>
     <div class="mb-3">
-        生日:{{  memberData.bitthday }}
+        生日:<input type="date" class="form-control" v-model="memberData.memberbirthday">
     </div>
     <div class="mb-3">
         帳戶建立日期:{{  memberData.memberaccountsince }}
     </div>
+    <input type="button" value="">
 </template>

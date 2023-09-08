@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/index.vue';
+import { authToken } from '@/api/login'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,9 +34,37 @@ const router = createRouter({
     },{
       path: '/member',
       name: 'member',
-      component: () => import('../views/member.vue')
+      component: () => import('../views/member.vue'),
+      meta:{
+        needLogin: true
+      }
+    },{
+      path: '/editprofile',
+      name: 'editprofile',
+      component: () => import('../views/editprofile.vue'),
+      meta:{
+        needLogin: true
+      }
     },
   ]
+})
+
+router.beforeResolve( async to=>{
+  if(to.meta.needLogin){
+      const isLogin = window.localStorage.getItem("isLogin")
+      console.log('login')
+      if(!isLogin){
+        console.log('back to login1')
+        return {name: "login"}
+      } 
+      
+      const token = window.localStorage.getItem("token")
+      const authResult = await authToken(token)
+      if(!authResult.status){
+        console.log('back to login2')
+        return {name: "login"}
+      } 
+  }
 })
 
 export default router

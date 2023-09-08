@@ -33,7 +33,7 @@
 
 <script setup>
 import router from "@/router"
-import { ref, reactive, onMounted, onBeforeMount, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted } from "vue";
+import { ref, onMounted} from "vue";
 
 const isLogin = ref();
 const membername = localStorage.getItem("membername")

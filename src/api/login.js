@@ -81,7 +81,7 @@ async function authToken(token) {
     const data = {
         token: token
     }
-    const res = await axios.post(`${url}/auth`, data)
+    const res = await axios.post(`${url}/memberauth`, data)
     console.log('res.status:' + res.data.status)
     if (res.data.status) {
         console.log('authToken1')
