@@ -59,6 +59,8 @@ const loadDatas = async () => {
         </div>
     </div>
     <router-link to="/editprofile">編輯個人資料</router-link>
+    <br>
+    <router-link to="/editpassword">重設密碼</router-link>
     <div class="mb-3">
         會員編號: {{ memberData.memberid }}
     </div>
@@ -67,6 +69,9 @@ const loadDatas = async () => {
     </div>
     <div class="mb-3">
         信箱: {{ memberData.memberemail }}
+    </div>
+    <div class="mb-3">
+        電話: {{ memberData.memberphoneno }}
     </div>
     <div class="mb-3">
         性別: {{  memberData.membergender }}
@@ -81,7 +86,7 @@ const loadDatas = async () => {
         地址:{{  memberData.memberaddress }}
     </div>
     <div class="mb-3">
-        生日:{{  memberData.bitthday }}
+        生日:{{  memberData.memberbirthday }}
     </div>
     <div class="mb-3">
         帳戶建立日期:{{  memberData.memberaccountsince }}

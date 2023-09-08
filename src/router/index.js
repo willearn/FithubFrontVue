@@ -45,6 +45,13 @@ const router = createRouter({
       meta:{
         needLogin: true
       }
+    },{
+      path: '/editpassword',
+      name: 'editpassword',
+      component: () => import('../views/editpassword.vue'),
+      meta:{
+        needLogin: true
+      } 
     },
   ]
 })

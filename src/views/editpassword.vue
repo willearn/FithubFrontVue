@@ -12,6 +12,13 @@ const localStorageEmail = ref({})
 
 const memberData = ref({})
 
+const checkpassword = reactive({
+    check: true,
+    oldpassword:'',
+    newpassword: '',
+    againpassword:'',
+});
+
 const loadDatas = async () => {
     const response = await axios.get(`${url}/members/byemail/${window.localStorage.getItem("memberemail")}`)
     memberData.value = response.data
@@ -77,38 +84,19 @@ const cancel = async () => {
     <br>
     <router-link to="/editpassword">重設密碼</router-link>
     <div class="mb-3">
-        會員編號: {{ memberData.memberid }}
+        輸入舊密碼
+        <span v-if="!checkpassword.oldpassword" class="text-danger">*</span>
+        <input type="text" class="form-control" v-model="checkpassword.oldpassword">
     </div>
     <div class="mb-3">
-        會員姓名: {{ memberData.membername }}
+        <span v-if="!checkpassword.newpassword" class="text-danger">*</span>
+        <input type="text" class="form-control" v-model="checkpassword.newpassword">
     </div>
     <div class="mb-3">
-        信箱: {{ memberData.memberemail }}
+        <span v-if="!checkpassword.againpassword" class="text-danger">*</span>
+        <input type="text" class="form-control" v-model="checkpassword.againpassword">
     </div>
 
-    <div class="mb-3">
-        電話: <input type="text" class="form-control" v-model="memberData.memberphoneno">
-    </div>
-    <div class="mb-3">
-        性別:
-        <input type="radio" name="gender" value="男" v-model="memberData.membergender" />男
-        <input type="radio" name="gender" value="女" v-model="memberData.membergender" />女
-    </div>
-    <div class="mb-3">
-        縣市:<input type="text" class="form-control" v-model="memberData.membercity">
-    </div>
-    <div class="mb-3">
-        地區:<input type="text" class="form-control" v-model="memberData.memberzone">
-    </div>
-    <div class="mb-3">
-        地址:<input type="text" class="form-control" v-model="memberData.memberaddress">
-    </div>
-    <div class="mb-3">
-        生日:<input type="date" class="form-control" v-model="memberData.memberbirthday">
-    </div>
-    <div class="mb-3">
-        帳戶建立日期:{{ memberData.memberaccountsince }}
-    </div>
     <input type="button" value="儲存" @click="submit">
     <input type="button" value="取消" @click="cancel">
 </template>
