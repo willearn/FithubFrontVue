@@ -59,11 +59,10 @@ const url = import.meta.env.VITE_API_JAVAURL
 
 // 測試:使用query接值
 const router = useRouter();
-const id = router.currentRoute.value.query.activityid;
+const activityid = router.currentRoute.value.query.activityid;
 
-const activityid = '6'
+console.log(activityid);
 
-// 檢查預定場地是否被使用，將選擇的資料傳到訂單頁面
 const getActivitydescription = async () => {
     try {
         const response = await axios.get(`${url}/activity/findActivitydescriptionById/${activityid}`);

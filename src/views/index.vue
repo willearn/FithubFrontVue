@@ -138,33 +138,18 @@
     </div>
   </section>
 
+
   <!-- activity-->
   <section class="page-section" id="activity">
     <div class="container px-4 text-center mybg-light">
       <div class="text-center pt-1">
-        <h2>最新消息</h2>
-        <hr class="divider" />
+        <h2>活動消息</h2>
+        <hr class="divider"/>
       </div>
       <div class="row gx-4 gx-lg-5">
-        <div class="col-lg-3 col-md-3 ">
-          <img src="../assets/index/activity/1.jpg" class="img-fluid" />
-          <p>活動名稱</p>
-        </div>
-        <div class="col-lg-3 col-md-3">
-          <img src="../assets/index/activity/2.jpg" class="img-fluid" />
-          <p>活動名稱</p>
-        </div>
-        <div class="col-lg-3 col-md-3">
-          <img src="../assets/index/activity/3.jpg" class="img-fluid" />
-          <p>活動名稱</p>
-        </div>
-        <div class="col-lg-3 col-md-3">
-          <img src="../assets/index/activity/4.jpg" class="img-fluid" />
-          <p>活動名稱</p>
-        </div>
-        <div class="col-lg-3 col-md-3">
-          <img src="../assets/index/activity/4.jpg" class="img-fluid" />
-          <p>活動名稱</p>
+        <div class="col-lg-3 col-md-3" v-for="(activity, activityindex) in activitys" :key="activityindex">
+          <img :src="activity.activitypic" style="width: 400px;height: 330px; cursor: pointer;" alt="維修中" @click="handleImageClick(activity)">
+          <p>{{activity.activityname}}</p>
         </div>
       </div>
     </div>
@@ -259,6 +244,9 @@ const router = useRouter();
 // Top按鈕
 const mybutton = ref(null);
 
+// 儲存活動資訊
+const activitys = ref([])
+
 //取得表單內容
 const formData = reactive({
   name: '',
@@ -267,6 +255,20 @@ const formData = reactive({
   message: '',
   subject: ''
 })
+
+
+// 取得活動資料並排序和篩選是否顯示
+const getActivitys = async () => {
+  try {
+    const response = await axios.get(`${url}/activity/list`);
+    activitys.value = response.data;
+    // console.log(activitys.value);
+    
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
+
 
 // 寄信聯絡我們
 const submitForm = async () => {
@@ -297,15 +299,13 @@ const submitForm = async () => {
   }
 };
 
-
-
-// 轉到活動內容
-const goActivityDetail = async () => {
+const handleImageClick = (activity) => {
+  console.log(activity.activityid);
   try {
     router.push({
       path: "/activity",
       query: {
-        activityid: "1",
+        activityid: activity.activityid,
       },
     });
   }
@@ -315,7 +315,7 @@ const goActivityDetail = async () => {
 };
 
 
-//返回頁頂
+// 返回頁頂
 function backToTop() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
@@ -333,6 +333,7 @@ function scrollFunction() {
 }
 
 onMounted(() => {
+  getActivitys();
   // mybutton.value.addEventListener('click', backToTop);
   // mybutton.value.style.display = 'block';
   // window.addEventListener('scroll', scrollFunction);
