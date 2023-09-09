@@ -248,6 +248,9 @@ const mybutton = ref(null);
 // 儲存活動資訊
 const activitys = ref([])
 
+// 儲存教練資訊
+const coachPics = ref([])
+
 //取得表單內容
 const formData = reactive({
   name: '',
@@ -257,6 +260,18 @@ const formData = reactive({
   subject: ''
 })
 
+
+// 取得教練資料
+const getCoachPics = async () => {
+  try {
+    const response = await axios.get(`${url}/employees/coachs`);
+    coachPics.value = response.data;
+    console.log(coachPics.value);
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
 
 // 取得活動資料並排序和篩選是否顯示
 const getActivitys = async () => {
@@ -335,6 +350,7 @@ function scrollFunction() {
 
 onMounted(() => {
   getActivitys();
+  // getCoachPics();
   // mybutton.value.addEventListener('click', backToTop);
   // mybutton.value.style.display = 'block';
   // window.addEventListener('scroll', scrollFunction);

@@ -44,7 +44,7 @@
                     <div class="col-lg-8 offset-md-2" id="activityDeatil">
                     </div>
                     <hr />
-                    <button class="btn btn-primary ">返回首頁</button>
+                    <button class="btn btn-primary" @click="goBack">返回首頁</button>
                 </div>
             </div>
         </div>
@@ -79,6 +79,10 @@ const getActivityDeatil = async () => {
         console.error('Error:', error);
     }
 };
+
+const goBack = () => {
+    router.back();
+}
 
 onMounted(() => {
     getActivityDeatil();
