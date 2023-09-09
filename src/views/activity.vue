@@ -66,7 +66,7 @@ const activityid = router.currentRoute.value.query.activityid;
 const activityDeatil = ref({});
 
 
-const getActivitydescription = async () => {
+const getActivityDeatil = async () => {
     try {
         const response = await axios.get(`${url}/activity/findDescriptionDateNameById/${activityid}`);
         activityDeatil.value = response.data;
@@ -81,7 +81,7 @@ const getActivitydescription = async () => {
 };
 
 onMounted(() => {
-    getActivitydescription();
+    getActivityDeatil();
 });
 </script>
 

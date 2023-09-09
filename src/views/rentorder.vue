@@ -100,7 +100,7 @@ const insertRentOrder = async () => {
 
         // 金流日期需求格式
         const formatted = useDateFormat(useNow(), 'YYYY/MM/DD HH:mm:ss')
-        
+
         // 建立綠界需要的訂單資訊
         const ecpayRentOrder = reactive({
             rentorderid: '',

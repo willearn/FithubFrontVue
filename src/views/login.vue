@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import { login , googleLogin} from "@/api/login"
+import { login, googleLogin } from "@/api/login"
 import router from "@/router"
 import { ref, reactive, onMounted } from "vue";
 import { GoogleLogin, decodeCredential } from 'vue3-google-login'
@@ -36,8 +36,8 @@ const callback = async (response) => {
   console.log("Handle the userData", userData.email)
   console.log("Handle the userData", userData.name)
 
-  let res = await googleLogin(userData.email , userData.name)
-  if(res.status == 0){
+  let res = await googleLogin(userData.email, userData.name)
+  if (res.status == 0) {
     router.push({ name: "home" })
   }
 }
@@ -45,15 +45,15 @@ const callback = async (response) => {
 </script>
 
 <template>
- <section class="vh-100 pt-5" style="background-color: #E8E1D4;">
+  <section class="vh-100 pt-5" style="background-color: #E8E1D4;">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-lg-8">
           <div class="card" style="border-radius: 1rem;">
             <div class="row g-0">
-              <div class=" col-md-6 col-lg-5 d-none d-md-block" style="background-image: url('src/assets/index/other/4.jpg');background-size: cover;">
-                <!-- <img src="../assets/index/other/4.jpg" alt="login form" class="img-fluid"
-                  style="border-radius: 1rem 0 0 1rem;" /> -->
+              <div class=" col-md-6 col-lg-5 d-none d-md-block">
+                <img src="../assets/index/other/4.jpg" alt="login form" class="myimg-full"
+                  style="border-radius: 1rem 0 0 1rem;" />
               </div>
               <div class="col-md-6 col-lg-7 d-flex align-items-center">
                 <div class="card-body p-4 p-lg-5 text-black">
@@ -72,9 +72,9 @@ const callback = async (response) => {
                   </div>
                   <a class="small text-muted" href="#!">忘記密碼</a>
                   <p class="pb-lg-2 mb-5">還沒有會員?<router-link to="/register">立即註冊</router-link>
-                <div>
-                  <GoogleLogin :callback="callback"></GoogleLogin>
-                </div>
+                  <div>
+                    <GoogleLogin :callback="callback"></GoogleLogin>
+                  </div>
                   </p>
                 </div>
               </div>
