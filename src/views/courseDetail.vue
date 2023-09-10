@@ -186,13 +186,19 @@
                   </button>
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
-                  <button class="btn btn btn-primary mx-2">
+                  <button
+                    class="btn btn btn-primary mx-2"
+                    @click="saveCourseCartToStore('stay')"
+                  >
                     <i type="button" class="bi bi-cart4"></i
                     >&nbsp;&nbsp;加入購物車
                   </button>
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
-                  <button class="btn btn btn-primary mx-2">
+                  <button
+                    class="btn btn btn-primary mx-2"
+                    @click="saveCourseCartToStore('forward')"
+                  >
                     <i type="button" class="bi bi-cart3"></i
                     >&nbsp;&nbsp;直接購買
                   </button>
@@ -256,7 +262,7 @@
 */
 
 import { ref, reactive, onMounted, onBeforeUnmount, watch } from "vue";
-import { RouterLink, useRoute } from "vue-router";
+import { RouterLink, useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import courseCard from "../components/course/courseCard.vue";
 import FullCalendar from "../components/course/courseCalendar.vue";
@@ -270,6 +276,7 @@ const URL = import.meta.env.VITE_API_JAVAURL;
   router
 */
 const route = useRoute();
+const router = useRouter();
 
 /*
   watcher for router
@@ -289,11 +296,16 @@ watch(
   Store and relative responsive datas
 */
 const courseStore = useCourseStore();
-const { courseCart } = storeToRefs(courseStore);
+const { courseCartStore } = storeToRefs(courseStore);
 const selectedClasses = reactive({
   memberid: localStorage.getItem("memberid"),
   classId: [],
 });
+console.log(courseCartStore.value);
+
+/*
+  Watcher for store
+*/
 
 /*
   Display Data
@@ -397,6 +409,27 @@ const onClickedClass = (classId) => {
   displayClasses.employeename = clickedCLass["employeename"];
   displayClasses.classroomName = clickedCLass["classroomName"];
   displayClasses.price = clickedCLass["price"];
+};
+
+const saveCourseCartToStore = (forwardOrStay) => {
+  console.log("saveCartToStore");
+  if (
+    // check classId have value and not repeat in store
+    displayClasses.classId != 0 &&
+    !selectedClasses.classId.includes(displayClasses.classId)
+  ) {
+    selectedClasses.classId.push(displayClasses.classId);
+    console.log(selectedClasses);
+    console.log(courseCartStore.value);
+    courseCartStore.value = selectedClasses;
+  }
+  if (forwardOrStay == "forward") {
+    console.log("forward");
+
+    router.push("/cart");
+  } else {
+    console.log("stay");
+  }
 };
 
 const saveCourseCartToDB = () => {

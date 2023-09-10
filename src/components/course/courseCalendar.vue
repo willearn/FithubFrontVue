@@ -25,7 +25,7 @@ const props = defineProps({
 const emit = defineEmits(["clickCalendarClassEmit"]);
 
 /*
-  Build Full Calendar
+  Build FullCalendar
 */
 const calendarOptions = ref({
   plugins: [dayGridPlugin],
@@ -37,11 +37,12 @@ const calendarOptions = ref({
   locale: "en-us",
   buttonText: { today: "今日" },
   events: [],
+  eventColor: "#ffc408",
+  interactive: true,
   eventClick: (eventClickInfo) => {
-    console.log(eventClickInfo.event._def.publicId);
+    // console.log(eventClickInfo.event._def.publicId);
     let classId = eventClickInfo.event._def.publicId;
     emit("clickCalendarClassEmit", classId);
-    console.log("emit to parent");
   },
 });
 
@@ -49,7 +50,7 @@ const calendarOptions = ref({
   LifeCycle Hooks
 */
 onUpdated(() => {
-  // when courseCalendar onMounted, props.calendarEvents still got no value
+  // When courseCalendar onMounted, props.calendarEvents still got no value
   calendarOptions.value.events = props.calendarEvents;
 });
 </script>

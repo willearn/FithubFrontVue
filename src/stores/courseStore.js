@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 
 export const useCourseStore = defineStore("course", () => {
   // const courseCategories = ref({})
-  const courseCart = ref(null);
+  const courseCartStore = ref(null);
 
-  return { courseCart };
+  return { courseCartStore };
 });
