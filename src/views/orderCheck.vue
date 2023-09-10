@@ -15,7 +15,7 @@
                         <div class="card" style="width: 15rem; ">
                             <div class="card-body">
                                 <h5 class="card-title">Total:</h5>
-                                <p class="card-text">NT$666</p>
+                                <p class="card-text">{{dataToSend.orderTotalAmount}}</p>
                                 <div class="d-grid gap-3 col-12 mx-auto">
                                     <button @click="postDataToApi" class="btn btn-primary">結帳</button>
                                 </div>

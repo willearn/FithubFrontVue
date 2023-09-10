@@ -32,15 +32,19 @@
                             <div class="card-body">
                                 <h5 class="card-title">Total:</h5>
                                 <p class="card-text">NT$666</p>
+                                <div v-if="error" >{{ error }}</div>
+                                <!-- 顯示折扣金額 -->
+                                <div v-else-if="couponDiscount">Discount$ {{ couponDiscount }}</div>
                                 <div class="d-grid gap-3 col-12 mx-auto">
                                     <router-link class="btn btn-primary " to="/ordercheck">結帳</router-link>
                                 </div>
                             </div>
                             <hr>
-                            <form class="row g-0" style="position: relative; right: -5%;">
+                            <form class="row g-0" style="position: relative; right: -5%;" @submit.prevent="submitCoupon">
                                 <div class="col-auto">
                                     <label for="inputPassword2" class="visually-hidden">促銷代碼</label>
-                                    <input type="text" class="form-control" id="inputPassword2" placeholder="促銷代碼">
+                                    <input v-model="couponCode" type="text" class="form-control" id="inputPassword2"
+                                        placeholder="促銷代碼">
                                 </div>
                                 <div class="col-auto">
                                     <button type="submit" class="btn btn-primary mb-3">輸入</button>
@@ -59,6 +63,7 @@
                                     <th scope="col">課程教練</th>
                                     <th scope="col">課程時間</th>
                                     <th scope="col">單價</th>
+                                    <th scope="col">折扣金額</th>
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
@@ -72,6 +77,7 @@
                                     <td>Otto</td>
                                     <td>@mdo</td>
                                     <td>$2000</td>
+                                    <td>$ {{ couponDiscount }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">2</th>
@@ -82,6 +88,7 @@
                                     <td>Thornton</td>
                                     <td>@fat</td>
                                     <td>$2000</td>
+                                    <td>$0</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">3</th>
@@ -91,6 +98,7 @@
                                     <td colspan="2">Larry the Bird</td>
                                     <td>@twitter</td>
                                     <td>$2000</td>
+                                    <td>$0</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -111,4 +119,28 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import axios from 'axios'; // 引入Axios
+
+const couponCode = ref('');
+const couponDiscount = ref('');
+const error = ref('');
+
+const submitCoupon = async () => {
+    try {
+        const response = await axios.post('http://localhost:8080/fithub/coupons/api/coupon', { couponcode: couponCode.value });
+
+        if (response.status === 200) {
+            couponDiscount.value = response.data;
+            error.value = '';
+        } else {
+            error.value = '發生錯誤'; // 处理后端返回的错误
+            couponDiscount.value = '';
+        }
+    } catch (err) {
+        console.error(err);
+        error.value = '發生錯誤';
+        couponDiscount.value = '';
+    }
+};
 </script>
