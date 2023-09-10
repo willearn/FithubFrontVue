@@ -262,7 +262,7 @@ const reserve = async () => {
             const localStorageData = localStorage.getItem('isLogin');
 
 
-            if (localStorageData) {
+            if (localStorageData === 'true') {
                 // 新增訂單
                 const response = await axios.post(`${url}/rent/insert`, rentOrder);
                 selectedData.rentOrderid = response.data;

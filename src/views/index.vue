@@ -23,13 +23,13 @@
         </div>
         <div class="col-lg-8 col-md-8" style="background-color: #FFBF3C;">
           <div class="mt-5 ps-3 pe-3">
-            <h2 class="h2 mb-4">Fithub 健身房</h2>
-            <p class="text-black-75 mb-4">
+            <h2>Fithub 健身房</h2>
+            <h3 class="mt-5">
               成立這個健身房的理念源於對健康和幸福的承諾。我們相信每個人都應該擁有實現健康目標的機會，無論年齡或健身水平如何。
-            </p>
-            <p class="text-black-75">
+            </h3>
+            <h3 class="mt-5">
               我們的健身房致力於營造一個充滿正能量和支持的環境，讓會員能夠自信地追求他們的健身和健康目標。我們提供專業的設施、優質的教練團隊和多元化的課程，以確保每個人都能找到適合自己的運動方式。我們相信，健康不僅僅是身體的狀態，更是心靈的寧靜。通過運動，我們可以擁有更健康、更充實的生活，這正是我們健身房存在的意義所在。
-            </p>
+            </h3>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
   </section>
 
   <!-- Team-->
-  <section class="page-section" id="team">
+  <!-- <section class="page-section" id="team">
     <div class="container px-4  mybg-light">
       <div class="text-center pt-1">
         <h2>專業團隊</h2>
@@ -67,7 +67,68 @@
         </div>
       </div>
     </div>
+  </section> -->
+  <section class="page-section">
+    <div class="container px-4  mybg-light" style="overflow-x:hidden;height: 500px;">
+      <div class="text-center pt-1">
+        <h2>專業團隊</h2>
+        <hr class="divider" />
+      </div>
+      <div class="row text-center">
+        <div :id="'carousel' + coach.employeeid" v-for="coach in coachPics" :key="coach.employeeid"
+          class="carousel slide col-lg-3" data-bs-touch="false" data-bs-interval="false">
+
+          <h4 style="margin: 0px;">{{ coach.employeenamne }}</h4>
+
+          <p class="text-muted">專長:{{ coach.specialtyname }}<i class="bi bi-envelope m-2"
+              :title="coach.employeeemail"></i></p>
+
+          <div class="carousel-inner" style="height: 370px;">
+            <div class="carousel-item" v-for="(pic, index) in coach.coachpic" :key="index"
+              :class="{ active: index === 0 }">
+              <img style="width: 100%;height: 300px;" class="rounded-circle"
+                :src="`data:image/jpeg;base64,${pic.cpicfile}`" alt="維修中" />
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" :data-bs-target="'#carousel' + coach.employeeid"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" :data-bs-target="'#carousel' + coach.employeeid"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </section>
+
+  <!-- <section class="page-section">
+    <div class="container px-4  mybg-light" style="height: 450px;overflow-x:hidden">
+      <div class="text-center pt-1">
+        <h2>專業團隊</h2>
+        <hr class="divider" />
+      </div>
+      <div class="row text-center">
+        <div class="col-lg-3" v-for="coachPic in coachPics" :key="coachPic.employeeid">
+          <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item" v-for="pic in coachPic.coachpic" :key="pic.cpicid"
+                :class="{ active: pic === coachPic.coachpic[0] }">
+                <img class="d-block w-100" :src="`data:image/jpeg;base64,${pic.cpicfile}`"
+                  style="width: 250px; height: 250px;" alt="維修中" />
+              </div>
+            </div>
+          </div>
+          <h4>{{ coachPic.employeenamne }}</h4>
+          <p class="text-muted">專長: {{ coachPic.specialtyname }}</p>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
 
 
   <!-- classroom -->
@@ -148,7 +209,7 @@
       </div>
       <div class="row gx-4 gx-lg-5">
         <div class="col-lg-3 col-md-3" v-for="(activity, activityindex) in activitys" :key="activityindex">
-          <img :src="activity.activitypic" style="max-width: 100%;height: 430px; cursor: pointer;" alt="維修中"
+          <img :src="activity.activitypic" style="width: 80%;height: 400px; cursor: pointer;" alt="維修中"
             @click="handleImageClick(activity)">
           <h3>{{ activity.activityname }}</h3>
         </div>
@@ -264,7 +325,7 @@ const formData = reactive({
 // 取得教練資料
 const getCoachPics = async () => {
   try {
-    const response = await axios.get(`${url}/employees/coachs`);
+    const response = await axios.get(`${url}/employees/findCoachDataPicSpecialty`);
     coachPics.value = response.data;
     console.log(coachPics.value);
 
@@ -315,6 +376,7 @@ const submitForm = async () => {
   }
 };
 
+// 點圖片轉到活動頁面
 const handleImageClick = (activity) => {
   console.log(activity.activityid);
   try {
@@ -350,7 +412,7 @@ function scrollFunction() {
 
 onMounted(() => {
   getActivitys();
-  // getCoachPics();
+  getCoachPics();
   // mybutton.value.addEventListener('click', backToTop);
   // mybutton.value.style.display = 'block';
   // window.addEventListener('scroll', scrollFunction);
