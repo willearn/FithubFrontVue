@@ -86,10 +86,15 @@
             <div class="col-6 mx-3">
               <div class="my-3">
                 <div class="row align-items-center">
-                  <div class="rol-12 col-md-4 col-lg-4">
-                    <h4>課程時間:</h4>
+                  <div class="rol">
+                    <div>課程時間:</div>
                   </div>
-                  <div class="col-12 col-md-6 col-lg-6 justify-content-start">
+                  <div>
+                    <span>{{ displayClasses.classDate }}</span
+                    >&nbsp;&nbsp;
+                    <span>{{ displayClasses.classTime }}</span>
+                  </div>
+                  <!-- <div class="col-12 col-md-6 col-lg-6 justify-content-start">
                     <button
                       class="btn btn btn-primary btn-sm mx-2"
                       data-bs-toggle="collapse"
@@ -99,9 +104,9 @@
                       <i type="button" class="bi bi-calendar-check"></i
                       >&nbsp;&nbsp;&nbsp;查看課表
                     </button>
-                  </div>
+                  </div> -->
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                   <div class="col-12 col-md-5 col-lg-5">
                     <label for="courseDate" class="mb-1">日期</label>
                     <select class="form-select" id="courseDate">
@@ -128,12 +133,13 @@
                       <option value="晚上">晚上</option>
                     </select>
                   </div>
-                </div>
+                </div> -->
               </div>
 
               <div class="my-3">
-                <h4>授課教練</h4>
-                <div class="row align-items-center">
+                <div>授課教練:</div>
+                <div>{{ displayClasses.employeename }}</div>
+                <!-- <div class="row align-items-center">
                   <div class="col-12 col-md-5 col-lg-6">
                     <select class="form-select" id="courseCoach" v-focus>
                       <option selected style="display: none" value="">
@@ -152,11 +158,21 @@
                       <i class="bi bi-lightbulb-fill"></i>&nbsp;&nbsp;教練專長
                     </button>
                   </div>
-                </div>
+                </div> -->
+              </div>
+
+              <div class="my-3">
+                <div>地點:</div>
+                <div>{{ displayClasses.classroomName }}</div>
+              </div>
+
+              <div class="my-3">
+                <div>價格:</div>
+                <div>NT$&nbsp;{{ displayClasses.price }}</div>
               </div>
 
               <div class="ml-2 my-3">
-                <h4>課程說明:</h4>
+                <div>課程說明:</div>
                 <p class="fs-6">
                   {{ pageCourse.courseDescription }}
                 </p>
@@ -200,7 +216,11 @@
       </div>
       <div class="row justify-content-center">
         <div class="col-12 col-md-10 col-lg-10">
-          <FullCalendar></FullCalendar>
+          <FullCalendar
+            :courseName="pageCourse.courseName"
+            :calendarEvents="calendarEvents"
+            @click-calendar-class-emit="onClickedClass"
+          ></FullCalendar>
         </div>
       </div>
 
@@ -276,19 +296,35 @@ const selectedClasses = reactive({
 });
 
 /*
+  Display Data
+*/
+const displayClasses = reactive({
+  classId: 0,
+  classDate: "",
+  classTime: "",
+  employeename: "",
+  classroomName: "",
+  price: "",
+});
+
+/*
+  Calendar
+*/
+const calendarEvents = ref([]);
+
+/*
 Load datas
 */
 
 // Load single course data
-const pageCourse = ref({});
+const pageCourse = ref([]);
 const loadPageCourse = async () => {
   const URLAPI = `${URL}/course/${route.params["courseid"]}`;
-  console.log(URLAPI);
   const response = await axios.get(URLAPI).catch((error) => {
     console.log(error.toJSON());
   });
   pageCourse.value = response.data;
-  console.log(pageCourse);
+  // console.log(pageCourse);
 };
 
 // Load Classes data
@@ -308,7 +344,24 @@ const loadPageClasses = async () => {
   // console.log(response.data);
 
   pageClasses.value = response.data;
-  console.log(pageClasses);
+  // console.log(pageClasses);
+
+  // imitial diaplay data
+  displayClasses.classId = pageClasses.value[0]["classId"];
+  displayClasses.classDate = pageClasses.value[0]["classDate"];
+  displayClasses.classTime = pageClasses.value[0]["classTime"];
+  displayClasses.employeename = pageClasses.value[0]["employeename"];
+  displayClasses.classroomName = pageClasses.value[0]["classroomName"];
+  displayClasses.price = pageClasses.value[0]["price"];
+
+  // put all classes data in calendar
+  calendarEvents.value = pageClasses.value.map((item) => {
+    return {
+      id: item["classId"],
+      title: item["classTime"],
+      start: item["classDate"],
+    };
+  });
 };
 
 // Load recommended courses data
@@ -331,8 +384,19 @@ const loadRecommendedCourses = async () => {
   Event obj. method
 */
 
-const onChangeClassTime = (e) => {
-  console.log(e.target);
+const onClickedClass = (classId) => {
+  console.log("get emit: " + classId);
+
+  // update diaplay data
+  let clickedCLass = pageClasses.value.find((item) => {
+    return item.classId == classId;
+  });
+  displayClasses.classId = clickedCLass["classId"];
+  displayClasses.classDate = clickedCLass["classDate"];
+  displayClasses.classTime = clickedCLass["classTime"];
+  displayClasses.employeename = clickedCLass["employeename"];
+  displayClasses.classroomName = clickedCLass["classroomName"];
+  displayClasses.price = clickedCLass["price"];
 };
 
 const saveCourseCartToDB = () => {
