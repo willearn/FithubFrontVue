@@ -85,27 +85,22 @@
             </div>
             <div class="col-6 mx-3">
               <div class="my-3">
-                <h4>授課教練</h4>
                 <div class="row align-items-center">
-                  <div class="col-12 col-md-5 col-lg-6">
-                    <select class="form-select" id="courseCoach" v-focus>
-                      <option selected style="display: none" value="">
-                        請選擇
-                      </option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
+                  <div class="rol-12 col-md-4 col-lg-4">
+                    <h4>課程時間:</h4>
                   </div>
-                  <div class="col-12 col-md-5 col-lg-6">
-                    <button class="btn btn-secondary btn-sm">
-                      <i class="bi bi-lightbulb-fill"></i>&nbsp;&nbsp;教練專長
+                  <div class="col-12 col-md-6 col-lg-6 justify-content-start">
+                    <button
+                      class="btn btn btn-primary btn-sm mx-2"
+                      data-bs-toggle="collapse"
+                      href="#collapseExample"
+                      role="button"
+                    >
+                      <i type="button" class="bi bi-calendar-check"></i
+                      >&nbsp;&nbsp;&nbsp;查看課表
                     </button>
                   </div>
                 </div>
-              </div>
-              <div class="my-3">
-                <h4>課程時間:</h4>
                 <div class="row">
                   <div class="col-12 col-md-5 col-lg-5">
                     <label for="courseDate" class="mb-1">日期</label>
@@ -113,9 +108,13 @@
                       <option selected style="display: none" value="">
                         請選擇
                       </option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                      <option
+                        v-for="{ classDate, classId } in pageClasses"
+                        :value="classId"
+                        @change="onChangeClassTime"
+                      >
+                        {{ classDate }}
+                      </option>
                     </select>
                   </div>
                   <div class="col-12 col-md-5 col-lg-5">
@@ -131,6 +130,31 @@
                   </div>
                 </div>
               </div>
+
+              <div class="my-3">
+                <h4>授課教練</h4>
+                <div class="row align-items-center">
+                  <div class="col-12 col-md-5 col-lg-6">
+                    <select class="form-select" id="courseCoach" v-focus>
+                      <option selected style="display: none" value="">
+                        請選擇
+                      </option>
+                      <option
+                        v-for="{ employeename, index } in pageClasses"
+                        value="employeename"
+                      >
+                        {{ employeename }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-12 col-md-5 col-lg-6">
+                    <button class="btn btn-secondary btn-sm">
+                      <i class="bi bi-lightbulb-fill"></i>&nbsp;&nbsp;教練專長
+                    </button>
+                  </div>
+                </div>
+              </div>
+
               <div class="ml-2 my-3">
                 <h4>課程說明:</h4>
                 <p class="fs-6">
@@ -138,28 +162,26 @@
                 </p>
               </div>
 
-              <span class="d-flex justify-content-end my-4">
-                <button
-                  class="btn btn btn-primary mx-2"
-                  data-bs-toggle="collapse"
-                  href="#collapseExample"
-                  role="button"
-                >
-                  <i type="button" class="bi bi-calendar-check"></i
-                  >&nbsp;&nbsp;&nbsp;查看課表
-                </button>
-                <button class="btn btn btn-primary mx-2">
-                  <i type="button" class="bi bi-heart-fill"></i
-                  >&nbsp;&nbsp;加入願望清單
-                </button>
-                <button class="btn btn btn-primary mx-2">
-                  <i type="button" class="bi bi-cart4"></i
-                  >&nbsp;&nbsp;加入購物車
-                </button>
-                <button class="btn btn btn-primary mx-2">
-                  <i type="button" class="bi bi-cart3"></i>&nbsp;&nbsp;直接購買
-                </button>
-              </span>
+              <div class="row justify-content-end my-4">
+                <div class="col-12 col-md-6 col-lg-4">
+                  <button class="btn btn btn-primary mx-2">
+                    <i type="button" class="bi bi-heart-fill"></i
+                    >&nbsp;&nbsp;加入願望清單
+                  </button>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <button class="btn btn btn-primary mx-2">
+                    <i type="button" class="bi bi-cart4"></i
+                    >&nbsp;&nbsp;加入購物車
+                  </button>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <button class="btn btn btn-primary mx-2">
+                    <i type="button" class="bi bi-cart3"></i
+                    >&nbsp;&nbsp;直接購買
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -213,13 +235,15 @@
   imports
 */
 
-import { ref, onMounted, watch } from "vue";
+import { ref, reactive, onMounted, onBeforeUnmount, watch } from "vue";
 import { RouterLink, useRoute } from "vue-router";
 import axios from "axios";
 import courseCard from "../components/course/courseCard.vue";
 import FullCalendar from "../components/course/courseCalendar.vue";
 import CartIcon from "../components/course/util/icon-cart.vue";
 import { vFocus } from "../directives/vFocus";
+import { useCourseStore } from "../stores/courseStore.js";
+import { storeToRefs } from "pinia";
 const URL = import.meta.env.VITE_API_JAVAURL;
 
 /*
@@ -237,8 +261,19 @@ watch(
   async (newUrlCourseId) => {
     // console.log(newUrlCourseId);
     await loadPageCourse();
+    await loadPageClasses();
   }
 );
+
+/*
+  Store and relative responsive datas
+*/
+const courseStore = useCourseStore();
+const { courseCart } = storeToRefs(courseStore);
+const selectedClasses = reactive({
+  memberid: localStorage.getItem("memberid"),
+  classId: [],
+});
 
 /*
 Load datas
@@ -254,6 +289,26 @@ const loadPageCourse = async () => {
   });
   pageCourse.value = response.data;
   console.log(pageCourse);
+};
+
+// Load Classes data
+const pageClasses = ref([]);
+const loadPageClasses = async () => {
+  const URLAPI = `${URL}/classes/findAllClassesInMonthRange/${route.params["courseid"]}`;
+  const response = await axios
+    .get(URLAPI, {
+      params: {
+        monthBefore: 1,
+        monthAfter: 1,
+      },
+    })
+    .catch((error) => {
+      console.log(error.toJSON());
+    });
+  // console.log(response.data);
+
+  pageClasses.value = response.data;
+  console.log(pageClasses);
 };
 
 // Load recommended courses data
@@ -273,11 +328,28 @@ const loadRecommendedCourses = async () => {
 };
 
 /*
+  Event obj. method
+*/
+
+const onChangeClassTime = (e) => {
+  console.log(e.target);
+};
+
+const saveCourseCartToDB = () => {
+  console.log("saveCartToDB");
+};
+
+/*
   LifeCycle Hooks
 */
 onMounted(() => {
   loadPageCourse();
+  loadPageClasses();
   loadRecommendedCourses();
+});
+
+onBeforeUnmount(() => {
+  saveCourseCartToDB();
 });
 
 /*

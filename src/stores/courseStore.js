@@ -1,9 +1,9 @@
-import { ref } from 'vue'
-import { defineStore } from 'pinia'
+import { ref } from "vue";
+import { defineStore } from "pinia";
 
-export const usecourseStore = defineStore('course', () => {
-    const courseCategories = ref({})
-    const courses = ref({})
+export const useCourseStore = defineStore("course", () => {
+  // const courseCategories = ref({})
+  const courseCart = ref(null);
 
-    return { courseCategories, courses }
-})
+  return { courseCart };
+});
