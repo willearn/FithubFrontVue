@@ -199,6 +199,7 @@ import {
   onBeforeMount,
   onMounted,
   onBeforeUnmount,
+  onUpdated,
   watch,
 } from "vue";
 import { RouterLink, useRoute, useRouter } from "vue-router";
