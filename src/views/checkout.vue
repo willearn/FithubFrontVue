@@ -63,8 +63,6 @@
                                     <th scope="col">課程教練</th>
                                     <th scope="col">課程時間</th>
                                     <th scope="col">單價</th>
-                                    <th scope="col">折扣金額</th>
-                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -77,7 +75,7 @@
                                     <td>Otto</td>
                                     <td>@mdo</td>
                                     <td>$2000</td>
-                                    <td>$ {{ couponDiscount }}</td>
+                                    
                                 </tr>
                                 <tr>
                                     <th scope="row">2</th>
@@ -88,7 +86,7 @@
                                     <td>Thornton</td>
                                     <td>@fat</td>
                                     <td>$2000</td>
-                                    <td>$0</td>
+                                    
                                 </tr>
                                 <tr>
                                     <th scope="row">3</th>
@@ -98,7 +96,7 @@
                                     <td colspan="2">Larry the Bird</td>
                                     <td>@twitter</td>
                                     <td>$2000</td>
-                                    <td>$0</td>
+                                    
                                 </tr>
                             </tbody>
                         </table>
@@ -120,7 +118,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios'; // 引入Axios
+import axios from 'axios'; 
 
 const couponCode = ref('');
 const couponDiscount = ref('');
