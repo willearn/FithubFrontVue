@@ -8,7 +8,7 @@
           <h1 class="text-white ">FIT & STRONG</h1>
         </div>
         <div class="col-lg-10 align-self-baseline">
-          <a class="btn btn-primary btn-xl" href="#class">Join Us</a>
+          <RouterLink class="btn btn-primary btn-xl" to="course">Join Us</RouterLink>
         </div>
       </div>
     </div>
@@ -37,37 +37,6 @@
   </section>
 
   <!-- Team-->
-  <!-- <section class="page-section" id="team">
-    <div class="container px-4  mybg-light">
-      <div class="text-center pt-1">
-        <h2>專業團隊</h2>
-        <hr class="divider" />
-      </div>
-      <div class="row text-center">
-        <div class="col-lg-4">
-          <img class="rounded-circle img-fluid" src="../assets/index/coach/1.jpg" alt="維修中" />
-          <h4>Parveen Anand</h4>
-          <p class="text-muted">教練</p>
-        </div>
-        <div class="col-lg-4">
-          <img class="rounded-circle img-fluid" src="../assets/index/coach/1.jpg" alt="維修中" />
-          <h4>Diana Petersen</h4>
-          <p class="text-muted">教練</p>
-        </div>
-        <div class="col-lg-4">
-          <img class="rounded-circle img-fluid" src="../assets/index/coach/1.jpg" alt="維修中" />
-          <h4>Larry Parker</h4>
-          <p class="text-muted">教練</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-8 mx-auto text-center">
-          <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eaque,
-            laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>
-        </div>
-      </div>
-    </div>
-  </section> -->
   <section class="page-section">
     <div class="container px-4  mybg-light" style="overflow-x:hidden;height: 500px;">
       <div class="text-center pt-1">
@@ -81,7 +50,7 @@
           <h4 style="margin: 0px;">{{ coach.employeenamne }}</h4>
 
           <p class="text-muted">專長:{{ coach.specialtyname }}<i class="bi bi-envelope m-2"
-              :title="coach.employeeemail"></i></p>
+              :title="coach.employeeemail"></i><i class="bi bi-telephone" :title="coach.emploueephone"></i></p>
 
           <div class="carousel-inner" style="height: 370px;">
             <div class="carousel-item" v-for="(pic, index) in coach.coachpic" :key="index"
@@ -104,32 +73,6 @@
       </div>
     </div>
   </section>
-
-  <!-- <section class="page-section">
-    <div class="container px-4  mybg-light" style="height: 450px;overflow-x:hidden">
-      <div class="text-center pt-1">
-        <h2>專業團隊</h2>
-        <hr class="divider" />
-      </div>
-      <div class="row text-center">
-        <div class="col-lg-3" v-for="coachPic in coachPics" :key="coachPic.employeeid">
-          <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-              <div class="carousel-item" v-for="pic in coachPic.coachpic" :key="pic.cpicid"
-                :class="{ active: pic === coachPic.coachpic[0] }">
-                <img class="d-block w-100" :src="`data:image/jpeg;base64,${pic.cpicfile}`"
-                  style="width: 250px; height: 250px;" alt="維修中" />
-              </div>
-            </div>
-          </div>
-          <h4>{{ coachPic.employeenamne }}</h4>
-          <p class="text-muted">專長: {{ coachPic.specialtyname }}</p>
-        </div>
-      </div>
-    </div>
-  </section> -->
-
-
 
   <!-- classroom -->
   <section class="page-section text-center" id="classroom">
