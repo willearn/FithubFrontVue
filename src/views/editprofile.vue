@@ -74,40 +74,49 @@ const cancel = async () => {
             </button>
         </div>
     </div>
-    <memberNavBar></memberNavBar>
-    <div class="mb-3">
-        會員編號: {{ memberData.memberid }}
-    </div>
-    <div class="mb-3">
-        會員姓名: {{ memberData.membername }}
-    </div>
-    <div class="mb-3">
-        信箱: {{ memberData.memberemail }}
-    </div>
 
-    <div class="mb-3">
-        電話: <input type="text" class="form-control" v-model="memberData.memberphoneno">
+    <div class="container m-5">
+        <div class="row">
+            <div class="col-lg-2 col-md-2">
+                <memberNavBar></memberNavBar>
+            </div>
+            <div class="col-lg-8 col-md-10 mydiv">
+                <div class="m-3">
+                    會員編號: {{ memberData.memberid }}
+                </div>
+                <div class="m-3">
+                    會員姓名: {{ memberData.membername }}
+                </div>
+                <div class="m-3">
+                    信箱: {{ memberData.memberemail }}
+                </div>
+
+                <div class="m-3">
+                    電話: <input type="text" class="form-control" v-model="memberData.memberphoneno">
+                </div>
+                <div class="m-3">
+                    性別:
+                    <input type="radio" name="gender" value="男" v-model="memberData.membergender" />男
+                    <input type="radio" name="gender" value="女" v-model="memberData.membergender" />女
+                </div>
+                <div class="m-3">
+                    縣市:<input type="text" class="form-control" v-model="memberData.membercity">
+                </div>
+                <div class="m-3">
+                    地區:<input type="text" class="form-control" v-model="memberData.memberzone">
+                </div>
+                <div class="m-3">
+                    地址:<input type="text" class="form-control" v-model="memberData.memberaddress">
+                </div>
+                <div class="m-3">
+                    生日:<input type="date" class="form-control" v-model="memberData.memberbirthday">
+                </div>
+                <div class="m-3">
+                    帳戶建立日期:{{ memberData.memberaccountsince }}
+                </div>
+                <button class="btn  btn-primary m-3" value="儲存" @click="submit">儲存活動</button>
+                <button class="btn  btn-primary m-3 ms-1" value="取消" @click="cancel">返回</button>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-        性別:
-        <input type="radio" name="gender" value="男" v-model="memberData.membergender" />男
-        <input type="radio" name="gender" value="女" v-model="memberData.membergender" />女
-    </div>
-    <div class="mb-3">
-        縣市:<input type="text" class="form-control" v-model="memberData.membercity">
-    </div>
-    <div class="mb-3">
-        地區:<input type="text" class="form-control" v-model="memberData.memberzone">
-    </div>
-    <div class="mb-3">
-        地址:<input type="text" class="form-control" v-model="memberData.memberaddress">
-    </div>
-    <div class="mb-3">
-        生日:<input type="date" class="form-control" v-model="memberData.memberbirthday">
-    </div>
-    <div class="mb-3">
-        帳戶建立日期:{{ memberData.memberaccountsince }}
-    </div>
-    <input type="button" value="儲存" @click="submit">
-    <input type="button" value="取消" @click="cancel">
 </template>

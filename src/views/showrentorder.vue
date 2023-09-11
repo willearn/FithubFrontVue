@@ -18,7 +18,7 @@ const rentOrders = reactive({});
 const loadDatas = async () => {
     const response = await axios.get(`${url}/rent/list/bymemberid/${window.localStorage.getItem("memberid")}`)
 
-    Object.assign(rentOrders,response.data)
+    Object.assign(rentOrders, response.data)
 
 }
 
@@ -58,27 +58,36 @@ const loadDatas = async () => {
             </button>
         </div>
     </div>
-    <memberNavBar></memberNavBar>
-    <table id="departmentsTable" class="table table-bordered">
-                                <thead class="align-middle text-center">
-                                    <tr class="table-primary">
-                                        <th>訂單編號</th>
-                                        <th>租借日期</th>
-                                        <th>時段</th>
-                                        <th>教室名稱</th>
-                                        <th>付款狀態</th>
-                                        <th>訂單金額</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="align-middle text-center">
-                                    <tr v-for="rent in rentOrders" :key="rent.rentorderid">
-                                        <td>{{ rent.rentorderid }}</td>
-                                        <td>{{ rent.rentdate }}</td>
-                                        <td>{{ rent.renttime }}</td>
-                                        <td>{{ rent.classroom.classroomName }}</td>
-                                        <td>{{ rent.rentstatus }}</td>
-                                        <td>{{ rent.rentamount }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+
+    <div class="container m-5">
+        <div class="row">
+            <div class="col-lg-2">
+                <memberNavBar></memberNavBar>
+            </div>
+            <div class="col-lg-8 mydiv">
+                <table id="rentorderTable" class="table table-bordered mt-3">
+                    <thead class="align-middle text-center">
+                        <tr class="table-success">
+                            <th>訂單編號</th>
+                            <th>租借日期</th>
+                            <th>時段</th>
+                            <th>教室名稱</th>
+                            <th>付款狀態</th>
+                            <th>訂單金額</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle text-center">
+                        <tr v-for="rent in rentOrders" :key="rent.rentorderid">
+                            <td>{{ rent.rentorderid }}</td>
+                            <td>{{ rent.rentdate }}</td>
+                            <td>{{ rent.renttime }}</td>
+                            <td>{{ rent.classroom.classroomName }}</td>
+                            <td>{{ rent.rentstatus }}</td>
+                            <td>{{ rent.rentamount }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </template>

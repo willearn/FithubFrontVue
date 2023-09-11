@@ -57,35 +57,48 @@ const loadDatas = async () => {
             </button>
         </div>
     </div>
-    <memberNavBar></memberNavBar>
-    <div class="mb-3">
-        會員編號: {{ memberData.memberid }}
-    </div>
-    <div class="mb-3">
-        會員姓名: {{ memberData.membername }}
-    </div>
-    <div class="mb-3">
-        信箱: {{ memberData.memberemail }}
-    </div>
-    <div class="mb-3">
-        電話: {{ memberData.memberphoneno }}
-    </div>
-    <div class="mb-3">
-        性別: {{  memberData.membergender }}
-    </div>
-    <div class="mb-3">
-        縣市:{{  memberData.membercity }}
-    </div>
-    <div class="mb-3">
-        地區:{{  memberData.memberzone }}
-    </div>
-    <div class="mb-3">
-        地址:{{  memberData.memberaddress }}
-    </div>
-    <div class="mb-3">
-        生日:{{  memberData.memberbirthday }}
-    </div>
-    <div class="mb-3">
-        帳戶建立日期:{{  memberData.memberaccountsince }}
+
+
+    <div class="container m-5">
+        <div class="row">
+            <div class="col-lg-2">
+                <memberNavBar></memberNavBar>
+            </div>
+            <div class="col-lg-8 mydiv">
+                <div class="m-3">
+                    會員編號: {{ memberData.memberid }}
+
+                </div>
+                <div class="m-3">
+                    會員姓名: {{ memberData.membername }}
+                </div>
+                <div class="m-3">
+                    信箱: {{ memberData.memberemail }}
+                </div>
+                <div class="m-3">
+                    電話: {{ memberData.memberphoneno }}
+                </div>
+                <div class="m-3">
+                    性別: {{ memberData.membergender }}
+                </div>
+                <div class="m-3">
+                    縣市:{{ memberData.membercity }}
+                </div>
+                <div class="m-3">
+                    地區:{{ memberData.memberzone }}
+                </div>
+                <div class="m-3">
+                    地址:{{ memberData.memberaddress }}
+                </div>
+                <div class="m-3">
+                    生日:{{ memberData.memberbirthday }}
+                </div>
+                <div class="m-3">
+                    帳戶建立日期:{{ memberData.memberaccountsince }}
+                </div>
+            </div>
+        </div>
     </div>
 </template>
+
+

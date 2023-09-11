@@ -12852,4 +12852,9 @@ header.masthead .h1 {
   height: 100%;
 }
 
+.mydiv {
+  border: 1px solid #DFDFDF;
+  border-radius: 10px;
+}
+
 /* antiquewhite */

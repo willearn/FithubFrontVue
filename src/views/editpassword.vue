@@ -101,23 +101,35 @@ const inputpassword = () => {
             </button>
         </div>
     </div>
-    <memberNavBar></memberNavBar>
-    <div class="mb-3">
-        輸入舊密碼(若是google登入沒有設置過密碼則不用輸入)
-        <span v-if="!checkpassword.oldpassword" class="text-danger">*</span>
-        <input type="password" class="form-control" v-model="checkpassword.oldpassword">
-    </div>
-    <div class="mb-3">
-        輸入新密碼<span v-if="!checkpassword.newpassword" class="text-danger">*</span>
-        <input type="password" class="form-control" v-model="checkpassword.newpassword" @keyup="inputpassword">
-    </div>
-    <div class="mb-3">
-        再次確認密碼<span v-if="!checkpassword.againpassword" class="text-danger">*</span>
-        <input type="password" class="form-control" v-model="checkpassword.againpassword" @keyup="inputpassword">
-        <span v-if="!checkpassword.check" class="text-danger">密碼不相符</span>
-    </div>
 
 
-    <input type="button" value="儲存" @click="submit">
-    <input type="button" value="取消" @click="cancel">
+    <div class="container m-5">
+        <div class="row">
+            <div class="col-lg-2">
+                <memberNavBar></memberNavBar>
+            </div>
+            <div class="col-lg-8 mydiv">
+                <div class="m-3">
+                    輸入舊密碼<i class="bi bi-patch-exclamation-fill" title="使用google登入沒有設置過密碼則不用輸入"></i>
+                    <span v-if="!checkpassword.oldpassword" class="text-danger">*</span>
+                    <input type="password" class="form-control" v-model="checkpassword.oldpassword">
+                </div>
+                <div class="m-3">
+                    輸入新密碼<span v-if="!checkpassword.newpassword" class="text-danger">*</span>
+                    <input type="password" class="form-control" v-model="checkpassword.newpassword" @keyup="inputpassword">
+                </div>
+                <div class="m-3">
+                    再次確認密碼<span v-if="!checkpassword.againpassword" class="text-danger">*</span>
+                    <input type="password" class="form-control" v-model="checkpassword.againpassword"
+                        @keyup="inputpassword">
+                    <span v-if="!checkpassword.check" class="text-danger">密碼不相符</span>
+                </div>
+                <button class="btn  btn-primary m-3" value="儲存" @click="submit">儲存</button>
+                <button class="btn  btn-primary m-3 ms-1" value="取消" @click="cancel">返回</button>
+            </div>
+        </div>
+    </div>
 </template>
+
+
+
