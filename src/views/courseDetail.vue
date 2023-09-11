@@ -94,71 +94,12 @@
                     >&nbsp;&nbsp;
                     <span>{{ displayClasses.classTime }}</span>
                   </div>
-                  <!-- <div class="col-12 col-md-6 col-lg-6 justify-content-start">
-                    <button
-                      class="btn btn btn-primary btn-sm mx-2"
-                      data-bs-toggle="collapse"
-                      href="#collapseExample"
-                      role="button"
-                    >
-                      <i type="button" class="bi bi-calendar-check"></i
-                      >&nbsp;&nbsp;&nbsp;查看課表
-                    </button>
-                  </div> -->
                 </div>
-                <!-- <div class="row">
-                  <div class="col-12 col-md-5 col-lg-5">
-                    <label for="courseDate" class="mb-1">日期</label>
-                    <select class="form-select" id="courseDate">
-                      <option selected style="display: none" value="">
-                        請選擇
-                      </option>
-                      <option
-                        v-for="{ classDate, classId } in pageClasses"
-                        :value="classId"
-                        @change="onChangeClassTime"
-                      >
-                        {{ classDate }}
-                      </option>
-                    </select>
-                  </div>
-                  <div class="col-12 col-md-5 col-lg-5">
-                    <label for="courseTime" class="mb-1">時段</label>
-                    <select class="form-select" id="courseTime">
-                      <option selected style="display: none" value="">
-                        請選擇
-                      </option>
-                      <option value="早上">早上</option>
-                      <option value="下午">下午</option>
-                      <option value="晚上">晚上</option>
-                    </select>
-                  </div>
-                </div> -->
               </div>
 
               <div class="my-3">
                 <div>授課教練:</div>
                 <div>{{ displayClasses.employeename }}</div>
-                <!-- <div class="row align-items-center">
-                  <div class="col-12 col-md-5 col-lg-6">
-                    <select class="form-select" id="courseCoach" v-focus>
-                      <option selected style="display: none" value="">
-                        請選擇
-                      </option>
-                      <option
-                        v-for="{ employeename, index } in pageClasses"
-                        value="employeename"
-                      >
-                        {{ employeename }}
-                      </option>
-                    </select>
-                  </div>
-                  <div class="col-12 col-md-5 col-lg-6">
-                    <button class="btn btn-secondary btn-sm">
-                      <i class="bi bi-lightbulb-fill"></i>&nbsp;&nbsp;教練專長
-                    </button>
-                  </div>
-                </div> -->
               </div>
 
               <div class="my-3">
@@ -211,15 +152,6 @@
 
       <hr />
 
-      <!-- 課表摺疊 -->
-      <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-10">
-          <div class="collapse my-4" id="collapseExample">
-            I am calendar !!!!!
-            <!-- <FullCalendar></FullCalendar> -->
-          </div>
-        </div>
-      </div>
       <div class="row justify-content-center">
         <div class="col-12 col-md-10 col-lg-10">
           <FullCalendar
