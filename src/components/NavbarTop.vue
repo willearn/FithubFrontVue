@@ -40,9 +40,6 @@ const membername = ref();
 
 onMounted(() => {
   isLogin.value = window.localStorage.getItem("isLogin") === 'true';
-
-  
-  // console.log("onMounted");
 })
 
 

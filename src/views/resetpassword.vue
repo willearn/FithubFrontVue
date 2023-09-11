@@ -16,7 +16,6 @@ const submit = async () => {
     try {
         if (!checkpassword.newpassword.trim() ||
             !checkpassword.againpassword.trim()) {
-            console.log("trim")
             return;
         }
 
@@ -26,6 +25,7 @@ const submit = async () => {
 
         const response = await axios.put(`${url}/members/resetPassword`, checkpassword)
         alert("修改成功")
+        router.push({ name: "home" })
     } catch (error) {
         alert("修改失敗")
     }
@@ -34,8 +34,6 @@ const submit = async () => {
 const route = useRoute();
 
 onMounted(() => {
-    console.log(route.params["token"])
-    console.log(route.query.token)
     checkpassword.token = route.query.token
 })
 

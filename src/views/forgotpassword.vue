@@ -12,7 +12,6 @@ const email = ref("")
 const submit = async () => {
     try {
         const response = await axios.post(`${url}/members/forgotpassword/${email.value}`)
-        console.log(response.status)
         alert("請至信箱收取密碼重設信")
     } catch (error) {
         alert("無此信箱")

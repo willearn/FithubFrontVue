@@ -2,6 +2,9 @@
 import { ref, reactive, onMounted } from "vue";
 import axios from 'axios';
 import router from "@/router";
+import memberNavBar from "../components/member/memberNavBar.vue";
+
+
 const url = import.meta.env.VITE_API_JAVAURL
 
 onMounted(() => {
@@ -22,7 +25,6 @@ const checkpassword = reactive({
 const loadDatas = async () => {
     const response = await axios.get(`${url}/members/byemail/${window.localStorage.getItem("memberemail")}`)
     memberData.value = response.data
-    console.log(response.data)
     // const response = await axios.post(`${url}/backstageaccounts/findPageByName`, datas)
 
     // allBackStageAccounts.value = response.data.list
@@ -36,7 +38,6 @@ const submit = async () => {
 
         if (!checkpassword.newpassword.trim() ||
             !checkpassword.againpassword.trim()) {
-            console.log("trim")
             return;
         }
 
@@ -46,12 +47,10 @@ const submit = async () => {
 
         const response = await axios.put(`${url}/members/changepassword/${memberid}`, checkpassword)
         alert("修改成功")
+        router.push({ name: "member" })
     } catch (error) {
         alert("修改失敗")
     }
-
-
-    // console.log(response)
 }
 
 const cancel = async () => {
@@ -102,11 +101,7 @@ const inputpassword = () => {
             </button>
         </div>
     </div>
-    <router-link to="/editprofile">編輯個人資料</router-link>
-    <br>
-    <router-link to="/editpassword">重設密碼</router-link>
-    <br>
-    <router-link to="/order">查看訂單</router-link>
+    <memberNavBar></memberNavBar>
     <div class="mb-3">
         輸入舊密碼(若是google登入沒有設置過密碼則不用輸入)
         <span v-if="!checkpassword.oldpassword" class="text-danger">*</span>

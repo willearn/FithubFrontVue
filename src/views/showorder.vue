@@ -2,6 +2,9 @@
 import { ref, reactive, onMounted } from "vue";
 import axios from 'axios';
 import router from "@/router";
+import memberNavBar from "../components/member/memberNavBar.vue";
+
+
 const url = import.meta.env.VITE_API_JAVAURL
 
 onMounted(() => {
@@ -15,7 +18,6 @@ const memberData = ref({})
 const loadDatas = async () => {
     const response = await axios.get(`${url}/members/byemail/${window.localStorage.getItem("memberemail")}`)
     memberData.value = response.data
-    console.log(response.data)
     // const response = await axios.post(`${url}/backstageaccounts/findPageByName`, datas)
 
     // allBackStageAccounts.value = response.data.list
@@ -30,7 +32,6 @@ const submit = async () => {
         alert("修改成功")
     }
 
-    console.log(response)
 }
 
 const cancel = async () => {
@@ -73,11 +74,7 @@ const cancel = async () => {
             </button>
         </div>
     </div>
-    <router-link to="/editprofile">編輯個人資料</router-link>
-    <br>
-    <router-link to="/editpassword">重設密碼</router-link>
-    <br>
-    <router-link to="/order">查看訂單</router-link>
+    <memberNavBar></memberNavBar>
     <div class="mb-3">
         會員編號: {{ memberData.memberid }}
     </div>

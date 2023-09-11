@@ -82,11 +82,7 @@ async function authToken(token) {
         token: token
     }
     const res = await axios.post(`${url}/memberauth`, data)
-    console.log('res.status:' + res.data.status)
     if (res.data.status) {
-        console.log('authToken1')
-        console.log('res.data:' + res.data.memberid)
-        console.log(res.data)
         result.status = true
         result.token = res.data.token
         result.memberid = res.data.memberid
@@ -100,7 +96,6 @@ async function authToken(token) {
             memberemail: res.data.memberemail,
         })
     } else {
-        console.log('authToken2')
         setLoginStore({
             isLogin: false,
             token: "",

@@ -61,9 +61,13 @@ const router = createRouter({
       name: 'resetpassword',
       component: () => import('../views/resetpassword.vue'),
     },{
-      path: '/order',
-      name: 'order',
-      component: () => import('../views/order.vue'),
+      path: '/showorder',
+      name: 'showorder',
+      component: () => import('../views/showorder.vue'),
+    },{
+      path: '/showrentorder',
+      name: 'showrentorder',
+      component: () => import('../views/showrentorder.vue'),
     },
     {
       path: "/course",
@@ -146,16 +150,13 @@ const router = createRouter({
 router.beforeResolve(async (to) => {
   if (to.meta.needLogin) {
     const isLogin = window.localStorage.getItem("isLogin");
-    console.log("login");
     if (!isLogin) {
-      console.log("back to login1");
       return { name: "login" };
     }
 
     const token = window.localStorage.getItem("token");
     const authResult = await authToken(token);
     if (!authResult.status) {
-      console.log("back to login2");
       return { name: "login" };
     }
   }
