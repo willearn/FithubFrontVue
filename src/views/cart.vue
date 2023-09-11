@@ -121,14 +121,14 @@
                   <th scope="col"></th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody v-for="(item, index) in pageClasses">
                 <tr>
-                  <th scope="row">1</th>
+                  <th scope="row">{{ index + 1 }}</th>
                   <td><img src=https://picsum.photos/id/17/200 alt="..." /></td>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>$2000</td>
+                  <td>{{ item.courseName }}</td>
+                  <td>{{ item.employeename }}</td>
+                  <td>{{ item.classDate }}&nbsp;{{ item.classTime }}</td>
+                  <td>$NT &nbsp;{{ item.price }}</td>
                   <td>
                     <div type="button" class="bi bi-heart-fill"></div>
                     <div type="button" class="bi bi-trash-fill"></div>
