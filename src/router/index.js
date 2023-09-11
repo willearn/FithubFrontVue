@@ -61,6 +61,10 @@ const router = createRouter({
       path: '/resetpassword/:token',
       name: 'resetpassword',
       component: () => import('../views/resetpassword.vue'),
+    },{
+      path: '/order',
+      name: 'order',
+      component: () => import('../views/order.vue'),
     },
   ],scrollBehavior (to, from, savedPosition) {
     if(savedPosition && to.meta.keepAlive){

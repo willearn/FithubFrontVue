@@ -1,21 +1,51 @@
 <script setup>
 import axios from "axios";
 import router from "@/router"
-import { ref, reactive , onMounted , watch} from "vue";
+import { ref, reactive, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 const url = import.meta.env.VITE_API_JAVAURL
 
-const email = ref("")
+const checkpassword = reactive({
+    check: true,
+    token: '',
+    newpassword: '',
+    againpassword: '',
+});
 
 const submit = async () => {
+    try {
+        if (!checkpassword.newpassword.trim() ||
+            !checkpassword.againpassword.trim()) {
+            console.log("trim")
+            return;
+        }
 
+        if (!checkpassword.check) {
+            return;
+        }
+
+        const response = await axios.put(`${url}/members/resetPassword`, checkpassword)
+        alert("修改成功")
+    } catch (error) {
+        alert("修改失敗")
+    }
 }
 
 const route = useRoute();
 
-onMounted(()=>{
+onMounted(() => {
     console.log(route.params["token"])
+    console.log(route.query.token)
+    checkpassword.token = route.query.token
 })
+
+const inputpassword = () => {
+    if (checkpassword.newpassword === checkpassword.againpassword) {
+        checkpassword.check = true
+    } else {
+        checkpassword.check = false
+    }
+}
 
 
 </script>
@@ -33,15 +63,16 @@ onMounted(()=>{
                             <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                 <div class="card-body p-4 p-lg-5 text-black">
                                     <h2 class="pb-5" style="letter-spacing: 1px;">重設密碼</h2>
-                                    <div class="mb-4">
-                                        <label class="form-label">請輸入密碼</label>
-                                        <input type="email" class="form-control form-control-lg" v-model="email"
-                                            placeholder="abc123456@example.com" />
+                                    <div class="mb-3">
+                                        輸入新密碼<span v-if="!checkpassword.newpassword" class="text-danger">*</span>
+                                        <input type="password" class="form-control" v-model="checkpassword.newpassword"
+                                            @keyup="inputpassword">
                                     </div>
-                                    <div class="mb-4">
-                                        <label class="form-label">再次輸入</label>
-                                        <input type="email" class="form-control form-control-lg" v-model="email"
-                                            placeholder="abc123456@example.com" />
+                                    <div class="mb-3">
+                                        再次確認密碼<span v-if="!checkpassword.againpassword" class="text-danger">*</span>
+                                        <input type="password" class="form-control" v-model="checkpassword.againpassword"
+                                            @keyup="inputpassword">
+                                        <span v-if="!checkpassword.check" class="text-danger">密碼不相符</span>
                                     </div>
                                     <div class="pt-1 mb-4">
                                         <button class="btn btn-dark btn-lg btn-block" type="button"

@@ -105,6 +105,8 @@ const inputpassword = () => {
     <router-link to="/editprofile">編輯個人資料</router-link>
     <br>
     <router-link to="/editpassword">重設密碼</router-link>
+    <br>
+    <router-link to="/order">查看訂單</router-link>
     <div class="mb-3">
         輸入舊密碼(若是google登入沒有設置過密碼則不用輸入)
         <span v-if="!checkpassword.oldpassword" class="text-danger">*</span>
