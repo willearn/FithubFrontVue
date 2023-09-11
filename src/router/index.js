@@ -16,9 +16,58 @@ const router = createRouter({
       component: () => import("../views/rent.vue"),
     },
     {
-      path: "/rentorder",
-      name: "rentorder",
-      component: () => import("../views/rentorder.vue"),
+      path: '/rentorder',
+      name: 'rentorder',
+      component: () => import('../views/rentorder.vue'),
+    }, {
+      path: '/activity',
+      name: 'activity',
+      component: () => import('../views/activity.vue')
+    }, {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/login.vue')
+    }, {
+      path: '/register',
+      name: 'register',
+      component: () => import('../views/register.vue')
+    },{
+      path: '/member',
+      name: 'member',
+      component: () => import('../views/member.vue'),
+      meta:{
+        needLogin: true
+      }
+    },{
+      path: '/editprofile',
+      name: 'editprofile',
+      component: () => import('../views/editprofile.vue'),
+      meta:{
+        needLogin: true
+      }
+    },{
+      path: '/editpassword',
+      name: 'editpassword',
+      component: () => import('../views/editpassword.vue'),
+      meta:{
+        needLogin: true
+      } 
+    },{
+      path: '/forgotpassword',
+      name: 'forgotpassword',
+      component: () => import('../views/forgotpassword.vue'),
+    },{
+      path: '/resetpassword/:token',
+      name: 'resetpassword',
+      component: () => import('../views/resetpassword.vue'),
+    },{
+      path: '/showorder',
+      name: 'showorder',
+      component: () => import('../views/showorder.vue'),
+    },{
+      path: '/showrentorder',
+      name: 'showrentorder',
+      component: () => import('../views/showrentorder.vue'),
     },
     {
       path: "/course",
@@ -101,16 +150,13 @@ const router = createRouter({
 router.beforeResolve(async (to) => {
   if (to.meta.needLogin) {
     const isLogin = window.localStorage.getItem("isLogin");
-    console.log("login");
     if (!isLogin) {
-      console.log("back to login1");
       return { name: "login" };
     }
 
     const token = window.localStorage.getItem("token");
     const authResult = await authToken(token);
     if (!authResult.status) {
-      console.log("back to login2");
       return { name: "login" };
     }
   }

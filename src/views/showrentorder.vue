@@ -11,31 +11,15 @@ onMounted(() => {
     loadDatas()
 });
 
-const localStorageEmail = ref({})
-
 const memberData = ref({})
 
+const rentOrders = reactive({});
+
 const loadDatas = async () => {
-    const response = await axios.get(`${url}/members/byemail/${window.localStorage.getItem("memberemail")}`)
-    memberData.value = response.data
-    // const response = await axios.post(`${url}/backstageaccounts/findPageByName`, datas)
+    const response = await axios.get(`${url}/rent/list/bymemberid/${window.localStorage.getItem("memberid")}`)
 
-    // allBackStageAccounts.value = response.data.list
-    // allEmps.value = responseEmp.data.list
+    Object.assign(rentOrders,response.data)
 
-}
-
-const submit = async () => {
-    const response = await axios.put(`${url}/members/${memberData.value.memberid}`, memberData.value)
-
-    if (response.status == 200) {
-        alert("修改成功")
-    }
-
-}
-
-const cancel = async () => {
-    router.push({ name: "member" })
 }
 
 </script>
@@ -75,39 +59,26 @@ const cancel = async () => {
         </div>
     </div>
     <memberNavBar></memberNavBar>
-    <div class="mb-3">
-        會員編號: {{ memberData.memberid }}
-    </div>
-    <div class="mb-3">
-        會員姓名: {{ memberData.membername }}
-    </div>
-    <div class="mb-3">
-        信箱: {{ memberData.memberemail }}
-    </div>
-
-    <div class="mb-3">
-        電話: <input type="text" class="form-control" v-model="memberData.memberphoneno">
-    </div>
-    <div class="mb-3">
-        性別:
-        <input type="radio" name="gender" value="男" v-model="memberData.membergender" />男
-        <input type="radio" name="gender" value="女" v-model="memberData.membergender" />女
-    </div>
-    <div class="mb-3">
-        縣市:<input type="text" class="form-control" v-model="memberData.membercity">
-    </div>
-    <div class="mb-3">
-        地區:<input type="text" class="form-control" v-model="memberData.memberzone">
-    </div>
-    <div class="mb-3">
-        地址:<input type="text" class="form-control" v-model="memberData.memberaddress">
-    </div>
-    <div class="mb-3">
-        生日:<input type="date" class="form-control" v-model="memberData.memberbirthday">
-    </div>
-    <div class="mb-3">
-        帳戶建立日期:{{ memberData.memberaccountsince }}
-    </div>
-    <input type="button" value="儲存" @click="submit">
-    <input type="button" value="取消" @click="cancel">
+    <table id="departmentsTable" class="table table-bordered">
+                                <thead class="align-middle text-center">
+                                    <tr class="table-primary">
+                                        <th>訂單編號</th>
+                                        <th>租借日期</th>
+                                        <th>時段</th>
+                                        <th>教室名稱</th>
+                                        <th>付款狀態</th>
+                                        <th>訂單金額</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="align-middle text-center">
+                                    <tr v-for="rent in rentOrders" :key="rent.rentorderid">
+                                        <td>{{ rent.rentorderid }}</td>
+                                        <td>{{ rent.rentdate }}</td>
+                                        <td>{{ rent.renttime }}</td>
+                                        <td>{{ rent.classroom.classroomName }}</td>
+                                        <td>{{ rent.rentstatus }}</td>
+                                        <td>{{ rent.rentamount }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
 </template>

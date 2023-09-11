@@ -5,7 +5,7 @@ import router from "@/router";
 
 const url = import.meta.env.VITE_API_JAVAURL;
 
-const loginData = reactive({
+const registerData = reactive({
   memberemail: "",
   memberpassword: "",
   memberphoneno: "",
@@ -15,6 +15,11 @@ const loginData = reactive({
   memberzone: "",
   memberaddress: "",
   memberbirthday: "",
+});
+
+const checkpassword = reactive({
+    check: true,
+    againpassword: '',
 });
 
 
@@ -37,15 +42,15 @@ const register = async () => {
   //  
 
   if (
-    !loginData.memberemail.trim() ||
-    !loginData.memberpassword.trim() ||
-    !loginData.memberphoneno.trim() ||
-    !loginData.membername.trim() ||
-    !loginData.membergender.trim() ||
-    !loginData.membercity.trim() ||
-    !loginData.memberzone.trim() ||
-    !loginData.memberaddress.trim() ||
-    !loginData.memberbirthday.trim()
+    !registerData.memberemail.trim() ||
+    !registerData.memberpassword.trim() ||
+    !registerData.memberphoneno.trim() ||
+    !registerData.membername.trim() ||
+    !registerData.membergender.trim() ||
+    !registerData.membercity.trim() ||
+    !registerData.memberzone.trim() ||
+    !registerData.memberaddress.trim() ||
+    !registerData.memberbirthday.trim()
   ) {
     alert("請輸入正確資料")
     return;
@@ -56,10 +61,14 @@ const register = async () => {
     return;
   }
 
-  try {
-    const response = await axios.post(`${url}/members`, loginData);
+  if(!checkpassword.check){
+    return;
+  }
 
-    if(response.status == 200){
+  try {
+    const response = await axios.post(`${url}/members`, registerData);
+
+    if (response.status == 200) {
       alert("註冊成功，請登入")
       router.push({ name: "login" })
     }
@@ -69,43 +78,42 @@ const register = async () => {
 };
 
 const sendVerificationCode = async () => {
-  if (!loginData.memberemail.trim()) {
+  if (!registerData.memberemail.trim()) {
     alert("請輸入email");
     return;
   }
-  verify.email = loginData.memberemail;
+  verify.email = registerData.memberemail;
 
   try {
-    console.log(verify)
 
     const response = await axios.post(`${url}/verificationcode`, verify);
-    console.log(response.status)
-    if(response.status == 200){
+    if (response.status == 200) {
       startCountdown();
-    }else{
-      alert("email已使用")
     }
   } catch (error) {
-    alert("請輸入正確email")
+    if (error.response.status == 400) {
+      alert("email已經被使用")
+    } else {
+      alert("請輸入正確email")
+    }
   }
 }
 
 const checkVerificationCode = async () => {
-  if (!loginData.memberemail.trim() ||
+  if (!registerData.memberemail.trim() ||
     !verify.verificationcode.trim()) {
     alert("請輸入email及驗證碼");
     return;
   }
-  verify.email = loginData.memberemail;
+  verify.email = registerData.memberemail;
 
   try {
     const response = await axios.post(`${url}/verificationcode/check`, verify);
-    console.log(response.status);
     verifystatus.value = true;
-    console.log("test typeof")
-    console.log(typeof verifystatus.value)
+    alert("驗證成功")
   } catch (error) {
     verifystatus.value = false;
+    alert("驗證碼錯誤")
   }
 
 }
@@ -128,6 +136,14 @@ const startCountdown = () => {
   }, 1000); // 每秒减少1秒
 };
 
+const inputpassword = () => {
+    if (registerData.memberpassword === checkpassword.againpassword) {
+        checkpassword.check = true
+    } else {
+        checkpassword.check = false
+    }
+}
+
 
 const goBack = () => {
   router.back();
@@ -146,76 +162,84 @@ const goBack = () => {
                 <div class="card-body  text-black">
                   <!-- 信箱 -->
                   <div>
-                    <label class="form-label mb-1">信箱</label><span v-if="!loginData.memberemail"
+                    <label class="form-label mb-1">信箱</label><span v-if="!registerData.memberemail"
                       class="text-danger">*</span><input type="email" class="form-control form-control-lg"
-                      v-model="loginData.memberemail" placeholder="abc123456@example.com" />
+                      v-model="registerData.memberemail" placeholder="abc123456@example.com" />
                     <div class="my-lg-1">
                       <input type="button" v-model="verifybutton.button" @click="sendVerificationCode" id="verifybtn">
                     </div>
                     <input type="text" placeholder="輸入驗證碼" v-model="verify.verificationcode">
                     <input type="button" value="驗證" @click="checkVerificationCode">
-                    <label v-if="verifystatus">驗證成功</label>
                   </div>
 
                   <!-- 密碼 -->
                   <div class="mb-1">
                     <label class="form-label">密碼</label>
-                    <span v-if="!loginData.memberpassword" class="text-danger">*</span>
-                    <input type="password" class="form-control" v-model="loginData.memberpassword" />
+                    <span v-if="!registerData.memberpassword" class="text-danger">*</span>
+                    <input type="password" class="form-control" v-model="registerData.memberpassword" @keyup="inputpassword" />
+                  </div>
+
+                  <!-- 再次確認密碼 -->
+                  <div class="mb-1">
+                    <label class="form-label">再次確認密碼</label>
+                    <span v-if="!checkpassword.againpassword" class="text-danger">*</span>
+                    <input type="password" class="form-control" v-model="checkpassword.againpassword"
+                      @keyup="inputpassword">
+                    <span v-if="!checkpassword.check" class="text-danger">密碼不相符</span>
                   </div>
 
                   <!-- 手機號碼 -->
                   <div class="mb-1">
                     <label class="form-label">手機號碼</label>
-                    <span v-if="!loginData.memberphoneno" class="text-danger">*</span>
-                    <input type="email" class="form-control" v-model="loginData.memberphoneno" />
+                    <span v-if="!registerData.memberphoneno" class="text-danger">*</span>
+                    <input type="email" class="form-control" v-model="registerData.memberphoneno" />
                   </div>
 
                   <!-- 姓名 -->
                   <div class="mb-1">
                     <label class="form-label">姓名</label>
-                    <span v-if="!loginData.membername" class="text-danger">*</span>
-                    <input type="email" class="form-control" v-model="loginData.membername" />
+                    <span v-if="!registerData.membername" class="text-danger">*</span>
+                    <input type="email" class="form-control" v-model="registerData.membername" />
                   </div>
 
                   <!-- 性別 -->
                   <div class="mb-1">
                     <label class="form-label">性別</label>
-                    <span v-if="!loginData.membergender" class="text-danger">*</span>
-                    <input style="width: 1em;" type="radio" name="gender" value="男" v-model="loginData.membergender" />男
-                    <input style="width: 1em;" type="radio" name="gender" value="女" v-model="loginData.membergender" />女
+                    <span v-if="!registerData.membergender" class="text-danger">*</span>
+                    <input style="width: 1em;" type="radio" name="gender" value="男" v-model="registerData.membergender" />男
+                    <input style="width: 1em;" type="radio" name="gender" value="女" v-model="registerData.membergender" />女
                   </div>
 
                   <!-- 縣市 -->
                   <div class="mb-1">
                     <label class="form-label">縣市</label>
-                    <span v-if="!loginData.membercity" class="text-danger">*</span>
-                    <input type="text" class="form-control" v-model="loginData.membercity" />
+                    <span v-if="!registerData.membercity" class="text-danger">*</span>
+                    <input type="text" class="form-control" v-model="registerData.membercity" />
                   </div>
 
                   <!-- 地區 -->
                   <div class="mb-1">
                     <label class="form-label">地區</label>
-                    <span v-if="!loginData.memberzone" class="text-danger">*</span>
-                    <input type="text" class="form-control" v-model="loginData.memberzone" />
+                    <span v-if="!registerData.memberzone" class="text-danger">*</span>
+                    <input type="text" class="form-control" v-model="registerData.memberzone" />
                   </div>
 
                   <!-- 地址 -->
                   <div class="mb-1">
                     <label class="form-label">地址</label>
-                    <span v-if="!loginData.memberaddress" class="text-danger">*</span>
-                    <input type="text" class="form-control" v-model="loginData.memberaddress" />
+                    <span v-if="!registerData.memberaddress" class="text-danger">*</span>
+                    <input type="text" class="form-control" v-model="registerData.memberaddress" />
                   </div>
 
                   <!-- 生日 -->
                   <div class="mb-1">
                     <label class="form-label">生日</label>
-                    <span v-if="!loginData.memberbirthday" class="text-danger">*</span>
-                    <input type="date" class="form-control" v-model="loginData.memberbirthday" />
+                    <span v-if="!registerData.memberbirthday" class="text-danger">*</span>
+                    <input type="date" class="form-control" v-model="registerData.memberbirthday" />
                   </div>
 
                   <div class="pt-1 mb-1 mt-3">
-                    <button class="btn btn-dark btn-lg btn-block" type="button" @click="goBack" >返回</button>
+                    <button class="btn btn-dark btn-lg btn-block" type="button" @click="goBack">返回</button>
                     <button class="btn btn-dark btn-lg btn-block ms-1" type="button" @click="register">註冊</button>
                   </div>
 
