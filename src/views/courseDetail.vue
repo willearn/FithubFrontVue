@@ -293,19 +293,19 @@ watch(
 );
 
 /*
-  Store and relative responsive datas
+  Store and relative responsive datas and local storage
 */
-const courseStore = useCourseStore();
-const { courseCartStore } = storeToRefs(courseStore);
-const selectedClasses = reactive({
-  memberid: localStorage.getItem("memberid"),
-  classId: [],
-});
-console.log(courseCartStore.value);
+// const courseStore = useCourseStore();
+// const { courseCartStore } = storeToRefs(courseStore);
+const selectedClasses = ref([]);
 
-/*
-  Watcher for store
-*/
+// Load Local storage data
+const loadLocalStorageCart = () => {
+  let currentCourseCart = JSON.parse(localStorage.getItem("courseCart"));
+  if (currentCourseCart != null) {
+    selectedClasses.value = currentCourseCart;
+  }
+};
 
 /*
   Display Data
@@ -412,16 +412,16 @@ const onClickedClass = (classId) => {
 };
 
 const saveCourseCartToStore = (forwardOrStay) => {
-  console.log("saveCartToStore");
+  console.log("saveCartToLocalStorage");
+  console.log(selectedClasses.value);
   if (
-    // check classId have value and not repeat in store
+    // check classId have value and not repeat in LocalStorage
     displayClasses.classId != 0 &&
-    !selectedClasses.classId.includes(displayClasses.classId)
+    !selectedClasses.value.includes(displayClasses.classId)
   ) {
-    selectedClasses.classId.push(displayClasses.classId);
-    console.log(selectedClasses);
-    console.log(courseCartStore.value);
-    courseCartStore.value = selectedClasses;
+    selectedClasses.value.push(displayClasses.classId);
+    // insert selected classId to local storage
+    localStorage.setItem("courseCart", JSON.stringify(selectedClasses.value));
   }
   if (forwardOrStay == "forward") {
     console.log("forward");
@@ -443,45 +443,12 @@ onMounted(() => {
   loadPageCourse();
   loadPageClasses();
   loadRecommendedCourses();
+  loadLocalStorageCart();
 });
 
 onBeforeUnmount(() => {
   saveCourseCartToDB();
 });
-
-/*
-  Build Calendar
-*/
-// // 取得下個月1號為日曆初始日期
-// const today = new Date()
-// const nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 1)
-// let year = nextMonth.getFullYear()
-// let month = String(nextMonth.getMonth()).padStart(2, '0')
-// let day = String(nextMonth.getDate()).padStart(2, '0')
-
-// // 如果月份為 01，年份加 1
-// if (month === '01') {
-//     year++
-// }
-// const nextMonthFormatted = `${year}-${month}-${day}`
-
-// const calendarEl = document.getElementById('calendar')
-// const calendar = new Calendar(calendarEl, {
-//     plugins: [dayGridPlugin],
-//     // headerToolbar: {
-//     //     left: '',
-//     //     center: 'title',
-//     //     right: '',
-//     // },
-//     initialView: 'dayGridMonth',
-//     initialDate: nextMonthFormatted,
-//     timeZone: 'UTC',
-//     locale: 'zh-tw',
-//     height: 700,
-//     events: [],
-
-// })
-// calendar.render()
 </script>
 
 <style scoped>
