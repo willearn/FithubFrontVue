@@ -131,10 +131,10 @@
           </div>
         </div>
         <!-- 結帳 card -->
-        <div class="col-3 col-md-2 col-lg-2">
+        <div class="col-12 col-md-3 col-lg-3">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">總價:</h5>
+              <h4 class="card-title">總價:</h4>
               <p class="card-text">NT$&nbsp;{{ totalPrice }}</p>
               <div class="d-grid gap-3 col-12 mx-auto">
                 <router-link class="btn btn-primary" to="/checkout"
@@ -153,7 +153,7 @@
 /*
   imports
  */
-import { ref, reactive, onMounted, computed } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 import ProgressBar from "../components/checkout/util/progressbar.vue";
