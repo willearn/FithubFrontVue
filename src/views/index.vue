@@ -209,9 +209,11 @@
       </div>
       <div class="row gx-4 gx-lg-5">
         <div class="col-lg-3 col-md-3" v-for="(activity, activityindex) in activitys" :key="activityindex">
-          <img :src="activity.activitypic" style="width: 80%;height: 400px; cursor: pointer;" alt="維修中"
+          <img :src="activity.activitypic" style="width: 80%;height: 300px;; cursor: pointer;" alt="維修中"
             @click="handleImageClick(activity)">
-          <h3>{{ activity.activityname }}</h3>
+          <div>
+            <h3>{{ activity.activityname }}</h3>
+          </div>
         </div>
       </div>
     </div>
