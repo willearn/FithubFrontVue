@@ -252,14 +252,14 @@ const loadLocalStorageCart = () => {
 */
 const cartItemAmount = ref(0);
 const computedCartItemAmount = () => {
-  console.log(localStorage.getItem("courseCart").length + "-1");
+  // console.log(localStorage.getItem("courseCart").length + "-1");
   if (localStorage.getItem("courseCart").length == 0) {
     cartItemAmount.value = 0;
   } else {
     cartItemAmount.value = JSON.parse(
       localStorage.getItem("courseCart")
     ).length;
-    console.log(cartItemAmount.value);
+    // console.log(cartItemAmount.value);
   }
 };
 
@@ -393,6 +393,11 @@ const saveCourseCartToDB = () => {
 };
 
 /*
+  setInterval for CartItemAmount()
+*/
+// window.setInterval(() => computedCartItemAmount(), 1000);
+
+/*
   LifeCycle Hooks
 */
 onBeforeMount(() => {
@@ -411,7 +416,6 @@ onMounted(() => {
 
 onUpdated(() => {
   computedCartItemAmount();
-  console.log("onUpdated");
 });
 
 onBeforeUnmount(() => {
