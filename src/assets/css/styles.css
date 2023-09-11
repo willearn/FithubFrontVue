@@ -12698,7 +12698,9 @@ hr.divider-light {
 
   #mainNav .navbar-nav .nav-item .nav-link {
     color: rgba(255, 255, 255, 0.8);
-    padding: 0 1rem;
+    /* padding: 0.5rem; */
+    padding-right: var(--bs-navbar-nav-link-padding-x);
+    padding-left: var(--bs-navbar-nav-link-padding-x);
   }
 
   #mainNav .navbar-nav .nav-item .nav-link:hover {
@@ -12706,7 +12708,7 @@ hr.divider-light {
   }
 
   #mainNav .navbar-nav .nav-item:last-child .nav-link {
-    padding-right: 0;
+    /* padding-right: 0; */
   }
 
   #mainNav.navbar-shrink {
@@ -12855,6 +12857,12 @@ header.masthead .h1 {
 .mydiv {
   border: 1px solid #DFDFDF;
   border-radius: 10px;
+}
+
+.mynav {
+  background-color: white;
+  font-weight: 700;
+  font-size: 1.5rem;
 }
 
 /* antiquewhite */

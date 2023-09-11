@@ -1,6 +1,6 @@
 <template>
   <!-- navbar-->
-  <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top mynav" :id="navId">
     <div class="container px-4 px-lg-5">
       <router-link class="navbar-brand" to="/">Fithub</router-link>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse"
@@ -33,15 +33,11 @@
 
 <script setup>
 import router from "@/router"
-import { ref, onMounted} from "vue";
+import { ref, onMounted } from "vue";
 
 const isLogin = ref();
 const membername = ref();
-
-onMounted(() => {
-  isLogin.value = window.localStorage.getItem("isLogin") === 'true';
-})
-
+const navId = ref(null); // 定义navId变量
 
 const logout = () => {
   window.localStorage.setItem("isLogin", "")
@@ -53,7 +49,22 @@ const logout = () => {
 
 router.beforeResolve(to => {
   isLogin.value = window.localStorage.getItem("isLogin") === 'true';
-  membername.value =  localStorage.getItem("membername");
+  membername.value = localStorage.getItem("membername");
 })
+
+onMounted(() => {
+  isLogin.value = window.localStorage.getItem("isLogin") === 'true';
+  // 检查是否是首页
+})
+
+
+router.afterEach((to, from) => {
+  // 检查是否是首页
+  if (to.name === 'home') {
+    navId.value = 'mainNav'; // 设置 ID
+  } else {
+    navId.value = null; // 清除 ID
+  }
+});
 
 </script>

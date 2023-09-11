@@ -49,7 +49,7 @@
                     </option>
                 </select>
                 <label class="fs-3">日期:</label>
-                <input type="date" class="form-control-lg me-sm-5" v-model="selectedDate">
+                <input type="date" class="form-select-lg me-sm-5" v-model="selectedDate">
                 <label class="fs-3">時段:</label>
                 <select class="form-select-lg me-sm-5" v-model="selectedTime">
                     <option disabled selected value="0">請選擇時段</option>
