@@ -75,7 +75,7 @@
     <div class="container">
       <div class="row justify-content-center mb-5">
         <div class="col-12 col-md-6 col-lg-6">
-          <ProgressBar :percent="`25`"></ProgressBar>
+          <ProgressBar :percent="25"></ProgressBar>
         </div>
       </div>
       <div style="position: relative; top: 20%; left: 350px">
@@ -150,12 +150,35 @@
 /*
   imports
  */
+import { ref, reactive, onMounted, watch } from "vue";
+import { useRoute } from "vue-router";
+import axios from "axios";
 import ProgressBar from "../components/checkout/util/progressbar.vue";
 const URL = import.meta.env.VITE_API_JAVAURL;
 
 /*
   Load datas
 */
+// Load Classes data
+const pageClasses = ref([]);
+const loadPageClasses = async () => {
+  const URLAPI = `${URL}/classes/findClassesByIds`;
+  let courseCart = JSON.parse(localStorage.getItem("courseCart"));
+  const response = await axios.post(URLAPI, courseCart).catch((error) => {
+    console.log(error.toJSON());
+  });
+  // console.log(response);
+
+  pageClasses.value = response.data;
+  // console.log(pageClasses);
+};
+
+/*
+  LifeCycle Hooks
+*/
+onMounted(() => {
+  loadPageClasses();
+});
 </script>
 
 <style scoped>
