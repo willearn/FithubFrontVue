@@ -78,38 +78,30 @@
           <ProgressBar :percent="25"></ProgressBar>
         </div>
       </div>
-      <div style="position: relative; top: 20%; left: 350px">
-        <div class="d-grid gap-0" style="width: 50%; height: 60%">
+      <div class="row justify-content-center">
+        <div class="col-11 col-md-9 col-lg-9">
           <div class="p-2 bg-light border">
             <ul class="nav nav-tabs">
               <li class="nav-item">
-                <a class="nav-link active disabled" aria-current="page" href="#"
-                  ><u>購物車</u></a
+                <button
+                  class="nav-link active disabled"
+                  aria-current="page"
+                  href="#"
                 >
+                  購物車
+                </button>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#"><u>我的願望清單</u></a>
+                <button class="nav-link" href="#">我的願望清單</button>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#"><u>我的折價券</u></a>
+                <button class="nav-link" href="#">我的折價券</button>
               </li>
             </ul>
           </div>
-          <div style="width: 12rem; position: absolute; right: 38%">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Total:</h5>
-                <p class="card-text">NT$666</p>
-                <div class="d-grid gap-3 col-12 mx-auto">
-                  <router-link class="btn btn-primary" to="/checkout"
-                    >結帳</router-link
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
+
           <div class="p-2 bg-light border">
-            <table class="table align-middle">
+            <table class="table align-middle text-center">
               <thead class="table-light">
                 <tr>
                   <th scope="col">#</th>
@@ -138,10 +130,21 @@
             </table>
           </div>
         </div>
+        <!-- 結帳 card -->
+        <div class="col-3 col-md-2 col-lg-2">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">總價:</h5>
+              <p class="card-text">NT$&nbsp;{{ totalPrice }}</p>
+              <div class="d-grid gap-3 col-12 mx-auto">
+                <router-link class="btn btn-primary" to="/checkout"
+                  >結帳</router-link
+                >
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <router-link class="btn btn-secondary mt-5" to="/checkout"
-        >結帳頁面</router-link
-      >
     </div>
   </section>
 </template>
@@ -150,7 +153,7 @@
 /*
   imports
  */
-import { ref, reactive, onMounted, watch } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 import ProgressBar from "../components/checkout/util/progressbar.vue";
@@ -172,6 +175,18 @@ const loadPageClasses = async () => {
   pageClasses.value = response.data;
   // console.log(pageClasses);
 };
+
+/*
+  computed total price
+*/
+
+const totalPrice = computed(() => {
+  let sum = 0;
+  for (let i = 0; i < pageClasses.value.length; i++) {
+    sum += pageClasses.value[i].price;
+  }
+  return sum;
+});
 
 /*
   LifeCycle Hooks
