@@ -129,7 +129,7 @@
                 <div class="col-12 col-md-6 col-lg-4">
                   <button
                     class="btn btn btn-primary mx-2"
-                    @click="saveCourseCartToStore('stay')"
+                    @click="saveCourseCartToLocalStorage('stay')"
                   >
                     <i type="button" class="bi bi-cart4"></i
                     >&nbsp;&nbsp;加入購物車
@@ -138,7 +138,7 @@
                 <div class="col-12 col-md-6 col-lg-4">
                   <button
                     class="btn btn btn-primary mx-2"
-                    @click="saveCourseCartToStore('forward')"
+                    @click="saveCourseCartToLocalStorage('forward')"
                   >
                     <i type="button" class="bi bi-cart3"></i
                     >&nbsp;&nbsp;直接購買
@@ -185,7 +185,7 @@
     <router-link class="btn btn-secondary" to="/cart">購物車</router-link>
   </div>
 
-  <CartIcon></CartIcon>
+  <CartIcon :cartItemAmount="cartItemAmount"></CartIcon>
 </template>
 
 <script setup>
@@ -193,7 +193,14 @@
   imports
 */
 
-import { ref, reactive, onMounted, onBeforeUnmount, watch } from "vue";
+import {
+  ref,
+  reactive,
+  onBeforeMount,
+  onMounted,
+  onBeforeUnmount,
+  watch,
+} from "vue";
 import { RouterLink, useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import courseCard from "../components/course/courseCard.vue";
@@ -233,9 +240,25 @@ const selectedClasses = ref([]);
 
 // Load Local storage data
 const loadLocalStorageCart = () => {
-  let currentCourseCart = JSON.parse(localStorage.getItem("courseCart"));
-  if (currentCourseCart != null) {
+  if (localStorage.getItem("courseCart").length != 0) {
+    let currentCourseCart = JSON.parse(localStorage.getItem("courseCart"));
     selectedClasses.value = currentCourseCart;
+  }
+};
+
+/*
+  methods for localStorage
+*/
+const cartItemAmount = ref(0);
+const computedCartItemAmount = () => {
+  console.log(localStorage.getItem("courseCart").length + "-1");
+  if (localStorage.getItem("courseCart").length == 0) {
+    cartItemAmount.value = 0;
+  } else {
+    cartItemAmount.value = JSON.parse(
+      localStorage.getItem("courseCart")
+    ).length;
+    console.log(cartItemAmount.value);
   }
 };
 
@@ -343,7 +366,7 @@ const onClickedClass = (classId) => {
   displayClasses.price = clickedCLass["price"];
 };
 
-const saveCourseCartToStore = (forwardOrStay) => {
+const saveCourseCartToLocalStorage = (forwardOrStay) => {
   console.log("saveCartToLocalStorage");
   console.log(selectedClasses.value);
   if (
@@ -371,11 +394,23 @@ const saveCourseCartToDB = () => {
 /*
   LifeCycle Hooks
 */
+onBeforeMount(() => {
+  // build courseCart if it haven't been built
+  if (localStorage.getItem("courseCart") == null) {
+    localStorage.setItem("courseCart", selectedClasses.value);
+  }
+});
+
 onMounted(() => {
   loadPageCourse();
   loadPageClasses();
   loadRecommendedCourses();
   loadLocalStorageCart();
+});
+
+onUpdated(() => {
+  computedCartItemAmount();
+  console.log("onUpdated");
 });
 
 onBeforeUnmount(() => {
