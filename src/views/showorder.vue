@@ -83,6 +83,8 @@ const cancel = async () => {
                 <memberNavBar></memberNavBar>
             </div>
             <div class="col-lg-8 mydiv">
+                <h1 class="text-center">課程訂單</h1>
+                <hr>
                 <table id="departmentsTable" class="table table-bordered mt-3">
                     <thead class="align-middle text-center">
                         <tr class="table-success">

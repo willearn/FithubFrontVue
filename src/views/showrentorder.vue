@@ -65,6 +65,8 @@ const loadDatas = async () => {
                 <memberNavBar></memberNavBar>
             </div>
             <div class="col-lg-8 mydiv">
+                <h1 class="text-center">場地租借訂單</h1>
+                <hr>
                 <table id="rentorderTable" class="table table-bordered mt-3">
                     <thead class="align-middle text-center">
                         <tr class="table-success">

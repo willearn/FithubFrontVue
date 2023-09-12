@@ -5,7 +5,7 @@
                 <div class="row">
                     <div class="footer-widgets">
                         <!-- 公司資訊 -->
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-6">
+                        <div class="col-lg-2 offset-lg-2 col-md-6 col-sm-6 col-6">
                             <div class="single-widgets">
                                 <div class="widgets-content">
                                     <div class="widgets-title">
@@ -17,8 +17,8 @@
                                                 <p>名稱:Fithub</p>
                                             </li>
                                             <li>
-                                                <p>營業時間:星期一至星期五</p>
-                                                <p>上午 6:00 - 晚上 10:00</p>
+                                                <p>營業時間:星期一~星期日</p>
+                                                <p>上午 6:00 - 晚上 00:00</p>
                                             </li>
                                         </ul>
                                     </div>
@@ -26,17 +26,17 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-6 ps-3 pt-5">
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-6 pt-5">
                             <div class="single-widgets">
                                 <div class="widgets-content">
                                     <div class="widgets-link">
                                         <ul>
                                             <li>
                                                 <br>
-                                                <p>地址:高雄市</p>
+                                                <p>地址:801高雄市前金區中正四路211號8號</p>
                                             </li>
                                             <li>
-                                                <p>電話:0123456789</p>
+                                                <p>電話:0910778412</p>
                                             </li>
                                             <li>
                                                 <p>信箱:axcdsa@gmail.com</p>
@@ -49,7 +49,7 @@
 
 
                         <!-- 網站連結 -->
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-6 ps-5">
+                        <div class="col-lg-2 col-md-6 col-sm-6 col-6 ">
                             <div class="single-widgets">
                                 <div class="widgets-content">
                                     <div class="widgets-title">
@@ -58,16 +58,13 @@
                                     <div class="widgets-link">
                                         <ul>
                                             <li>
-                                                <a href="#">課程</a>
+                                                <router-link class="nav-link" to="/course">課程</router-link>
                                             </li>
                                             <li>
-                                                <a href="#">場地租借</a>
+                                                <router-link class="nav-link" to="/rent">場地租借</router-link>
                                             </li>
                                             <li>
-                                                <a href="#">最新消息</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">專業團隊</a>
+                                                <router-link class="nav-link" to="/member">會員專區</router-link>
                                             </li>
                                         </ul>
                                     </div>
@@ -76,7 +73,7 @@
                         </div>
 
                         <!-- Follow Us -->
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-6 text-center">
+                        <div class="col-lg-1 col-md-6 col-sm-6 col-6 text-center">
                             <div class="single-widgets">
                                 <div class="widgets-content">
                                     <div class="widgets-title">
@@ -85,7 +82,6 @@
                                     <div class="footer-logo">
                                         <a href="#"><img src="../assets/index/footer/013.png" alt=""></a>
                                         <a href="#"><img src="../assets/index/footer/023.png" alt=""></a>
-                                        <a href="#"><img src="../assets/index/footer/033.png" alt=""></a>
                                         <a href="#"><img src="../assets/index/footer/043.png" alt=""></a>
                                     </div>
                                 </div>

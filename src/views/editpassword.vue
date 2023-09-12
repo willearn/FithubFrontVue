@@ -109,6 +109,8 @@ const inputpassword = () => {
                 <memberNavBar></memberNavBar>
             </div>
             <div class="col-lg-8 mydiv">
+                <h1 class="text-center">重設密碼</h1>
+                <hr>
                 <div class="m-3">
                     輸入舊密碼<i class="bi bi-patch-exclamation-fill" title="使用google登入沒有設置過密碼則不用輸入"></i>
                     <span v-if="!checkpassword.oldpassword" class="text-danger">*</span>
