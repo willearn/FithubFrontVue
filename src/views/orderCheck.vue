@@ -50,15 +50,15 @@
                 <thead></thead>
                 <tbody>
                   <tr>
-                    <th scope="row">姓名</th>
+                    <th scope="row">姓名:{{ memberData.membername }}</th>
                     <td></td>
                   </tr>
                   <tr>
-                    <th scope="row">電話</th>
+                    <th scope="row">電話: {{ memberData.memberphoneno }}</th>
                     <td></td>
                   </tr>
                   <tr>
-                    <th scope="row">信箱</th>
+                    <th scope="row">信箱:{{ memberData.memberemail }}</th>
                     <td></td>
                   </tr>
                 </tbody>
@@ -134,23 +134,31 @@ const { courseCartStore } = storeToRefs(courseStore);
   訂單
 */
 // 根據你的資料結構組合需要的資料
+const courseCart = JSON.parse(localStorage.getItem("courseCart")); // 獲取courseCart數組
+
 const dataToSend = {
   orderDate: "",
   orderCondition: "未付款", // 寫死!!
-  memberId: 5,
+  memberId: localStorage.getItem("memberid"),
   orderTotalAmount: 100, // for (課程-折扣)
   orderPaymentMethod: "Credit Card", // 先寫死
-  orderstate: 1, //寫死
-  orderItem: [
-    {
-      classId: 1,
-      couponId: 1,
-    },
-    {
-      classId: 3,
-      couponId: 3,
-    },
-  ],
+  orderstate: 1, // 寫死
+  orderItem: courseCart.map((classId) => ({ classId, couponId: 1 })), // 使用map轉換courseCart數組
+};
+
+const memberId = localStorage.getItem("memberid");
+const memberData = ref({});
+
+const fetchMemberData = async () => {
+  try {
+    const id = memberId;
+    console.log(id);
+    const response = await axios.get(`${URL}/members/${id}`);
+    memberData.value = response.data;
+    console.log(memberData.value);
+  } catch (error) {
+    console.error("獲取會員資料失敗", error);
+  }
 };
 
 const postDataToApi = async () => {
@@ -245,6 +253,7 @@ const totalPrice = computed(() => {
 */
 onMounted(() => {
   loadPageClasses();
+  fetchMemberData();
 });
 </script>
 
