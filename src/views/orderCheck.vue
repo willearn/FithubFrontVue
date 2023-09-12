@@ -134,7 +134,7 @@ const { courseCartStore } = storeToRefs(courseStore);
   訂單
 */
 // 根據你的資料結構組合需要的資料
-const courseCart = JSON.parse(localStorage.getItem("courseCart")); // 獲取courseCart數組
+const courseCart = courseCartStore.value; // 獲取courseCart數組
 
 const dataToSend = {
   orderDate: "",
@@ -170,10 +170,7 @@ const postDataToApi = async () => {
     dataToSend.orderDate = formatted.value;
 
     // 發送 POST 請求到後端 API
-    const response = await axios.post(
-      "http://localhost:8080/fithub/orders",
-      dataToSend
-    );
+    const response = await axios.post(`${URL}/orders`, dataToSend);
     console.log(response.data);
     // 建立傳送給綠界的物件
     // 並把新增order的response傳給ecpayorderitem
