@@ -13,6 +13,7 @@ const submit = async () => {
     try {
         const response = await axios.post(`${url}/members/forgotpassword/${email.value}`)
         alert("請至信箱收取密碼重設信")
+        router.push({ name: "login" })
     } catch (error) {
         alert("無此信箱")
     }
@@ -29,10 +30,9 @@ const submit = async () => {
                 <div class="col-lg-8">
                     <div class="card" style="border-radius: 1rem;">
                         <div class="row g-0">
-                            <div class=" col-md-6 col-lg-5 d-none d-md-block"
-                                style="background-image: url('src/assets/index/other/4.jpg');background-size: cover;">
-                                <!-- <img src="../assets/index/other/4.jpg" alt="login form" class="img-fluid"
-                  style="border-radius: 1rem 0 0 1rem;" /> -->
+                            <div class=" col-md-6 col-lg-5 d-none d-md-block">
+                                <img src="../assets/index/other/4.jpg" alt="login form" class="img-fluid"
+                  style="border-radius: 1rem 0 0 1rem;" />
                             </div>
                             <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                 <div class="card-body p-4 p-lg-5 text-black">

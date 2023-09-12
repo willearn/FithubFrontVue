@@ -118,16 +118,17 @@ const checkVerificationCode = async () => {
 
 }
 
+const test = ref({})
+
 const startCountdown = () => {
 
   countdown.value = 60; // 设置倒计时秒数
-  timer = setInterval(() => {
+  test.value = timer = setInterval(() => {
     var verifybtn = document.getElementById('verifybtn')
     if (countdown.value > 0) {
       verifybtn.disabled = true;
       verifybutton.button = "重新發送驗證碼(" + countdown.value + ")"
       countdown.value -= 1;
-
     } else {
       clearInterval(timer); // 倒计时结束时清除定时器
       verifybutton.button = "發送驗證碼"
@@ -146,8 +147,15 @@ const inputpassword = () => {
 
 
 const goBack = () => {
+  
   router.back();
 }
+
+router.beforeResolve(async (to) => {
+  clearInterval(test.value)
+  console.log("test")
+});
+
 </script>
 
 <template>
