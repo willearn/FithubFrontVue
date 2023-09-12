@@ -185,7 +185,7 @@
     <router-link class="btn btn-secondary" to="/cart">購物車</router-link>
   </div>
 
-  <CartIcon :cartItemAmount="cartItemAmount"></CartIcon>
+  <CartIcon></CartIcon>
 </template>
 
 <script setup>
@@ -193,15 +193,7 @@
   imports
 */
 
-import {
-  ref,
-  reactive,
-  onBeforeMount,
-  onMounted,
-  onBeforeUnmount,
-  onUpdated,
-  watch,
-} from "vue";
+import { ref, reactive, onMounted, onBeforeUnmount, watch } from "vue";
 import { RouterLink, useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import courseCard from "../components/course/courseCard.vue";
@@ -238,31 +230,6 @@ watch(
 const courseStore = useCourseStore();
 const { courseCartStore } = storeToRefs(courseStore);
 const selectedClasses = ref([]);
-
-// Load Local storage data
-const loadLocalStorageCart = () => {
-  if (localStorage.getItem("courseCart").length != 0) {
-    let currentCourseCart = JSON.parse(localStorage.getItem("courseCart"));
-    selectedClasses.value = currentCourseCart;
-    courseCartStore.value = currentCourseCart;
-  }
-};
-
-/*
-  methods for localStorage
-*/
-const cartItemAmount = ref(0);
-const computedCartItemAmount = () => {
-  // console.log(localStorage.getItem("courseCart").length + "-1");
-  if (localStorage.getItem("courseCart").length == 0) {
-    cartItemAmount.value = 0;
-  } else {
-    cartItemAmount.value = JSON.parse(
-      localStorage.getItem("courseCart")
-    ).length;
-    // console.log(cartItemAmount.value);
-  }
-};
 
 /*
   Display Data
@@ -370,15 +337,13 @@ const onClickedClass = (classId) => {
 
 const saveCourseCartToLocalStorage = (forwardOrStay) => {
   console.log("saveCartToLocalStorage");
-  console.log(selectedClasses.value);
+  console.log(courseCartStore.value);
   if (
     // check classId have value and not repeat in LocalStorage
     displayClasses.classId != 0 &&
-    !selectedClasses.value.includes(displayClasses.classId)
+    !courseCartStore.value.includes(displayClasses.classId)
   ) {
-    selectedClasses.value.push(displayClasses.classId);
-    // insert selected classId to local storage
-    localStorage.setItem("courseCart", JSON.stringify(selectedClasses.value));
+    courseCartStore.value.push(displayClasses.classId);
   }
   if (forwardOrStay == "forward") {
     console.log("forward");
@@ -394,29 +359,13 @@ const saveCourseCartToDB = () => {
 };
 
 /*
-  setInterval for CartItemAmount()
-*/
-// window.setInterval(() => computedCartItemAmount(), 1000);
-
-/*
   LifeCycle Hooks
 */
-onBeforeMount(() => {
-  // build courseCart if it haven't been built
-  if (localStorage.getItem("courseCart") == null) {
-    localStorage.setItem("courseCart", selectedClasses.value);
-  }
-});
 
 onMounted(() => {
   loadPageCourse();
   loadPageClasses();
   loadRecommendedCourses();
-  loadLocalStorageCart();
-});
-
-onUpdated(() => {
-  computedCartItemAmount();
 });
 
 onBeforeUnmount(() => {

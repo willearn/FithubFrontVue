@@ -156,8 +156,16 @@
 import { ref, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
+import { useCourseStore } from "../stores/courseStore.js";
+import { storeToRefs } from "pinia";
 import ProgressBar from "../components/checkout/util/progressbar.vue";
 const URL = import.meta.env.VITE_API_JAVAURL;
+
+/*
+  Store and relative responsive datas and local storage
+*/
+const courseStore = useCourseStore();
+const { courseCartStore } = storeToRefs(courseStore);
 
 /*
   Load datas
@@ -166,10 +174,11 @@ const URL = import.meta.env.VITE_API_JAVAURL;
 const pageClasses = ref([]);
 const loadPageClasses = async () => {
   const URLAPI = `${URL}/classes/findClassesByIds`;
-  let courseCart = JSON.parse(localStorage.getItem("courseCart"));
-  const response = await axios.post(URLAPI, courseCart).catch((error) => {
-    console.log(error.toJSON());
-  });
+  const response = await axios
+    .post(URLAPI, courseCartStore.value)
+    .catch((error) => {
+      console.log(error.toJSON());
+    });
   // console.log(response);
 
   pageClasses.value = response.data;

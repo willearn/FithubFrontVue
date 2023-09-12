@@ -17,35 +17,23 @@
 /*
   Imports
 */
+import { computed } from "vue";
+import { useCourseStore } from "../../../stores/courseStore.js";
+import { storeToRefs } from "pinia";
 import { RouterLink } from "vue-router";
 
 /*
-  Props
- */
-const props = defineProps({
-  cartItemAmount: Number,
-});
-
-// const cartItemAmount = ref(0);
+  Store
+*/
+const courseStore = useCourseStore();
+const { courseCartStore } = storeToRefs(courseStore);
 
 /*
-  computted for localStorage
+  computted for store and localStorage
 */
-// const cartItemAmount = computed(() => {
-//   console.log(localStorage.getItem("courseCart").length);
-//   if (localStorage.getItem("courseCart").length == 0) {
-//     return 0;
-//   } else {
-//     return JSON.parse(localStorage.getItem("courseCart")).length;
-//   }
-// });
-// watch(localStorage.getItem("courseCart").length, () => {
-//   if (localStorage.getItem("courseCart").length == 0) {
-//     cartItemAmount = 0;
-//   } else {
-//     cartItemAmount = JSON.parse(localStorage.getItem("courseCart")).length;
-//   }
-// });
+const cartItemAmount = computed(() => {
+  return courseCartStore.value.length;
+});
 </script>
 
 <style scoped>
