@@ -15,7 +15,7 @@
                         <div class="card" style="width: 15rem; ">
                             <div class="card-body">
                                 <h5 class="card-title">Total:</h5>
-                                <p class="card-text">NT$666</p>
+                                <p class="card-text">{{dataToSend.orderTotalAmount}}</p>
                                 <div class="d-grid gap-3 col-12 mx-auto">
                                     <button @click="postDataToApi" class="btn btn-primary">結帳</button>
                                 </div>
@@ -117,7 +117,7 @@ const URL = import.meta.env.VITE_API_JAVAURL
 // 根據你的資料結構組合需要的資料
 const dataToSend = {    
     orderDate: '',
-    orderCondition: '未付款', // 寫死
+    orderCondition: '未付款', // 寫死!!
     memberId: 5, 
     orderTotalAmount: 100, // for (課程-折扣)
     orderPaymentMethod: 'Credit Card', // 先寫死

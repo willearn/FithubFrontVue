@@ -60,6 +60,11 @@
             <div class="card-body">
               <h4 class="card-title">總價:</h4>
               <p class="card-text">NT$&nbsp;{{ totalPrice }}</p>
+              <div v-if="error">{{ error }}</div>
+              <!-- 顯示折扣金額 -->
+              <div v-else-if="couponDiscount">
+                Discount$ {{ couponDiscount }}
+              </div>
               <div class="d-grid gap-3 col-12 mx-auto">
                 <router-link class="btn btn-primary" to="/ordercheck"
                   >結帳</router-link
@@ -76,6 +81,7 @@
                 <input
                   type="text"
                   class="form-control"
+                  v-model="couponCode"
                   id="inputPassword2"
                   placeholder="促銷代碼"
                 />
@@ -83,7 +89,11 @@
               <div class="col-12 my-2">
                 <div class="row d-grid justify-content-end">
                   <div class="col-12">
-                    <button type="submit" class="btn btn-primary mb-3">
+                    <button
+                      type="submit"
+                      class="btn btn-primary mb-3"
+                      @click="submitCoupon"
+                    >
                       輸入
                     </button>
                   </div>
@@ -122,6 +132,34 @@ const loadPageClasses = async () => {
 
   pageClasses.value = response.data;
   // console.log(pageClasses);
+};
+
+/*
+  Submit Coupon Data
+*/
+const couponCode = ref("");
+const couponDiscount = ref("");
+const error = ref("");
+
+const submitCoupon = async () => {
+  try {
+    console.log(couponCode.value);
+    const response = await axios.post(`${URL}/coupons/api/coupon`, {
+      couponcode: couponCode.value,
+    });
+
+    if (response.status === 200) {
+      couponDiscount.value = response.data;
+      error.value = "";
+    } else {
+      error.value = "發生錯誤"; // 处理后端返回的错误
+      couponDiscount.value = "";
+    }
+  } catch (err) {
+    console.error(err);
+    error.value = "發生錯誤";
+    couponDiscount.value = "";
+  }
 };
 
 /*
