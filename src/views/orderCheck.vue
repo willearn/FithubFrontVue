@@ -2,94 +2,103 @@
   <!-- 結帳頁面 -->
   <section class="page-section" id="about">
     <div class="container">
+      <!-- Progress Bar -->
       <div class="row justify-content-center mb-5">
-        <div class="col-12 col-md-6 col-lg-6">
+        <div class="col-10 col-md-6 col-lg-6">
           <ProgressBar :percent="75"></ProgressBar>
         </div>
       </div>
+      <!-- Order table start -->
       <div class="row justify-content-center">
         <div class="col-11 col-md-9 col-lg-7">
-          <div class="d-grid gap-3">
-            <div>
-              <table class="table caption-top">
+          <div>
+            <table class="table caption-top">
+              <caption>
+                訂單項目
+              </caption>
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">課程名稱</th>
+                  <th scope="col">課程教練</th>
+                  <th scope="col">課程時間</th>
+                  <th scope="col">單價</th>
+                  <th scope="col">折扣金額</th>
+                </tr>
+              </thead>
+              <tbody v-for="(item, index) in pageClasses">
+                <tr>
+                  <th scope="row">{{ index + 1 }}</th>
+                  <td>{{ item.courseName }}</td>
+                  <td>{{ item.employeename }}</td>
+                  <td>{{ item.classDate }}&nbsp;{{ item.classTime }}</td>
+                  <td>$NT &nbsp;{{ item.price }}</td>
+                  <td>折扣金額(待補)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Order table end -->
+          <hr />
+          <!-- 訂購人資訊 start -->
+          <div class="col-11 col-md-9 col-lg-7">
+            <div style="display: inline-block">
+              <table class="table caption-top" style="width: 450px">
                 <caption>
-                  訂單項目
+                  訂購人資訊
                 </caption>
-                <thead class="table-light">
+                <thead></thead>
+                <tbody>
                   <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">課程名稱</th>
-                    <th scope="col">課程教練</th>
-                    <th scope="col">課程時間</th>
-                    <th scope="col">單價</th>
-                    <th scope="col">折扣金額</th>
+                    <th scope="row">姓名</th>
+                    <td></td>
                   </tr>
-                </thead>
-                <tbody v-for="(item, index) in pageClasses">
                   <tr>
-                    <th scope="row">{{ index + 1 }}</th>
-                    <td>{{ item.courseName }}</td>
-                    <td>{{ item.employeename }}</td>
-                    <td>{{ item.classDate }}&nbsp;{{ item.classTime }}</td>
-                    <td>$NT &nbsp;{{ item.price }}</td>
-                    <td>折扣金額(待補)</td>
+                    <th scope="row">電話</th>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">信箱</th>
+                    <td></td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <div style="width: 900px; display: inline-block">
-              <div style="display: inline-block">
-                <table class="table caption-top" style="width: 450px">
-                  <caption>
-                    訂購人資訊
-                  </caption>
-                  <thead></thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">姓名</th>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <th scope="row">電話</th>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <th scope="row">信箱</th>
-                      <td></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div style="display: inline-block">
-                <table
-                  class="table caption-top"
-                  style="width: 400px; position: relative; left: 10%"
-                >
-                  <caption>
-                    付款方式
-                  </caption>
-                  <thead>
-                    <tr>
-                      <th>
-                        <img
-                          src="../assets/index/other/ECPay.png"
-                          style="width: 200px; height: auto"
-                        />
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody></tbody>
-                </table>
-              </div>
-            </div>
           </div>
+          <!-- 訂購人資訊 end -->
+          <hr />
+          <!-- 付款方式 start -->
+          <div class="col-10 col-md-9 col-lg-7">
+            <table
+              class="table caption-top"
+              style="width: 400px; position: relative; left: 10%"
+            >
+              <caption>
+                付款方式
+              </caption>
+              <thead>
+                <tr>
+                  <th>
+                    <img
+                      src="../assets/index/other/ECPay.png"
+                      style="width: 200px; height: auto"
+                    />
+                  </th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <!-- 付款方式 end -->
         </div>
         <!-- 結帳 -->
         <div class="col-12 col-md-3 col-lg-2">
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">總價:</h4>
-              <p class="card-text">{{ dataToSend.orderTotalAmount }}</p>
+              <p class="card-text">
+                $NT &nbsp;{{ dataToSend.orderTotalAmount }}
+              </p>
               <div class="d-grid gap-3 col-12 mx-auto">
                 <button @click="postDataToApi" class="btn btn-primary">
                   結帳
