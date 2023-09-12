@@ -49,7 +49,7 @@
                     </option>
                 </select>
                 <label class="fs-3">日期:</label>
-                <input type="date" class="form-select-lg me-sm-5" v-model="selectedDate">
+                <input type="date" class="form-select-lg me-sm-5" v-model="selectedDate" :min="minDate" :max="maxDate">
                 <label class="fs-3">時段:</label>
                 <select class="form-select-lg me-sm-5" v-model="selectedTime">
                     <option disabled selected value="0">請選擇時段</option>
@@ -103,7 +103,7 @@
 import axios from 'axios'
 import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import { reactive, ref, onMounted, watch } from 'vue'
+import { reactive, ref, onMounted, watch , computed  } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useRentOrderStore } from "../stores/rentorder.js"
 import { storeToRefs } from 'pinia'
@@ -174,6 +174,24 @@ const rentOrder = reactive({
     renttime: '',
     rentamount: '',
     rentstatus: '未付款',
+});
+
+// 計算下個月第一天
+const minDate = computed(() => {
+  const today = new Date();
+  const nextMonth = new Date(today);
+  nextMonth.setMonth(today.getMonth() + 1);
+  nextMonth.setDate(1);
+  return nextMonth.toISOString().split('T')[0];
+});
+
+// 計算下個月最後一天
+const maxDate = computed(() => {
+  const today = new Date();
+  const nextMonth = new Date(today);
+  nextMonth.setMonth(today.getMonth() + 2);
+  nextMonth.setDate(0);
+  return nextMonth.toISOString().split('T')[0];
 });
 
 
@@ -305,11 +323,11 @@ const getfindAllDateTimeFromRentOrderAndclass = async (selectedValue) => {
         const calendarEl = document.getElementById('calendar');
         const calendar = new Calendar(calendarEl, {
             plugins: [dayGridPlugin],
-            // headerToolbar: {
-            //     left: '',
-            //     center: 'title',
-            //     right: '',
-            // },
+            headerToolbar: {
+                left: '',
+                center: 'title',
+                right: '',
+            },
             initialView: 'dayGridMonth',
             initialDate: nextMonthFormatted,
             timeZone: 'UTC',

@@ -84,7 +84,7 @@
         </div>
         <div class="row g-0">
           <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="../assets/index/classroom/攀岩教室.jpg" title="攀岩教室">
+            <a class="portfolio-box" href="src/assets/index/classroom/攀岩教室.jpg" @click="handleLinkClick" title="攀岩教室">
               <img class="img-fluid" src="../assets/index/classroom/攀岩教室.jpg" alt="攀岩教室" />
               <div class="portfolio-box-caption">
                 <div class="project-category text-white-50">Category</div>
@@ -93,7 +93,7 @@
             </a>
           </div>
           <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="../assets/index/classroom/有氧大教室.jpg" title="有氧大教室">
+            <a class="portfolio-box" href="src/assets/index/classroom/有氧大教室.jpg" title="有氧大教室">
               <img class="img-fluid" src="../assets/index/classroom/有氧大教室.jpg" alt="有氧大教室" />
               <div class="portfolio-box-caption">
                 <div class="project-category text-white-50">Category</div>
@@ -102,7 +102,7 @@
             </a>
           </div>
           <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="../assets/index/classroom/有氧小教室.jpg" title="有氧小教室">
+            <a class="portfolio-box" href="src/assets/index/classroom/有氧小教室.jpg" title="有氧小教室">
               <img class="img-fluid" src="../assets/index/classroom/有氧小教室.jpg" alt="有氧小教室" />
               <div class="portfolio-box-caption">
                 <div class="project-category text-white-50">Category</div>
@@ -111,7 +111,7 @@
             </a>
           </div>
           <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="../assets/index/classroom/格鬥教室.jpg" title="格鬥教室">
+            <a class="portfolio-box" href="src/assets/index/classroom/格鬥教室.jpg" title="格鬥教室">
               <img class="img-fluid" src="../assets/index/classroom/格鬥教室.jpg" alt="格鬥教室" />
               <div class="portfolio-box-caption">
                 <div class="project-category text-white-50">Category</div>
@@ -120,7 +120,7 @@
             </a>
           </div>
           <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="../assets/index/classroom/空中瑜珈.jpg" title="空中瑜珈">
+            <a class="portfolio-box" href="src/assets/index/classroom/空中瑜珈.jpg" title="空中瑜珈">
               <img class="img-fluid" src="../assets/index/classroom/空中瑜珈.jpg" alt="空中瑜珈" />
               <div class="portfolio-box-caption">
                 <div class="project-category text-white-50">Category</div>
@@ -129,7 +129,7 @@
             </a>
           </div>
           <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="../assets/index/classroom/飛輪教室.jpg" title="飛輪教室">
+            <a class="portfolio-box" href="src/assets/index/classroom/飛輪教室.jpg" title="飛輪教室">
               <img class="img-fluid" src="../assets/index/classroom/飛輪教室.jpg" alt="飛輪教室" />
               <div class="portfolio-box-caption p-3">
                 <div class="project-category text-white-50">Category</div>
@@ -335,6 +335,13 @@ const handleImageClick = (activity) => {
   catch (error) {
     console.error('Error:', error);
   }
+};
+
+// 处理链接点击事件
+const handleLinkClick = (event) => {
+  event.preventDefault(); // 阻止默认链接行为
+
+  // 在这里可以添加您的自定义逻辑
 };
 
 

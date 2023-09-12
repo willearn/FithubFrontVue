@@ -16,10 +16,8 @@ const loadDatas = async () => {
     const response = await axios.get(`${url}/members/byemail/${window.localStorage.getItem("memberemail")}`)
     memberData.value = response.data
     // const response = await axios.post(`${url}/backstageaccounts/findPageByName`, datas)
-
     // allBackStageAccounts.value = response.data.list
     // allEmps.value = responseEmp.data.list
-
 }
 </script>
 
@@ -65,6 +63,8 @@ const loadDatas = async () => {
                 <memberNavBar></memberNavBar>
             </div>
             <div class="col-lg-8 mydiv">
+                <h1 class="text-center">會員專區</h1>
+                <hr>
                 <div class="m-3">
                     會員編號: {{ memberData.memberid }}
 

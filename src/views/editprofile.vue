@@ -81,6 +81,8 @@ const cancel = async () => {
                 <memberNavBar></memberNavBar>
             </div>
             <div class="col-lg-8 col-md-10 mydiv">
+                <h1 class="text-center">編輯個人資料</h1>
+                <hr>
                 <div class="m-3">
                     會員編號: {{ memberData.memberid }}
                 </div>
