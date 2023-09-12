@@ -118,9 +118,7 @@
     </div>
   </section>
 
-  <router-link class="btn btn-secondary mt-6" to="/course/detail/2"
-    >課程詳細資訊</router-link
-  >
+  <CartIcon></CartIcon>
 </template>
 
 <script setup>
@@ -148,6 +146,7 @@ import { ref, reactive, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 import courseCard from "../components/course/courseCard.vue";
+import CartIcon from "../components/course/util/icon-cart.vue";
 import pagination from "../components/course/util/pagination.vue";
 import listGroup from "../components/course/util/listGroup.vue";
 import { vFocus } from "../directives/vFocus";

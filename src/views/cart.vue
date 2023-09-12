@@ -123,7 +123,11 @@
                   <td>$NT &nbsp;{{ item.price }}</td>
                   <td>
                     <div type="button" class="bi bi-heart-fill"></div>
-                    <div type="button" class="bi bi-trash-fill"></div>
+                    <div
+                      type="button"
+                      class="bi bi-trash-fill"
+                      @click="deleteCartItem(item.classId)"
+                    ></div>
                   </td>
                 </tr>
               </tbody>
@@ -153,7 +157,7 @@
 /*
   imports
  */
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 import { useCourseStore } from "../stores/courseStore.js";
@@ -195,6 +199,32 @@ const totalPrice = computed(() => {
     sum += pageClasses.value[i].price;
   }
   return sum;
+});
+
+/*
+  Methods
+*/
+
+// Delete single cart items throuth deleting in store
+const deleteCartItem = (itemsId) => {
+  courseCartStore.value.shift(courseCartStore.value.indexOf(itemsId));
+};
+
+// Delete cart items throuth deleting in store
+// Not use yet
+const deleteCartItems = (itemsIds) => {
+  for (let i = 0; i < itemsIds.length; i++) {
+    let index = courseCartStore.value.indexOf(itemsIds[i]);
+    let deleteId = courseCartStore.value.shift(index);
+    console.log(deleteId);
+  }
+};
+
+/*
+  watcher for cart items in store
+*/
+watch(courseCartStore.value, () => {
+  loadPageClasses();
 });
 
 /*
