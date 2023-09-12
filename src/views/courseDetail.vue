@@ -235,8 +235,8 @@ watch(
 /*
   Store and relative responsive datas and local storage
 */
-// const courseStore = useCourseStore();
-// const { courseCartStore } = storeToRefs(courseStore);
+const courseStore = useCourseStore();
+const { courseCartStore } = storeToRefs(courseStore);
 const selectedClasses = ref([]);
 
 // Load Local storage data
@@ -244,6 +244,7 @@ const loadLocalStorageCart = () => {
   if (localStorage.getItem("courseCart").length != 0) {
     let currentCourseCart = JSON.parse(localStorage.getItem("courseCart"));
     selectedClasses.value = currentCourseCart;
+    courseCartStore.value = currentCourseCart;
   }
 };
 
