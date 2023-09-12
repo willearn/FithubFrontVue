@@ -85,23 +85,29 @@
               <li class="nav-item">
                 <button
                   class="nav-link active disabled"
-                  aria-current="page"
-                  href="#"
+                  @click="changePage('cart')"
                 >
                   購物車
                 </button>
               </li>
               <li class="nav-item">
-                <button class="nav-link" href="#">我的願望清單</button>
+                <button class="nav-link" @click="changePage('wishlist')">
+                  我的願望清單
+                </button>
               </li>
               <li class="nav-item">
-                <button class="nav-link" href="#">我的折價券</button>
+                <button class="nav-link" @click="changePage('coupon')">
+                  我的折價券
+                </button>
               </li>
             </ul>
           </div>
 
           <div class="p-2 bg-light border">
-            <table class="table align-middle text-center">
+            <table
+              v-if="cartOrWishListOrCoupon == 'cart'"
+              class="table align-middle text-center"
+            >
               <thead class="table-light">
                 <tr>
                   <th scope="col">#</th>
@@ -122,7 +128,11 @@
                   <td>{{ item.classDate }}&nbsp;{{ item.classTime }}</td>
                   <td>$NT &nbsp;{{ item.price }}</td>
                   <td>
-                    <div type="button" class="bi bi-heart-fill"></div>
+                    <div
+                      type="button"
+                      class="bi bi-heart-fill"
+                      @click="addToWishlist(item.classId)"
+                    ></div>
                     <div
                       type="button"
                       class="bi bi-trash-fill"
@@ -132,6 +142,10 @@
                 </tr>
               </tbody>
             </table>
+            <!-- wishlist -->
+            <courseWishlist
+              v-else-if="cartOrWishListOrCoupon == 'wishlist'"
+            ></courseWishlist>
           </div>
         </div>
         <!-- 結帳 card -->
@@ -163,17 +177,33 @@ import axios from "axios";
 import { useCourseStore } from "../stores/courseStore.js";
 import { storeToRefs } from "pinia";
 import ProgressBar from "../components/checkout/util/progressbar.vue";
+import courseWishlist from "../components/checkout/courseWishlist.vue";
 const URL = import.meta.env.VITE_API_JAVAURL;
+
+/*
+  Decide which page to render
+*/
+const cartOrWishListOrCoupon = ref("cart");
+const changePage = (pageName) => {
+  if (pageName == "cart") {
+    cartOrWishListOrCoupon.value = "cart";
+  } else if (pageName == "wishlist") {
+    cartOrWishListOrCoupon.value = "wishlist";
+  } else {
+    alert("coupon not yet");
+  }
+};
 
 /*
   Store and relative responsive datas and local storage
 */
 const courseStore = useCourseStore();
-const { courseCartStore } = storeToRefs(courseStore);
+const { courseCartStore, courseWishlistStore } = storeToRefs(courseStore);
 
 /*
   Load datas
 */
+
 // Load Classes data
 const pageClasses = ref([]);
 const loadPageClasses = async () => {
@@ -202,12 +232,12 @@ const totalPrice = computed(() => {
 });
 
 /*
-  Methods
+  Methods for delete cart items
 */
 
 // Delete single cart items throuth deleting in store
-const deleteCartItem = (itemsId) => {
-  courseCartStore.value.shift(courseCartStore.value.indexOf(itemsId));
+const deleteCartItem = (classId) => {
+  courseCartStore.value.shift(courseCartStore.value.indexOf(classId));
 };
 
 // Delete cart items throuth deleting in store
@@ -226,6 +256,18 @@ const deleteCartItems = (itemsIds) => {
 watch(courseCartStore.value, () => {
   loadPageClasses();
 });
+
+/*
+  Add classes to courseWishlistStore and local storage
+*/
+const addToWishlist = (classId) => {
+  if (!courseWishlistStore.value.includes(classId)) {
+    courseWishlistStore.value.push(classId);
+    console.log(courseWishlistStore.value);
+  } else {
+    alert("NOT addToWishlist");
+  }
+};
 
 /*
   LifeCycle Hooks

@@ -6,13 +6,18 @@ export const useCourseStore = defineStore(
   () => {
     // 用setup的方式定義
     const courseCartStore = ref([]);
-    return { courseCartStore };
+    const courseWishlistStore = ref([]);
+    return { courseCartStore, courseWishlistStore };
   },
   {
     persist: [
       {
         paths: ["courseCartStore"],
         storage: localStorage,
+      },
+      {
+        paths: ["courseWishlistStore"],
+        storage: sessionStorage,
       },
     ],
   }
