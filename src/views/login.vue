@@ -37,6 +37,8 @@ const callback = async (response) => {
 
   const userData = decodeCredential(response.credential)
 
+  console.log(userData)
+
   let res = await googleLogin(userData.email, userData.name)
   if (res.status == 0) {
     router.push({ name: "home" })

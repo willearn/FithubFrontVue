@@ -29,7 +29,7 @@ const verify = reactive({
   verificationcode: "",
 });
 
-const verifystatus = ref()
+const verifystatus = ref(false)
 
 const countdown = ref(0);
 let timer;
@@ -40,6 +40,7 @@ const verifybutton = reactive({
 
 const register = async () => {
   //  
+  // console.log(!verifystatus.value)
 
   if (
     !registerData.memberemail.trim() ||
@@ -56,7 +57,7 @@ const register = async () => {
     return;
   }
 
-  if (!verifystatus) {
+  if (!verifystatus.value) {
     alert("請驗證信箱")
     return;
   }
@@ -89,6 +90,7 @@ const sendVerificationCode = async () => {
     const response = await axios.post(`${url}/verificationcode`, verify);
     if (response.status == 200) {
       startCountdown();
+      alert("發送成功，請至信箱收取驗證碼")
     }
   } catch (error) {
     if (error.response.status == 400) {
