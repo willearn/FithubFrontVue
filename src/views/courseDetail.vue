@@ -182,7 +182,6 @@
         </div>
       </div>
     </section>
-    <router-link class="btn btn-secondary" to="/cart">購物車</router-link>
   </div>
 
   <CartIcon></CartIcon>
@@ -200,7 +199,7 @@ import courseCard from "../components/course/courseCard.vue";
 import FullCalendar from "../components/course/courseCalendar.vue";
 import CartIcon from "../components/course/util/icon-cart.vue";
 import { vFocus } from "../directives/vFocus";
-import { useCourseStore } from "../stores/courseStore.js";
+import { useCartStore } from "../stores/courseStore.js";
 import { storeToRefs } from "pinia";
 const URL = import.meta.env.VITE_API_JAVAURL;
 
@@ -227,8 +226,8 @@ watch(
 /*
   Store and relative responsive datas and local storage
 */
-const courseStore = useCourseStore();
-const { courseCartStore } = storeToRefs(courseStore);
+const cartStore = useCartStore();
+const { courseCartStore } = storeToRefs(cartStore);
 const selectedClasses = ref([]);
 
 /*

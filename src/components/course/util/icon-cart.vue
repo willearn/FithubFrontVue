@@ -18,15 +18,15 @@
   Imports
 */
 import { computed } from "vue";
-import { useCourseStore } from "../../../stores/courseStore.js";
+import { useCartStore } from "../../../stores/courseStore.js";
 import { storeToRefs } from "pinia";
 import { RouterLink } from "vue-router";
 
 /*
   Store
 */
-const courseStore = useCourseStore();
-const { courseCartStore } = storeToRefs(courseStore);
+const cartStore = useCartStore();
+const { courseCartStore } = storeToRefs(cartStore);
 
 /*
   computted for store and localStorage

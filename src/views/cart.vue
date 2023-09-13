@@ -167,7 +167,10 @@
           </div>
         </div>
         <!-- 結帳 card -->
-        <div class="col-12 col-md-3 col-lg-2">
+        <div
+          v-if="cartOrWishListOrCoupon == 'cart'"
+          class="col-12 col-md-3 col-lg-2"
+        >
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">總價:</h4>
@@ -192,7 +195,8 @@
 import { ref, reactive, onMounted, computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
-import { useCourseStore } from "../stores/courseStore.js";
+import { useDialog } from "naive-ui";
+import { useCartStore, useWishlistStore } from "../stores/courseStore.js";
 import { storeToRefs } from "pinia";
 import ProgressBar from "../components/checkout/util/progressbar.vue";
 import courseWishlist from "../components/checkout/courseWishlist.vue";
@@ -229,7 +233,7 @@ const changePage = (pageName) => {
 /*
   watcher for page change
 */
-watch(cartOrWishListOrCoupon.value, (newPageName) => {
+watch(cartOrWishListOrCoupon, (newPageName) => {
   if (newPageName == "cart") {
     loadPageClasses();
   }
@@ -238,8 +242,10 @@ watch(cartOrWishListOrCoupon.value, (newPageName) => {
 /*
   Store and relative responsive datas and local storage
 */
-const courseStore = useCourseStore();
-const { courseCartStore, courseWishlistStore } = storeToRefs(courseStore);
+const cartStore = useCartStore();
+const { courseCartStore } = storeToRefs(cartStore);
+const wishlistStore = useWishlistStore();
+const { courseWishlistStore } = storeToRefs(wishlistStore);
 
 /*
   Load datas
@@ -302,12 +308,28 @@ watch(courseCartStore.value, () => {
   Add classes to courseWishlistStore and local storage
 */
 const addToWishlist = (classId) => {
+  // Delete utem from cart ,then add to wishlist
   if (!courseWishlistStore.value.includes(classId)) {
+    deleteCartItem(classId);
     courseWishlistStore.value.push(classId);
     console.log(courseWishlistStore.value);
+    // Use Naive UI Dialog
+    handleSuccess("課程已成功加入願望清單");
   } else {
-    alert("NOT addToWishlist");
+    handleSuccess("課程已存在您的願望清單");
   }
+};
+
+/*
+  Naive UI
+*/
+const dialog = useDialog();
+const handleSuccess = (contentText) => {
+  dialog.success({
+    title: "Success",
+    content: contentText,
+    positiveText: "確定",
+  });
 };
 
 /*

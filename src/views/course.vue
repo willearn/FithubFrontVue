@@ -100,7 +100,6 @@
               class="col-3 mx-2 my-3"
               :cardAmount="index"
               :course="course"
-              :isLike="isLike"
             ></courseCard>
           </div>
 
@@ -190,7 +189,6 @@ const loadAllCourseCategories = async () => {
 
 // Load course data of all categories
 const pageCourses = ref([]);
-let isLike = ref(false); //可拿掉
 const paginationData = reactive({
   page: 1,
   totalPages: 1,

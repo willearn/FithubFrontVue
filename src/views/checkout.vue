@@ -113,7 +113,7 @@
  */
 import { ref, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
-import { useCourseStore } from "../stores/courseStore.js";
+import { useCartStore } from "../stores/courseStore.js";
 import { storeToRefs } from "pinia";
 import axios from "axios";
 import ProgressBar from "../components/checkout/util/progressbar.vue";
@@ -122,8 +122,8 @@ const URL = import.meta.env.VITE_API_JAVAURL;
 /*
   Store and relative responsive datas and local storage
 */
-const courseStore = useCourseStore();
-const { courseCartStore } = storeToRefs(courseStore);
+const cartStore = useCartStore();
+const { courseCartStore } = storeToRefs(cartStore);
 
 /*
   Load datas

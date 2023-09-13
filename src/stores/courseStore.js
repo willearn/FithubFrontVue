@@ -1,13 +1,12 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 
-export const useCourseStore = defineStore(
-  "course",
+export const useCartStore = defineStore(
+  "cart",
   () => {
     // 用setup的方式定義
     const courseCartStore = ref([]);
-    const courseWishlistStore = ref([]);
-    return { courseCartStore, courseWishlistStore };
+    return { courseCartStore };
   },
   {
     persist: [
@@ -15,9 +14,22 @@ export const useCourseStore = defineStore(
         paths: ["courseCartStore"],
         storage: localStorage,
       },
+    ],
+  }
+);
+
+export const useWishlistStore = defineStore(
+  "wishlist",
+  () => {
+    // 用setup的方式定義
+    const courseWishlistStore = ref([]);
+    return { courseWishlistStore };
+  },
+  {
+    persist: [
       {
         paths: ["courseWishlistStore"],
-        storage: sessionStorage,
+        storage: localStorage,
       },
     ],
   }

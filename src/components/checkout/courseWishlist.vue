@@ -41,18 +41,19 @@
   imports
  */
 
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import axios from "axios";
-import { useCourseStore } from "../../stores/courseStore.js";
+import { useCartStore, useWishlistStore } from "../../stores/courseStore.js";
 import { storeToRefs } from "pinia";
 const URL = import.meta.env.VITE_API_JAVAURL;
 
 /*
   Store and relative responsive datas and local storage
 */
-const courseStore = useCourseStore();
-const { courseCartStore, courseWishlistStore } = storeToRefs(courseStore);
-
+const cartStore = useCartStore();
+const { courseCartStore } = storeToRefs(cartStore);
+const wishlistStore = useWishlistStore();
+const { courseWishlistStore } = storeToRefs(wishlistStore);
 /*
   Load datas
 */
@@ -74,16 +75,34 @@ const loadPageClasses = async () => {
 };
 
 /*
-  Add wishlist item to cart
+  Methods for delete cart items
+*/
+
+// Delete single wishlist item throuth deleting in store
+const deleteWishlistItem = (classId) => {
+  console.log(classId);
+  courseWishlistStore.value.shift(courseWishlistStore.value.indexOf(classId));
+};
+
+/*
+  Methods Add wishlist item to cart
 */
 // const emits = defineEmits(["addWishlistToCartEmit"]);
 const addWishlistToCart = (classId) => {
   if (!courseCartStore.value.includes(classId)) {
     courseCartStore.value.push(classId);
+    deleteWishlistItem(classId);
   } else {
     alert("NOT addToCart");
   }
 };
+
+/*
+  watcher for wishlist items in store
+*/
+watch(courseWishlistStore.value, () => {
+  loadPageClasses();
+});
 
 /*
   LifeCycle Hooks
