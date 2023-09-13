@@ -16,7 +16,7 @@ onMounted(() => {
 
 const memberData = ref({})
 
-const rentOrders = reactive({});
+const rentOrders = ref({});
 
 const totalPages = ref(0);
 const datas = reactive({
@@ -37,9 +37,30 @@ const loadDatas = async () => {
 
     console.log(response.data)
 
+    rentOrders.value = response.data.list
+    
+    totalPages.value = +datas.rows === 0 ? 1 : Math.ceil(response.data.count / datas.rows)
 
-    Object.assign(rentOrders, response.data)
+}
 
+//paging 由子元件觸發
+const clickHandler = page => {
+    datas.start = page - 1
+    loadDatas()
+}
+
+//一頁幾筆資料
+const changeHandler = value => {
+    datas.rows = value
+    datas.start = 0
+    loadDatas()
+}
+
+//搜尋
+const inputHandler = value => {
+    datas.rentDate = value
+    datas.start = 0
+    loadDatas()
 }
 
 </script>
@@ -109,7 +130,7 @@ const loadDatas = async () => {
                             <td>{{ rent.rentorderid }}</td>
                             <td>{{ rent.rentdate }}</td>
                             <td>{{ rent.renttime }}</td>
-                            <td>{{ rent.classroom.classroomName }}</td>
+                            <td>{{ rent.classroomName }}</td>
                             <td>{{ rent.rentstatus }}</td>
                             <td>{{ rent.rentamount }}</td>
                         </tr>
