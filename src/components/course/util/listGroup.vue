@@ -34,7 +34,7 @@ import { RouterLink } from "vue-router";
 const props = defineProps({
   urlPattern: String,
   allCourseCategories: Object,
-  pageCourseCategoryId: Number,
+  pageCourseCategoryId: String,
 });
 </script>
 
