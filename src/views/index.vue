@@ -230,8 +230,7 @@
       </div>
     </div>
   </section>
-
-  <button ref="mybutton" class="btn btn-primary " id="btn-back-to-top">TOP</button>
+  <n-back-top />
 </template>
 
 
@@ -252,7 +251,6 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
 import Swal from 'sweetalert2'
 
 const url = import.meta.env.VITE_API_JAVAURL
-
 
 const settings = {
   itemsToShow: 1,
@@ -381,43 +379,14 @@ const handleImageClick = (activity) => {
 };
 
 
-// 返回頁頂
-function backToTop() {
-  // document.body.scrollTop = 0;
-  // document.documentElement.scrollTop = 0;
-}
-
-function scrollFunction() {
-  if (
-    document.body.scrollTop > 300 ||
-    document.documentElement.scrollTop > 300
-  ) {
-    mybutton.value.style.display = 'block';
-  } else {
-    mybutton.value.style.display = 'none';
-  }
-}
-
 onMounted(() => {
   AOS.init({
     once: true // 動畫只執行一次
   });
   getActivitys();
   getCoachPics();
-  // mybutton.value.addEventListener('click', backToTop);
-  // mybutton.value.style.display = 'block';
-  // window.addEventListener('scroll', scrollFunction);
-  // scrollFunction(); // 初始化時檢查滾動位置以設置按鈕的初始狀態
 });
 
 </script>
 
-<style scoped>
-#btn-back-to-top {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  display: none;
-  /* 初始時隱藏按鈕 */
-}
-</style>
+<style scoped></style>
