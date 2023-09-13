@@ -81,7 +81,9 @@ const getActivityDeatil = async () => {
 };
 
 const goBack = () => {
-    router.back();
+    router.push({
+        path: "/",
+    });
 }
 
 onMounted(() => {

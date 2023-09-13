@@ -79,6 +79,7 @@ import { useRouter } from 'vue-router'
 import { useNow, useDateFormat } from '@vueuse/core'
 import { useRentOrderStore } from "../stores/rentorder.js"
 import { storeToRefs } from 'pinia'
+import Swal from 'sweetalert2'
 const url = import.meta.env.VITE_API_JAVAURL
 
 // 測試:使用query接值
@@ -141,19 +142,29 @@ const insertRentOrder = async () => {
 
 // 取消訂單
 const cancleRentOrder = async () => {
-    const checkDelete = window.confirm('確定要取消訂單嗎？');
-    if (checkDelete) {
-        try {
-            alert('已取消')
-            const response = await axios.delete(`${url}/rent/delete/${selectedClassroom.value.rentOrderid}`);
-            console.log(response.data);
-            selectedClassroom.value = null;
-            router.back();
-        } catch (error) {
-            console.error('cancleRentOrder Error:', error);
-        }
-    } else {
 
+    try {
+        Swal.fire({
+            title: '確定要取消訂單嗎？',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '確定',
+            cancelButtonText:'取消'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    '已取消訂單!'
+                )
+                const response = await axios.delete(`${url}/rent/delete/${selectedClassroom.value.rentOrderid}`);
+                // console.log(response.data);
+                selectedClassroom.value = null;
+                router.back();
+            }
+        })
+    } catch (error) {
+        console.error('cancleRentOrder Error:', error);
     }
 };
 
