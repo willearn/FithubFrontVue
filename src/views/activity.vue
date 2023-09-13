@@ -38,13 +38,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 offset-lg-2 mybg-light text-center">
-                    <h1>活動名稱</h1>
-                    <h2>活動日期</h2>
+                    <h1>{{ activityDeatil.activityname }}</h1>
+                    <h2>{{ activityDeatil.activitydate }}</h2>
                     <hr />
-                    <div class="col-lg-8 offset-md-2" id="activitydescription">
+                    <div class="col-lg-8 offset-md-2" id="activityDeatil">
                     </div>
                     <hr />
-                    <button class="btn btn-primary ">返回首頁</button>
+                    <button class="btn btn-primary" @click="goBack">返回首頁</button>
                 </div>
             </div>
         </div>
@@ -54,33 +54,38 @@
 <script setup>
 import axios from 'axios'
 import { useRoute, useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
 const url = import.meta.env.VITE_API_JAVAURL
 
 // 測試:使用query接值
 const router = useRouter();
-const id = router.currentRoute.value.query.activityid;
+const activityid = router.currentRoute.value.query.activityid;
 
-const activityid = '6'
+//取得活動內容
+// const activityDescription = ref([])
+const activityDeatil = ref({});
 
-// 檢查預定場地是否被使用，將選擇的資料傳到訂單頁面
-const getActivitydescription = async () => {
+
+const getActivityDeatil = async () => {
     try {
-        const response = await axios.get(`${url}/activity/findActivitydescriptionById/${activityid}`);
-        const activityDescription = response.data;
+        const response = await axios.get(`${url}/activity/findDescriptionDateNameById/${activityid}`);
+        activityDeatil.value = response.data;
 
-        // 取得activitydescription的div
-        const activityDescriptionDiv = document.getElementById('activitydescription');
+        const activityDeatilDiv = document.getElementById('activityDeatil');
 
         // 將activityDescription的内容設置為<div>的innerHTML
-        activityDescriptionDiv.innerHTML = activityDescription;
+        activityDeatilDiv.innerHTML = activityDeatil.value.activitydescription;
     } catch (error) {
         console.error('Error:', error);
     }
 };
 
+const goBack = () => {
+    router.back();
+}
+
 onMounted(() => {
-    getActivitydescription();
+    getActivityDeatil();
 });
 </script>
 

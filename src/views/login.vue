@@ -1,11 +1,10 @@
 <script setup>
 import axios from "axios";
-import { login , googleLogin} from "@/api/login"
+import { login, googleLogin } from "@/api/login"
 import router from "@/router"
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive } from "vue";
 import { GoogleLogin, decodeCredential } from 'vue3-google-login'
-import { googleAuthCodeLogin } from "vue3-google-login"
-import { googleTokenLogin } from "vue3-google-login"
+import Swal from 'sweetalert2'
 
 const url = import.meta.env.VITE_API_JAVAURL
 
@@ -21,23 +20,32 @@ const loginData = reactive({
 });
 
 const submit = async () => {
-  let res = await login(loginData.memberemail, loginData.memberpassword)
-  if (res.status == 0) {
-    router.push({ name: "home" })
+  try {
+    let res = await login(loginData.memberemail, loginData.memberpassword)
+    if (res.status == 0) {
+      router.push({ name: "home" })
+    } else {
+      Swal.fire({
+        title: '帳號密碼錯誤',
+        icon: 'error',
+        confirmButtonText: '確定'
+      })
+    }
+  } catch (error) {
+
   }
 }
 
 const callback = async (response) => {
   // This callback will be triggered when the user selects or login to
   // his Google account from the popup
-  console.log("Handle the response", response)
 
   const userData = decodeCredential(response.credential)
-  console.log("Handle the userData", userData.email)
-  console.log("Handle the userData", userData.name)
 
-  let res = await googleLogin(userData.email , userData.name)
-  if(res.status == 0){
+  console.log(userData)
+
+  let res = await googleLogin(userData.email, userData.name)
+  if (res.status == 0) {
     router.push({ name: "home" })
   }
 }
@@ -45,15 +53,15 @@ const callback = async (response) => {
 </script>
 
 <template>
- <section class="vh-100 pt-5" style="background-color: #E8E1D4;">
+  <section class="vh-100 pt-5" style="background-color: #E8E1D4;">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-lg-8">
           <div class="card" style="border-radius: 1rem;">
             <div class="row g-0">
-              <div class=" col-md-6 col-lg-5 d-none d-md-block" style="background-image: url('src/assets/index/other/4.jpg');background-size: cover;">
-                <!-- <img src="../assets/index/other/4.jpg" alt="login form" class="img-fluid"
-                  style="border-radius: 1rem 0 0 1rem;" /> -->
+              <div class=" col-md-6 col-lg-5 d-none d-md-block">
+                <img src="../assets/index/other/4.jpg" alt="login form" class="myimg-full"
+                  style="border-radius: 1rem 0 0 1rem;" />
               </div>
               <div class="col-md-6 col-lg-7 d-flex align-items-center">
                 <div class="card-body p-4 p-lg-5 text-black">
@@ -68,13 +76,13 @@ const callback = async (response) => {
                     <input type="password" class="form-control form-control-lg" v-model="loginData.memberpassword" />
                   </div>
                   <div class="pt-1 mb-4">
-                    <button class="btn btn-dark btn-lg btn-block" type="button" @click="submit()">登入</button>
+                    <button class="btn btn-dark btn-lg btn-block" type="button" @click="submit">登入</button>
                   </div>
-                  <a class="small text-muted" href="#!">忘記密碼</a>
+                  <a class="small text-muted"><router-link to="/forgotpassword">忘記密碼</router-link></a>
                   <p class="pb-lg-2 mb-5">還沒有會員?<router-link to="/register">立即註冊</router-link>
-                <div>
-                  <GoogleLogin :callback="callback"></GoogleLogin>
-                </div>
+                  <div>
+                    <GoogleLogin :callback="callback"></GoogleLogin>
+                  </div>
                   </p>
                 </div>
               </div>

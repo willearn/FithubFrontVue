@@ -49,7 +49,7 @@
                     </option>
                 </select>
                 <label class="fs-3">日期:</label>
-                <input type="date" class="form-control-lg me-sm-5" v-model="selectedDate">
+                <input type="date" class="form-select-lg me-sm-5" v-model="selectedDate" :min="minDate" :max="maxDate">
                 <label class="fs-3">時段:</label>
                 <select class="form-select-lg me-sm-5" v-model="selectedTime">
                     <option disabled selected value="0">請選擇時段</option>
@@ -103,19 +103,13 @@
 import axios from 'axios'
 import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import { reactive, ref, onMounted, watch } from 'vue'
+import { reactive, ref, onMounted, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useRentOrderStore } from "../stores/rentorder.js"
 import { storeToRefs } from 'pinia'
+import Swal from 'sweetalert2'
 const url = import.meta.env.VITE_API_JAVAURL
 
-// 使用函式表達式給變數countStore賦值，這邊變數會習慣用import進來的檔案名稱並去除use命名，只要看到Store就是與pinia有關。
-// const countStore = useCounterStore()
-// 使用解構的方式取得useCounterStore()內的函式
-// const { increment } = countStore
-// 也可以使用 countStore.increment()來執行函式
-// 使用useCounterStore()的變數，不能直接解構變數，會去除掉proxy也就是解包，會造成資料無法響應式，所以要用到storeToRefs這個方法把變數在塞回ref內
-// const { count, doubleCount } = storeToRefs(countStore)
 
 const rentOrderStore = useRentOrderStore();
 const { selectedClassroom } = storeToRefs(rentOrderStore);
@@ -176,6 +170,24 @@ const rentOrder = reactive({
     rentstatus: '未付款',
 });
 
+// 計算下個月第一天
+const minDate = computed(() => {
+    const today = new Date();
+    const nextMonth = new Date(today);
+    nextMonth.setMonth(today.getMonth() + 1);
+    nextMonth.setDate(1);
+    return nextMonth.toISOString().split('T')[0];
+});
+
+// 計算下個月最後一天
+const maxDate = computed(() => {
+    const today = new Date();
+    const nextMonth = new Date(today);
+    nextMonth.setMonth(today.getMonth() + 2);
+    nextMonth.setDate(0);
+    return nextMonth.toISOString().split('T')[0];
+});
+
 
 // 篩選狀態為開放的場地
 const getfindAllClassroomNameAndStatusAndId = async () => {
@@ -213,14 +225,25 @@ const reserve = async () => {
     try {
 
         if (selectedClassroomId.value === 0) {
-            alert('請選擇場地')
+            Swal.fire({
+                title: '請選擇場地',
+                icon: 'warning',
+                confirmButtonText: '確定'
+            })
             return
-            //需修改
         } else if (selectedDate.value === '') {
-            alert('請選擇日期')
+            Swal.fire({
+                title: '請選擇日期',
+                icon: 'warning',
+                confirmButtonText: '確定'
+            })
             return
         } else if (selectedTime.value === 0) {
-            alert('請選擇時段')
+            Swal.fire({
+                title: '請選擇時段',
+                icon: 'warning',
+                confirmButtonText: '確定'
+            })
             return
         }
 
@@ -236,7 +259,11 @@ const reserve = async () => {
         // console.log(responseData)
 
         if (responseData === true) {
-            alert('已被預訂')
+            Swal.fire({
+                title: '已被預訂',
+                icon: 'error',
+                confirmButtonText: '確定'
+            })
         } else {
 
             // 篩選出選擇的場地資訊並傳到訂單頁面 find篩選出為物件(只返回第一個匹配的元素)
@@ -262,7 +289,7 @@ const reserve = async () => {
             const localStorageData = localStorage.getItem('isLogin');
 
 
-            if (localStorageData) {
+            if (localStorageData === 'true') {
                 // 新增訂單
                 const response = await axios.post(`${url}/rent/insert`, rentOrder);
                 selectedData.rentOrderid = response.data;
@@ -272,9 +299,17 @@ const reserve = async () => {
                     path: "/rentorder",
                 });
             } else {
-                alert('請登入會員')
-                router.push({
-                    path: "/login",
+                Swal.fire({
+                    title: '請登入會員',
+                    icon: 'warning',
+                    confirmButtonText: '確定'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // 點擊 "確定" 按钮，執行頁面跳转
+                        router.push({
+                            path: "/login",
+                        });
+                    }
                 });
             }
         }
@@ -305,11 +340,11 @@ const getfindAllDateTimeFromRentOrderAndclass = async (selectedValue) => {
         const calendarEl = document.getElementById('calendar');
         const calendar = new Calendar(calendarEl, {
             plugins: [dayGridPlugin],
-            // headerToolbar: {
-            //     left: '',
-            //     center: 'title',
-            //     right: '',
-            // },
+            headerToolbar: {
+                left: '',
+                center: 'title',
+                right: '',
+            },
             initialView: 'dayGridMonth',
             initialDate: nextMonthFormatted,
             timeZone: 'UTC',

@@ -1,7 +1,10 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import axios from 'axios';
+import router from "@/router";
 import memberNavBar from "../components/member/memberNavBar.vue";
+
+
 const url = import.meta.env.VITE_API_JAVAURL
 
 onMounted(() => {
@@ -16,9 +19,25 @@ const loadDatas = async () => {
     const response = await axios.get(`${url}/members/byemail/${window.localStorage.getItem("memberemail")}`)
     memberData.value = response.data
     // const response = await axios.post(`${url}/backstageaccounts/findPageByName`, datas)
+
     // allBackStageAccounts.value = response.data.list
     // allEmps.value = responseEmp.data.list
+
 }
+
+const submit = async () => {
+    const response = await axios.put(`${url}/members/${memberData.value.memberid}`, memberData.value)
+
+    if (response.status == 200) {
+        alert("修改成功")
+    }
+
+}
+
+const cancel = async () => {
+    router.push({ name: "member" })
+}
+
 </script>
 
 <template>
@@ -57,48 +76,38 @@ const loadDatas = async () => {
     </div>
 
 
+
     <div class="container m-5">
         <div class="row">
             <div class="col-lg-2">
                 <memberNavBar></memberNavBar>
             </div>
             <div class="col-lg-8 mydiv">
-                <h1 class="text-center">會員專區</h1>
+                <h1 class="text-center">課程訂單</h1>
                 <hr>
-                <div class="m-3">
-                    會員編號: {{ memberData.memberid }}
-
-                </div>
-                <div class="m-3">
-                    會員姓名: {{ memberData.membername }}
-                </div>
-                <div class="m-3">
-                    信箱: {{ memberData.memberemail }}
-                </div>
-                <div class="m-3">
-                    電話: {{ memberData.memberphoneno }}
-                </div>
-                <div class="m-3">
-                    性別: {{ memberData.membergender }}
-                </div>
-                <div class="m-3">
-                    縣市:{{ memberData.membercity }}
-                </div>
-                <div class="m-3">
-                    地區:{{ memberData.memberzone }}
-                </div>
-                <div class="m-3">
-                    地址:{{ memberData.memberaddress }}
-                </div>
-                <div class="m-3">
-                    生日:{{ memberData.memberbirthday }}
-                </div>
-                <div class="m-3">
-                    帳戶建立日期:{{ memberData.memberaccountsince }}
-                </div>
+                <table id="departmentsTable" class="table table-bordered mt-3">
+                    <thead class="align-middle text-center">
+                        <tr class="table-success">
+                            <th>訂單編號</th>
+                            <th>租借日期</th>
+                            <th>時段</th>
+                            <th>教室名稱</th>
+                            <th>付款狀態</th>
+                            <th>訂單金額</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle text-center">
+                        <tr v-for="rent in rentOrders" :key="rent.rentorderid">
+                            <td>{{ rent.rentorderid }}</td>
+                            <td>{{ rent.rentdate }}</td>
+                            <td>{{ rent.renttime }}</td>
+                            <td>{{ rent.classroom.classroomName }}</td>
+                            <td>{{ rent.rentstatus }}</td>
+                            <td>{{ rent.rentamount }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </template>
-
-
