@@ -46,6 +46,7 @@
                 class="form-select"
                 id="floatingSelect"
                 aria-label="Floating label select example"
+                required
               >
                 <option selected>選擇付款方式</option>
                 <option value="1">綠界金流</option>
@@ -59,12 +60,12 @@
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">總價:</h4>
-              <p class="card-text">NT$&nbsp;{{ totalPrice }}</p>
+              <p class="card-text">
+                NT$&nbsp;{{ totalPrice - couponDiscount }}
+              </p>
               <div v-if="error">{{ error }}</div>
               <!-- 顯示折扣金額 -->
-              <div v-else-if="couponDiscount">
-                Discount$ {{ couponDiscount }}
-              </div>
+              <div v-else-if="couponDiscount">折扣$ {{ couponDiscount }}</div>
               <div class="d-grid gap-3 col-12 mx-auto">
                 <router-link class="btn btn-primary" to="/ordercheck"
                   >結帳</router-link
@@ -159,6 +160,8 @@ const submitCoupon = async () => {
 
     if (response.status === 200) {
       couponDiscount.value = response.data;
+      var dis = couponDiscount.value;
+      localStorage.setItem("dis", dis);
       error.value = "";
     } else {
       error.value = "發生錯誤"; // 处理后端返回的错误

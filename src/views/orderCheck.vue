@@ -23,7 +23,7 @@
                   <th scope="col">課程教練</th>
                   <th scope="col">課程時間</th>
                   <th scope="col">單價</th>
-                  <th scope="col">折扣金額</th>
+                  <!-- <th scope="col">折扣金額</th> -->
                 </tr>
               </thead>
               <tbody v-for="(item, index) in pageClasses">
@@ -33,7 +33,7 @@
                   <td>{{ item.employeename }}</td>
                   <td>{{ item.classDate }}&nbsp;{{ item.classTime }}</td>
                   <td>$NT &nbsp;{{ item.price }}</td>
-                  <td>折扣金額(待補)</td>
+                  <!-- <td>折扣金額(待補)</td> -->
                 </tr>
               </tbody>
             </table>
@@ -42,63 +42,49 @@
           <hr />
           <!-- 訂購人資訊 start -->
           <div class="col-11 col-md-9 col-lg-7">
-            <div style="display: inline-block">
-              <table class="table caption-top" style="width: 450px">
-                <caption>
-                  訂購人資訊
-                </caption>
-                <thead></thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">姓名:{{ memberData.membername }}</th>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">電話: {{ memberData.memberphoneno }}</th>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">信箱:{{ memberData.memberemail }}</th>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
+            <div style="display: flex; align-items: center">
+              <div class="table caption-top">
+                <blockquote class="blockquote">
+                  <small class="text-muted">訂購人資訊</small>
+                </blockquote>
+                <tr>
+                  <th scope="row">姓 名: {{ memberData.membername }}</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">電 話: {{ memberData.memberphoneno }}</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">信 箱: {{ memberData.memberemail }}</th>
+                  <td></td>
+                </tr>
+              </div>
+              <!-- 付款方式 start -->
+
+              <div>
+                <blockquote class="blockquote">
+                  <small class="text-muted">付款方式</small>
+                </blockquote>
+
+                <img
+                  src="../assets/index/other/ECPay.png"
+                  style="width: 200px; height: auto"
+                />
+              </div>
+
+              <!-- 付款方式 end -->
             </div>
           </div>
           <!-- 訂購人資訊 end -->
           <hr />
-          <!-- 付款方式 start -->
-          <div class="col-10 col-md-9 col-lg-7">
-            <table
-              class="table caption-top"
-              style="width: 400px; position: relative; left: 10%"
-            >
-              <caption>
-                付款方式
-              </caption>
-              <thead>
-                <tr>
-                  <th>
-                    <img
-                      src="../assets/index/other/ECPay.png"
-                      style="width: 200px; height: auto"
-                    />
-                  </th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-          <!-- 付款方式 end -->
         </div>
         <!-- 結帳 -->
         <div class="col-12 col-md-3 col-lg-2">
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">總價:</h4>
-              <p class="card-text">
-                $NT &nbsp;{{ dataToSend.orderTotalAmount }}
-              </p>
+              <p class="card-text">$NT&nbsp;{{ totalPrice - dis }}</p>
               <div class="d-grid gap-3 col-12 mx-auto">
                 <button @click="postDataToApi" class="btn btn-primary">
                   結帳
@@ -140,7 +126,7 @@ const dataToSend = {
   orderDate: "",
   orderCondition: "未付款", // 寫死!!
   memberId: localStorage.getItem("memberid"),
-  orderTotalAmount: 100, // for (課程-折扣)
+  orderTotalAmount: "", // for (課程-折扣)
   orderPaymentMethod: "Credit Card", // 先寫死
   orderstate: 1, // 寫死
   orderItem: courseCart.map((classId) => ({ classId, couponId: 1 })), // 使用map轉換courseCart數組
@@ -148,6 +134,9 @@ const dataToSend = {
 
 const memberId = localStorage.getItem("memberid");
 const memberData = ref({});
+
+// 從localStorage取得折扣金額
+const dis = localStorage.getItem("dis");
 
 const fetchMemberData = async () => {
   try {
@@ -169,6 +158,10 @@ const postDataToApi = async () => {
     // 生成後將值，塞給dataToSend.orderDate
     dataToSend.orderDate = formatted.value;
 
+    // 訂單總金額 = 商品總額-折扣的金額
+    dataToSend.orderTotalAmount = totalPrice.value - dis;
+    console.log(dataToSend.orderTotalAmount);
+
     // 發送 POST 請求到後端 API
     const response = await axios.post(`${URL}/orders`, dataToSend);
     console.log(response.data);
@@ -178,6 +171,7 @@ const postDataToApi = async () => {
     const ecpayorderitem = {
       orderId: responseData.orderId,
       orderdate: responseData.orderDate,
+      orderamount: responseData.orderTotalAmount,
     };
     console.log(ecpayorderitem);
 
