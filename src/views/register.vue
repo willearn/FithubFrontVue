@@ -2,6 +2,7 @@
 import axios from "axios";
 import { ref, reactive, onMounted } from "vue";
 import router from "@/router";
+import Swal from 'sweetalert2'
 
 const url = import.meta.env.VITE_API_JAVAURL;
 
@@ -52,12 +53,20 @@ const register = async () => {
     !registerData.memberaddress.trim() ||
     !registerData.memberbirthday.trim()
   ) {
-    alert("請輸入正確資料")
+    Swal.fire({
+      title: '請輸入正確資料',
+      icon: 'warning',
+      confirmButtonText: '確定'
+    })
     return;
   }
 
   if (!verifystatus) {
-    alert("請驗證信箱")
+    Swal.fire({
+      title: '請驗證信箱',
+      icon: 'warning',
+      confirmButtonText: '確定'
+    })
     return;
   }
 
@@ -67,19 +76,30 @@ const register = async () => {
 
   try {
     const response = await axios.post(`${url}/members`, registerData);
-
     if (response.status == 200) {
-      alert("註冊成功，請登入")
-      router.push({ name: "login" })
+
+      Swal.fire({
+        title: '註冊成功，請登入',
+        icon: 'success',
+        confirmButtonText: '確定'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // 點擊 "確定" 按钮，執行頁面跳转
+          router.push({ name: "login" })
+        }
+      });
     }
   } catch (error) {
-
   }
 };
 
 const sendVerificationCode = async () => {
   if (!registerData.memberemail.trim()) {
-    alert("請輸入email");
+    Swal.fire({
+      title: '請輸入email',
+      icon: 'warning',
+      confirmButtonText: '確定'
+    })
     return;
   }
   verify.email = registerData.memberemail;
@@ -92,9 +112,17 @@ const sendVerificationCode = async () => {
     }
   } catch (error) {
     if (error.response.status == 400) {
-      alert("email已經被使用")
+      Swal.fire({
+        title: 'email已經被使用',
+        icon: 'warning',
+        confirmButtonText: '確定'
+      })
     } else {
-      alert("請輸入正確email")
+      Swal.fire({
+        title: '請輸入正確email',
+        icon: 'warning',
+        confirmButtonText: '確定'
+      })
     }
   }
 }
@@ -102,7 +130,11 @@ const sendVerificationCode = async () => {
 const checkVerificationCode = async () => {
   if (!registerData.memberemail.trim() ||
     !verify.verificationcode.trim()) {
-    alert("請輸入email及驗證碼");
+    Swal.fire({
+      title: '請輸入email及驗證碼',
+      icon: 'warning',
+      confirmButtonText: '確定'
+    })
     return;
   }
   verify.email = registerData.memberemail;
@@ -110,12 +142,19 @@ const checkVerificationCode = async () => {
   try {
     const response = await axios.post(`${url}/verificationcode/check`, verify);
     verifystatus.value = true;
-    alert("驗證成功")
+    Swal.fire({
+      title: '驗證成功',
+      icon: 'success',
+      confirmButtonText: '確定'
+    })
   } catch (error) {
     verifystatus.value = false;
-    alert("驗證碼錯誤")
+    Swal.fire({
+      title: '驗證碼錯誤',
+      icon: 'warning',
+      confirmButtonText: '確定'
+    })
   }
-
 }
 
 const test = ref({})
@@ -147,7 +186,7 @@ const inputpassword = () => {
 
 
 const goBack = () => {
-  
+
   router.back();
 }
 
@@ -263,4 +302,5 @@ router.beforeResolve(async (to) => {
         </div>
       </div>
     </div>
-</section></template>
+  </section>
+</template>

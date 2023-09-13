@@ -3,7 +3,7 @@ import { ref, reactive, onMounted } from "vue";
 import axios from 'axios';
 import router from "@/router";
 import memberNavBar from "../components/member/memberNavBar.vue";
-
+import Swal from 'sweetalert2'
 
 const url = import.meta.env.VITE_API_JAVAURL
 
@@ -29,7 +29,11 @@ const submit = async () => {
     const response = await axios.put(`${url}/members/${memberData.value.memberid}`, memberData.value)
 
     if (response.status == 200) {
-        alert("修改成功")
+        Swal.fire({
+            title: '修改成功',
+            icon: 'success',
+            confirmButtonText: '確定'
+        })
     }
 
 }

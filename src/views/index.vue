@@ -17,7 +17,7 @@
   <!-- About-->
   <section class="page-section px-sm-3">
     <div class="container">
-      <div class="row" data-aos="slide-left" >
+      <div class="row" data-aos="slide-left">
         <div class="col-lg-4" style="padding: 0px;">
           <img src="../assets/index/other/2.jpg" class="myimg-full" alt="維修中">
         </div>
@@ -36,7 +36,7 @@
     </div>
   </section>
 
-   <!-- Team-->
+  <!-- Team-->
   <section class="page-section px-sm-3">
     <div class="container mybg-light">
       <div class="text-center pt-1">
@@ -47,12 +47,12 @@
         <Slide :id="'carousel' + coach.employeeid" v-for=" coach in coachPics" :key="coach.employeeid"
           class="carousel slide col-lg-3 px-sm-4" data-bs-touch="false" data-bs-interval="false">
           <div class="carousel-inner" style="height: 360px">
-            <div class="carousel-item" style="" v-for="(  pic, index  ) in   coach.coachpic  "
-              :key="index" :class="{ active: index === 0 }">
+            <div class="carousel-item" style="" v-for="(  pic, index  ) in   coach.coachpic  " :key="index"
+              :class="{ active: index === 0 }">
               <img style="width: 90%;height: 300px;" :src="`data:image/jpeg;base64,${pic.cpicfile}`" alt="維修中" />
               <h4 style="margin: 0;">{{ coach.employeenamne }}</h4>
               <p class="text-muted">專長:{{ coach.specialtyname }}<i class="bi bi-envelope m-2"
-              :title="coach.employeeemail"></i><i class="bi bi-telephone" :title="coach.emploueephone"></i></p>
+                  :title="coach.employeeemail"></i><i class="bi bi-telephone" :title="coach.emploueephone"></i></p>
             </div>
           </div>
           <button class="carousel-control-prev m-5" type="button" :data-bs-target="'#carousel' + coach.employeeid"
@@ -241,14 +241,15 @@ import { ref, onMounted, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
 import { GoogleMap, Marker, InfoWindow } from "vue3-google-map";
 // 橫向卷軸
-import { Carousel, Navigation, Pagination, Slide } from 'vue3-carousel' 
+import { Carousel, Navigation, Pagination, Slide } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
 
 // 滾動動畫
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // You can also use <link> for styles
 
-
+// 動態ALERT
+import Swal from 'sweetalert2'
 
 const url = import.meta.env.VITE_API_JAVAURL
 
@@ -333,16 +334,29 @@ const submitForm = async () => {
       formData.subject === ''
     ) {
       // 如果有任何一個字段為空，執行錯誤處理邏輯
-      alert('請填寫全部欄位');
+      Swal.fire({
+        title: '請填寫全部欄位。',
+        // text: '請填寫全部欄位。',
+        icon: 'warning',
+        confirmButtonText: '確定'
+      })
       return
     }
 
     const response = await axios.post(`${url}/index/sendEmail`, formData);
 
     if (response.status === 200) {
-      alert('送出成功')
+      Swal.fire({
+        title: '送出成功',
+        icon: 'success',
+        confirmButtonText: '確定'
+      })
     } else {
-      alert('送出失敗')
+      Swal.fire({
+        title: '送出成功',
+        icon: 'error',
+        confirmButtonText: '確定'
+      })
     }
 
   } catch (error) {
@@ -369,8 +383,8 @@ const handleImageClick = (activity) => {
 
 // 返回頁頂
 function backToTop() {
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
+  // document.body.scrollTop = 0;
+  // document.documentElement.scrollTop = 0;
 }
 
 function scrollFunction() {
@@ -385,7 +399,9 @@ function scrollFunction() {
 }
 
 onMounted(() => {
-  AOS.init();
+  AOS.init({
+    once: true // 動畫只執行一次
+  });
   getActivitys();
   getCoachPics();
   // mybutton.value.addEventListener('click', backToTop);

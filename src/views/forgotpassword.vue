@@ -4,6 +4,7 @@ import { login, googleLogin } from "@/api/login"
 import router from "@/router"
 import { ref, reactive } from "vue";
 import { GoogleLogin, decodeCredential } from 'vue3-google-login'
+import Swal from 'sweetalert2'
 
 const url = import.meta.env.VITE_API_JAVAURL
 
@@ -12,14 +13,26 @@ const email = ref("")
 const submit = async () => {
     try {
         const response = await axios.post(`${url}/members/forgotpassword/${email.value}`)
-        alert("請至信箱收取密碼重設信")
+        Swal.fire({
+            title: '請至信箱收取密碼重設信',
+            icon: 'success',
+            confirmButtonText: '確定'
+        })
         router.push({ name: "login" })
     } catch (error) {
-        alert("無此信箱")
+        Swal.fire({
+            title: '查無此信箱',
+            icon: 'warning',
+            confirmButtonText: '確定'
+        })
     }
 
 }
 
+
+const goBack = () => {
+router.back();
+}
 
 </script>
 
@@ -32,7 +45,7 @@ const submit = async () => {
                         <div class="row g-0">
                             <div class=" col-md-6 col-lg-5 d-none d-md-block">
                                 <img src="../assets/index/other/4.jpg" alt="login form" class="img-fluid"
-                  style="border-radius: 1rem 0 0 1rem;" />
+                                    style="border-radius: 1rem 0 0 1rem;" />
                             </div>
                             <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                 <div class="card-body p-4 p-lg-5 text-black">
@@ -44,8 +57,11 @@ const submit = async () => {
                                     </div>
                                     <div class="pt-1 mb-4">
                                         <button class="btn btn-dark btn-lg btn-block" type="button"
+                                            @click="goBack">返回</button>
+                                        <button class="btn btn-dark btn-lg btn-block ms-1" type="button"
                                             @click="submit()">確認</button>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

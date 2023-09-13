@@ -3,7 +3,7 @@ import { ref, reactive, onMounted } from "vue";
 import axios from 'axios';
 import router from "@/router";
 import memberNavBar from "../components/member/memberNavBar.vue";
-
+import Swal from 'sweetalert2'
 
 const url = import.meta.env.VITE_API_JAVAURL
 
@@ -46,10 +46,22 @@ const submit = async () => {
         }
 
         const response = await axios.put(`${url}/members/changepassword/${memberid}`, checkpassword)
-        alert("修改成功")
-        router.push({ name: "member" })
+        Swal.fire({
+            title: '修改成功',
+            icon: 'success',
+            confirmButtonText: '確定'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // 點擊 "確定" 按钮，執行頁面跳转
+                router.push({ name: "member" })
+            }
+        });
     } catch (error) {
-        alert("修改失敗")
+        Swal.fire({
+            title: '修改失敗',
+            icon: 'error',
+            confirmButtonText: '確定'
+        })
     }
 }
 
