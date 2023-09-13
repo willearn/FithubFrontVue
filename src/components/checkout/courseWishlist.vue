@@ -98,6 +98,7 @@ const addWishlistToCart = (classId) => {
   if (!courseCartStore.value.includes(classId)) {
     courseCartStore.value.push(classId);
     deleteWishlistItem(classId);
+    handleSuccess("已成功加入您的購物車");
   } else {
     handleSuccess("課程已存在您的購物車");
   }
