@@ -6,12 +6,6 @@
       alt="..."
     />
     <div class="card-body">
-      <span
-        v-if="isLike == true"
-        type="button"
-        class="bi bi-heart-fill mx-1"
-      ></span>
-      <span v-else type="button" class="bi bi-heart mx-1"></span>
       <h5 class="card-text">課程名稱: {{ course.courseName }}</h5>
       <div class="card-text mb-1">
         課程分類:{{ course.courseCategories.categoryName }}
@@ -39,7 +33,6 @@ import { RouterLink } from "vue-router";
   props
 */
 const props = defineProps({
-  isLike: Boolean,
   cardAmount: Number,
   course: Object,
 });
