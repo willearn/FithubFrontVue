@@ -64,10 +64,16 @@ const router = createRouter({
       path: '/showorder',
       name: 'showorder',
       component: () => import('../views/showorder.vue'),
+      meta:{
+        needLogin: true
+      } 
     },{
       path: '/showrentorder',
       name: 'showrentorder',
       component: () => import('../views/showrentorder.vue'),
+      meta:{
+        needLogin: true
+      } 
     },
     {
       path: "/course",
@@ -98,45 +104,6 @@ const router = createRouter({
       path: "/ordercheck",
       name: "ordercheck",
       component: () => import("../views/orderCheck.vue"),
-    },
-    {
-      path: "/activity",
-      name: "activity",
-      component: () => import("../views/activity.vue"),
-    },
-    {
-      path: "/login",
-      name: "login",
-      component: () => import("../views/login.vue"),
-    },
-    {
-      path: "/register",
-      name: "register",
-      component: () => import("../views/register.vue"),
-    },
-    {
-      path: "/member",
-      name: "member",
-      component: () => import("../views/member.vue"),
-      meta: {
-        needLogin: true,
-      },
-    },
-    {
-      path: "/editprofile",
-      name: "editprofile",
-      component: () => import("../views/editprofile.vue"),
-      meta: {
-        needLogin: true,
-      },
-    },
-    {
-      path: "/editpassword",
-      name: "editpassword",
-      component: () => import("../views/editpassword.vue"),
-      meta: {
-        needLogin: true,
-      },
     },
   ],
   scrollBehavior(to, from, savedPosition) {

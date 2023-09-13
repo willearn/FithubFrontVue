@@ -3,6 +3,8 @@ import axios from "axios";
 import router from "@/router"
 import { ref, reactive, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
+import Swal from 'sweetalert2'
+
 const url = import.meta.env.VITE_API_JAVAURL
 
 const checkpassword = reactive({
@@ -24,10 +26,23 @@ const submit = async () => {
         }
 
         const response = await axios.put(`${url}/members/resetPassword`, checkpassword)
-        alert("修改成功")
-        router.push({ name: "home" })
+        Swal.fire({
+            title: '修改成功',
+            icon: 'success',
+            confirmButtonText: '確定'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // 點擊 "確定" 按钮，執行頁面跳转
+                router.push({ name: "home" })
+            }
+        });
+
     } catch (error) {
-        alert("修改失敗")
+        Swal.fire({
+            title: '修改失敗',
+            icon: 'warning',
+            confirmButtonText: '確定'
+        })
     }
 }
 
