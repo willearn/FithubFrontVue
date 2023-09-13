@@ -4,6 +4,7 @@ import { login, googleLogin } from "@/api/login"
 import router from "@/router"
 import { ref, reactive } from "vue";
 import { GoogleLogin, decodeCredential } from 'vue3-google-login'
+import Swal from 'sweetalert2'
 
 const url = import.meta.env.VITE_API_JAVAURL
 
@@ -24,7 +25,11 @@ const submit = async () => {
     if (res.status == 0) {
       router.push({ name: "home" })
     } else {
-      alert("帳號密碼錯誤")
+      Swal.fire({
+        title: '帳號密碼錯誤',
+        icon: 'error',
+        confirmButtonText: '確定'
+      })
     }
   } catch (error) {
 
