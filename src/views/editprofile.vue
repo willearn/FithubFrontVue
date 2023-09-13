@@ -120,8 +120,8 @@ const cancel = async () => {
                 <div class="m-3">
                     帳戶建立日期:{{ memberData.memberaccountsince }}
                 </div>
-                <button class="btn  btn-primary m-3" value="儲存" @click="submit">儲存活動</button>
-                <button class="btn  btn-primary m-3 ms-1" value="取消" @click="cancel">返回</button>
+                <button class="btn  btn-primary m-3" @click="submit">儲存</button>
+                <button class="btn  btn-primary m-3 ms-1" @click="cancel">返回</button>
             </div>
         </div>
     </div>

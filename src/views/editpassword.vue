@@ -37,11 +37,13 @@ const submit = async () => {
         const memberid = window.localStorage.getItem("memberid")
 
         if (!checkpassword.newpassword.trim() ||
-            !checkpassword.againpassword.trim()) {
-            return;
-        }
-
-        if (!checkpassword.check) {
+            !checkpassword.againpassword.trim() ||
+            !checkpassword.check) {
+            Swal.fire({
+                title: '請輸入資料',
+                icon: 'error',
+                confirmButtonText: '確定'
+            })
             return;
         }
 
