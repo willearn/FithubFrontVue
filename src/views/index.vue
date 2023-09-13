@@ -36,15 +36,42 @@
     </div>
   </section>
 
+  <Carousel v-bind="settings" :breakpoints="breakpoints">
+    <Slide :id="'carousel' + coach.employeeid" v-for=" coach in coachPics" :key="coach.employeeid"
+      class="carousel slide col-lg-3" data-bs-touch="false" data-bs-interval="false">
+      <div class="carousel-inner" style="max-height: 400px;">
+        <div class="carousel-item" v-for="(  pic, index  ) in   coach.coachpic  " :key="index"
+          :class="{ active: index === 0 }">
+          <img style="width: 90%;height: 300px;" :src="`data:image/jpeg;base64,${pic.cpicfile}`" alt="維修中" />
+          <h4 style="margin: 0;">{{ coach.employeenamne }}</h4>
+          <h5 style="margin: 0;">專長:{{ coach.specialtyname }}</h5>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" :data-bs-target="'#carousel' + coach.employeeid"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" :data-bs-target="'#carousel' + coach.employeeid"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </Slide>
+    <template #addons>
+      <Navigation />
+    </template>
+  </Carousel>
+
   <!-- Team-->
-  <section class="page-section">
+  <!-- <section class="page-section">
     <div class="container px-4  mybg-light" style="overflow-x:hidden;height: 500px;">
       <div class="text-center pt-1">
         <h2>專業團隊</h2>
         <hr class="divider" />
       </div>
       <div class="row text-center">
-        <div :id="'carousel' + coach.employeeid" v-for="coach in coachPics" :key="coach.employeeid"
+        <div :id="'carousel' + coach.employeeid" v-for="  coach   in   coachPics  " :key="coach.employeeid"
           class="carousel slide col-lg-3" data-bs-touch="false" data-bs-interval="false">
 
           <h4 style="margin: 0px;">{{ coach.employeenamne }}</h4>
@@ -53,7 +80,7 @@
               :title="coach.employeeemail"></i><i class="bi bi-telephone" :title="coach.emploueephone"></i></p>
 
           <div class="carousel-inner" style="height: 370px;">
-            <div class="carousel-item" v-for="(pic, index) in coach.coachpic" :key="index"
+            <div class="carousel-item" v-for="(  pic, index  ) in   coach.coachpic  " :key="index"
               :class="{ active: index === 0 }">
               <img style="width: 100%;height: 300px;" class="rounded-circle"
                 :src="`data:image/jpeg;base64,${pic.cpicfile}`" alt="維修中" />
@@ -72,7 +99,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- classroom -->
   <section class="page-section text-center" id="classroom">
@@ -151,7 +178,7 @@
         <hr class="divider" />
       </div>
       <div class="row gx-4 gx-lg-5">
-        <div class="col-lg-3 col-md-3" v-for="(activity, activityindex) in activitys" :key="activityindex">
+        <div class="col-lg-3 col-md-3" v-for="(  activity, activityindex  ) in   activitys  " :key="activityindex">
           <img :src="activity.activitypic" style="width: 80%;height: 300px;; cursor: pointer;" alt="維修中"
             @click="handleImageClick(activity)">
           <div>
@@ -240,7 +267,28 @@ import axios from 'axios'
 import { ref, onMounted, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
 import { GoogleMap, Marker, InfoWindow } from "vue3-google-map";
+import { Carousel, Navigation, Pagination, Slide } from 'vue3-carousel'
+import 'vue3-carousel/dist/carousel.css'
 const url = import.meta.env.VITE_API_JAVAURL
+
+
+const settings = {
+  itemsToShow: 1,
+  snapAlign: 'center',
+};
+
+const breakpoints = {
+  700: {
+    itemsToShow: 3.5,
+    snapAlign: 'center',
+  },
+  1024: {
+    itemsToShow: 5,
+    snapAlign: 'start',
+  },
+};
+
+
 
 // 設定GoogleMap
 const center = { lat: 22.62808625882824, lng: 120.29252321578828 };
@@ -335,13 +383,6 @@ const handleImageClick = (activity) => {
   catch (error) {
     console.error('Error:', error);
   }
-};
-
-// 处理链接点击事件
-const handleLinkClick = (event) => {
-  event.preventDefault(); // 阻止默认链接行为
-
-  // 在这里可以添加您的自定义逻辑
 };
 
 
