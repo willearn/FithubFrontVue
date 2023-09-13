@@ -3,6 +3,9 @@ import { ref, reactive, onMounted } from "vue";
 import axios from 'axios';
 import router from "@/router";
 import memberNavBar from "../components/member/memberNavBar.vue";
+import Paging from "../components/member/Paging.vue";
+import PageSize from "../components/member/PageSize.vue";
+import SearchTextBox from '../components/member/SearchTextBox.vue'
 
 
 const url = import.meta.env.VITE_API_JAVAURL
@@ -15,8 +18,25 @@ const memberData = ref({})
 
 const rentOrders = reactive({});
 
+const totalPages = ref(0);
+const datas = reactive({
+    start: 0,
+    rows: 5,
+    memberId: 0,
+    rentDate: null,
+    sortOrder: "asc",
+    sortType: "id",
+});
+
+
 const loadDatas = async () => {
-    const response = await axios.get(`${url}/rent/list/bymemberid/${window.localStorage.getItem("memberid")}`)
+    datas.memberId = window.localStorage.getItem("memberid")
+    
+    // const response = await axios.get(`${url}/rent/list/bymemberid/${window.localStorage.getItem("memberid")}`)
+    const response = await axios.post(`${url}/rent/list/findPageByDate`,datas)
+
+    console.log(response.data)
+
 
     Object.assign(rentOrders, response.data)
 
@@ -67,6 +87,12 @@ const loadDatas = async () => {
             <div class="col-lg-8 mydiv">
                 <h1 class="text-center">場地租借訂單</h1>
                 <hr>
+                <div class="col-3">
+                                <PageSize @pageSizeChange="changeHandler"></PageSize>
+                            </div>
+                            <div class="col-3">
+                                <SearchTextBox @searchInput="inputHandler"></SearchTextBox>
+                            </div>
                 <table id="rentorderTable" class="table table-bordered mt-3">
                     <thead class="align-middle text-center">
                         <tr class="table-success">
@@ -89,6 +115,7 @@ const loadDatas = async () => {
                         </tr>
                     </tbody>
                 </table>
+                <Paging :totalPages="totalPages" :thePage="datas.start + 1" @abcClick="clickHandler"></Paging>
             </div>
         </div>
     </div>
