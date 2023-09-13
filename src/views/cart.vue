@@ -284,7 +284,7 @@ const totalPrice = computed(() => {
 
 // Delete single cart items throuth deleting in store
 const deleteCartItem = (classId) => {
-  courseCartStore.value.shift(courseCartStore.value.indexOf(classId));
+  courseCartStore.value.splice(courseCartStore.value.indexOf(classId), 1);
 };
 
 // Delete cart items throuth deleting in store
@@ -292,7 +292,7 @@ const deleteCartItem = (classId) => {
 const deleteCartItems = (itemsIds) => {
   for (let i = 0; i < itemsIds.length; i++) {
     let index = courseCartStore.value.indexOf(itemsIds[i]);
-    let deleteId = courseCartStore.value.shift(index);
+    let deleteId = courseCartStore.value.splice(index, 1);
     console.log(deleteId);
   }
 };

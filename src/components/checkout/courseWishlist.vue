@@ -43,6 +43,7 @@
 
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
+import { useDialog } from "naive-ui";
 import { useCartStore, useWishlistStore } from "../../stores/courseStore.js";
 import { storeToRefs } from "pinia";
 const URL = import.meta.env.VITE_API_JAVAURL;
@@ -81,7 +82,10 @@ const loadPageClasses = async () => {
 // Delete single wishlist item throuth deleting in store
 const deleteWishlistItem = (classId) => {
   console.log(classId);
-  courseWishlistStore.value.shift(courseWishlistStore.value.indexOf(classId));
+  courseWishlistStore.value.splice(
+    courseWishlistStore.value.indexOf(classId),
+    1
+  );
 };
 
 /*
@@ -93,7 +97,7 @@ const addWishlistToCart = (classId) => {
     courseCartStore.value.push(classId);
     deleteWishlistItem(classId);
   } else {
-    alert("NOT addToCart");
+    handleSuccess("課程已存在您的購物車");
   }
 };
 
@@ -103,6 +107,18 @@ const addWishlistToCart = (classId) => {
 watch(courseWishlistStore.value, () => {
   loadPageClasses();
 });
+
+/*
+  Naive UI
+*/
+const dialog = useDialog();
+const handleSuccess = (contentText) => {
+  dialog.success({
+    title: "Success",
+    content: contentText,
+    positiveText: "確定",
+  });
+};
 
 /*
   LifeCycle Hooks
