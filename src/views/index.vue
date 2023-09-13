@@ -15,7 +15,7 @@
   </header>
 
   <!-- About-->
-  <section class="page-section" id="about">
+  <section class="page-section">
     <div class="container">
       <div style="display: flex; flex-wrap: wrap;">
         <div class="col-lg-4 col-md-4">
@@ -36,32 +36,43 @@
     </div>
   </section>
 
-  <Carousel v-bind="settings" :breakpoints="breakpoints">
-    <Slide :id="'carousel' + coach.employeeid" v-for=" coach in coachPics" :key="coach.employeeid"
-      class="carousel slide col-lg-3" data-bs-touch="false" data-bs-interval="false">
-      <div class="carousel-inner" style="max-height: 400px;">
-        <div class="carousel-item" v-for="(  pic, index  ) in   coach.coachpic  " :key="index"
-          :class="{ active: index === 0 }">
-          <img style="width: 90%;height: 300px;" :src="`data:image/jpeg;base64,${pic.cpicfile}`" alt="維修中" />
-          <h4 style="margin: 0;">{{ coach.employeenamne }}</h4>
-          <h5 style="margin: 0;">專長:{{ coach.specialtyname }}</h5>
-        </div>
+   <!-- Team-->
+  <section class="page-section">
+    <div class="container mybg-light">
+      <div class="text-center pt-1">
+        <h2>專業團隊</h2>
+        <hr class="divider" />
       </div>
-      <button class="carousel-control-prev" type="button" :data-bs-target="'#carousel' + coach.employeeid"
-        data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" :data-bs-target="'#carousel' + coach.employeeid"
-        data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </Slide>
-    <template #addons>
-      <Navigation />
-    </template>
-  </Carousel>
+      <Carousel v-bind="settings" :breakpoints="breakpoints">
+        <Slide :id="'carousel' + coach.employeeid" v-for=" coach in coachPics" :key="coach.employeeid"
+          class="carousel slide col-lg-3 px-sm-4" data-bs-touch="false" data-bs-interval="false">
+          <div class="carousel-inner" style="height: 360px">
+            <div class="carousel-item" style="" v-for="(  pic, index  ) in   coach.coachpic  "
+              :key="index" :class="{ active: index === 0 }">
+              <img style="width: 90%;height: 300px;" :src="`data:image/jpeg;base64,${pic.cpicfile}`" alt="維修中" />
+              <h4 style="margin: 0;">{{ coach.employeenamne }}</h4>
+              <p class="text-muted">專長:{{ coach.specialtyname }}<i class="bi bi-envelope m-2"
+              :title="coach.employeeemail"></i><i class="bi bi-telephone" :title="coach.emploueephone"></i></p>
+            </div>
+          </div>
+          <button class="carousel-control-prev m-5" type="button" :data-bs-target="'#carousel' + coach.employeeid"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next m-5" type="button" :data-bs-target="'#carousel' + coach.employeeid"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+          <!-- 左右按鈕 -->
+        </Slide>
+        <template #addons>
+          <Navigation />
+        </template>
+      </Carousel>
+    </div>
+  </section>
 
   <!-- Team-->
   <!-- <section class="page-section">
@@ -102,7 +113,7 @@
   </section> -->
 
   <!-- classroom -->
-  <section class="page-section text-center" id="classroom">
+  <section class="page-section text-center">
     <div id="portfolio">
       <div class="container-fluid p-0">
         <div class="text-center pt-1">
@@ -171,7 +182,7 @@
 
 
   <!-- activity-->
-  <section class="page-section" id="activity">
+  <section class="page-section">
     <div class="container px-4 text-center mybg-light">
       <div class="text-center pt-1">
         <h2>活動消息</h2>
@@ -190,7 +201,7 @@
   </section>
 
   <!-- Contact -->
-  <section class="page-section" id="contact">
+  <section class="page-section">
     <div class="container px-4 px-lg-5">
       <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-lg-6 col-xl-6">
