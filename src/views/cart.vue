@@ -84,19 +84,37 @@
             <ul class="nav nav-tabs">
               <li class="nav-item">
                 <button
-                  class="nav-link active disabled"
+                  class="nav-link"
+                  :class="{
+                    active: pageState.isActiveOrDisableCart,
+                    disabled: pageState.isActiveOrDisableCart,
+                  }"
                   @click="changePage('cart')"
                 >
                   購物車
                 </button>
               </li>
               <li class="nav-item">
-                <button class="nav-link" @click="changePage('wishlist')">
+                <button
+                  class="nav-link"
+                  :class="{
+                    active: pageState.isActiveOrDisableWishlist,
+                    disabled: pageState.isActiveOrDisableWishlist,
+                  }"
+                  @click="changePage('wishlist')"
+                >
                   我的願望清單
                 </button>
               </li>
               <li class="nav-item">
-                <button class="nav-link" @click="changePage('coupon')">
+                <button
+                  class="nav-link"
+                  :class="{
+                    active: pageState.isActiveOrDisableCoupon,
+                    disabled: pageState.isActiveOrDisableCoupon,
+                  }"
+                  @click="changePage('coupon')"
+                >
                   我的折價券
                 </button>
               </li>
@@ -171,7 +189,7 @@
 /*
   imports
  */
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, reactive, onMounted, computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 import { useCourseStore } from "../stores/courseStore.js";
@@ -184,15 +202,38 @@ const URL = import.meta.env.VITE_API_JAVAURL;
   Decide which page to render
 */
 const cartOrWishListOrCoupon = ref("cart");
+const pageState = reactive({
+  isActiveOrDisableCart: true,
+  isActiveOrDisableWishlist: false,
+  isActiveOrDisableCoupon: false,
+});
 const changePage = (pageName) => {
   if (pageName == "cart") {
     cartOrWishListOrCoupon.value = "cart";
+    pageState.isActiveOrDisableCart = true;
+    pageState.isActiveOrDisableWishlist = false;
+    pageState.isActiveOrDisableCoupon = false;
   } else if (pageName == "wishlist") {
     cartOrWishListOrCoupon.value = "wishlist";
+    pageState.isActiveOrDisableCart = false;
+    pageState.isActiveOrDisableWishlist = true;
+    pageState.isActiveOrDisableCoupon = false;
   } else {
     alert("coupon not yet");
+    pageState.isActiveOrDisableCart = false;
+    pageState.isActiveOrDisableWishlist = false;
+    pageState.isActiveOrDisableCoupon = true;
   }
 };
+
+/*
+  watcher for page change
+*/
+watch(cartOrWishListOrCoupon.value, (newPageName) => {
+  if (newPageName == "cart") {
+    loadPageClasses();
+  }
+});
 
 /*
   Store and relative responsive datas and local storage
