@@ -2,7 +2,7 @@
   <!-- banner-->
   <header class="masthead">
     <div class="container px-4 px-lg-5 h-100 w-75">
-      <div class="row gx-4 gx-lg-5 h-75 align-items-center justify-content-center">
+      <div data-aos="slide-right" class="row gx-4 gx-lg-5 h-75 align-items-center justify-content-center">
         <div class="col-lg-10 align-self-end">
           <h3 class="text-white">KEEP&emsp;YOUR&emsp;BODY</h3>
           <h1 class="text-white ">FIT & STRONG</h1>
@@ -15,15 +15,15 @@
   </header>
 
   <!-- About-->
-  <section class="page-section">
+  <section class="page-section px-sm-3">
     <div class="container">
-      <div style="display: flex; flex-wrap: wrap;">
-        <div class="col-lg-4 col-md-4">
-          <img src="../assets/index/other/2.jpg" style="width: 100%;height: 100%;" alt="維修中">
+      <div class="row" data-aos="slide-left" >
+        <div class="col-lg-4" style="padding: 0px;">
+          <img src="../assets/index/other/2.jpg" class="myimg-full" alt="維修中">
         </div>
-        <div class="col-lg-8 col-md-8" style="background-color: #FFBF3C;">
-          <div class="mt-5 ps-3 pe-3">
-            <h2>Fithub 健身房</h2>
+        <div class="col-lg-8" style="background-color: #FFBF3C;">
+          <div class="ms-5">
+            <h1>Fithub 健身房</h1>
             <h3 class="mt-5">
               成立這個健身房的理念源於對健康和幸福的承諾。我們相信每個人都應該擁有實現健康目標的機會，無論年齡或健身水平如何。
             </h3>
@@ -37,7 +37,7 @@
   </section>
 
    <!-- Team-->
-  <section class="page-section">
+  <section class="page-section px-sm-3">
     <div class="container mybg-light">
       <div class="text-center pt-1">
         <h2>專業團隊</h2>
@@ -74,46 +74,8 @@
     </div>
   </section>
 
-  <!-- Team-->
-  <!-- <section class="page-section">
-    <div class="container px-4  mybg-light" style="overflow-x:hidden;height: 500px;">
-      <div class="text-center pt-1">
-        <h2>專業團隊</h2>
-        <hr class="divider" />
-      </div>
-      <div class="row text-center">
-        <div :id="'carousel' + coach.employeeid" v-for="  coach   in   coachPics  " :key="coach.employeeid"
-          class="carousel slide col-lg-3" data-bs-touch="false" data-bs-interval="false">
-
-          <h4 style="margin: 0px;">{{ coach.employeenamne }}</h4>
-
-          <p class="text-muted">專長:{{ coach.specialtyname }}<i class="bi bi-envelope m-2"
-              :title="coach.employeeemail"></i><i class="bi bi-telephone" :title="coach.emploueephone"></i></p>
-
-          <div class="carousel-inner" style="height: 370px;">
-            <div class="carousel-item" v-for="(  pic, index  ) in   coach.coachpic  " :key="index"
-              :class="{ active: index === 0 }">
-              <img style="width: 100%;height: 300px;" class="rounded-circle"
-                :src="`data:image/jpeg;base64,${pic.cpicfile}`" alt="維修中" />
-            </div>
-          </div>
-          <button class="carousel-control-prev" type="button" :data-bs-target="'#carousel' + coach.employeeid"
-            data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" :data-bs-target="'#carousel' + coach.employeeid"
-            data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </section> -->
-
   <!-- classroom -->
-  <section class="page-section text-center">
+  <section class="page-section text-center px-sm-3">
     <div id="portfolio">
       <div class="container-fluid p-0">
         <div class="text-center pt-1">
@@ -182,7 +144,7 @@
 
 
   <!-- activity-->
-  <section class="page-section">
+  <section class="page-section px-sm-3">
     <div class="container px-4 text-center mybg-light">
       <div class="text-center pt-1">
         <h2>活動消息</h2>
@@ -278,8 +240,16 @@ import axios from 'axios'
 import { ref, onMounted, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
 import { GoogleMap, Marker, InfoWindow } from "vue3-google-map";
-import { Carousel, Navigation, Pagination, Slide } from 'vue3-carousel'
+// 橫向卷軸
+import { Carousel, Navigation, Pagination, Slide } from 'vue3-carousel' 
 import 'vue3-carousel/dist/carousel.css'
+
+// 滾動動畫
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // You can also use <link> for styles
+
+
+
 const url = import.meta.env.VITE_API_JAVAURL
 
 
@@ -415,6 +385,7 @@ function scrollFunction() {
 }
 
 onMounted(() => {
+  AOS.init();
   getActivitys();
   getCoachPics();
   // mybutton.value.addEventListener('click', backToTop);
