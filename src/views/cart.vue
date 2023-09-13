@@ -176,7 +176,12 @@
               <h4 class="card-title">總價:</h4>
               <p class="card-text">NT$&nbsp;{{ totalPrice }}</p>
               <div class="d-grid gap-3 col-12 mx-auto">
-                <router-link class="btn btn-primary" to="/checkout"
+                <router-link
+                  class="btn btn-primary"
+                  :class="{
+                    disabled: isCheckoutButtonActive,
+                  }"
+                  to="/checkout"
                   >結帳</router-link
                 >
               </div>
@@ -192,7 +197,7 @@
 /*
   imports
  */
-import { ref, reactive, onMounted, computed, watch } from "vue";
+import { ref, reactive, onMounted, computed, watch, onUpdated } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 import { useDialog } from "naive-ui";
@@ -337,6 +342,18 @@ const addToWishlist = (classId) => {
 };
 
 /*
+  checkout button active verification
+*/
+const isCheckoutButtonActive = ref(null);
+const CheckoutButtonActive = () => {
+  if (totalPrice.value == 0 || localStorage.getItem("memberid") == null) {
+    isCheckoutButtonActive.value = true;
+  } else {
+    isCheckoutButtonActive.value = false;
+  }
+};
+
+/*
   Naive UI
 */
 const dialog = useDialog();
@@ -353,6 +370,11 @@ const handleSuccess = (contentText) => {
 */
 onMounted(() => {
   loadPageClasses();
+  CheckoutButtonActive();
+});
+
+onUpdated(() => {
+  CheckoutButtonActive();
 });
 </script>
 
