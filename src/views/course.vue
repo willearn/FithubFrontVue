@@ -82,7 +82,7 @@
         </div>
 
         <!-- cards for course -->
-        <div class="col-10">
+        <div class="col-9">
           <h1 v-if="pageCourseCategoryId != 0" class="text-center mb-4">
             {{
               allCourseCategories.find((item) => {
