@@ -55,6 +55,7 @@ const cartStore = useCartStore();
 const { courseCartStore } = storeToRefs(cartStore);
 const wishlistStore = useWishlistStore();
 const { courseWishlistStore } = storeToRefs(wishlistStore);
+
 /*
   Load datas
 */
@@ -86,6 +87,7 @@ const deleteWishlistItem = (classId) => {
     courseWishlistStore.value.indexOf(classId),
     1
   );
+  // deleteWishlistItemToDB(classId);
 };
 
 /*
@@ -107,6 +109,22 @@ const addWishlistToCart = (classId) => {
 watch(courseWishlistStore.value, () => {
   loadPageClasses();
 });
+
+/*
+  method for add and delete item to wishlish DB
+*/
+
+// delete(actually is put, just add deletedate ) item to wishlish DB
+const deleteWishlistItemToDB = async (classId) => {
+  const reswishlist = await axios
+    .put(`${URL}/wishlist/${classId}`, {
+      memberId: localStorage.getItem("memberid"),
+      classId: classId,
+    })
+    .catch((error) => {
+      console.log(error.toJSON());
+    });
+};
 
 /*
   Naive UI

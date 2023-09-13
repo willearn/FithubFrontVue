@@ -305,6 +305,21 @@ watch(courseCartStore.value, () => {
 });
 
 /*
+  method for add and delete item to wishlish DB
+*/
+// add item to wishlish DB
+const AddWishlistItemToDB = async (classId, e) => {
+  const reswishlist = await axios
+    .post(`${URL}/wishlist`, {
+      memberId: localStorage.getItem("memberid"),
+      classId: classId,
+    })
+    .catch((error) => {
+      console.log(error.toJSON());
+    });
+};
+
+/*
   Add classes to courseWishlistStore and local storage
 */
 const addToWishlist = (classId) => {
@@ -312,6 +327,7 @@ const addToWishlist = (classId) => {
   if (!courseWishlistStore.value.includes(classId)) {
     deleteCartItem(classId);
     courseWishlistStore.value.push(classId);
+    // AddWishlistItemToDB(classId);
     console.log(courseWishlistStore.value);
     // Use Naive UI Dialog
     handleSuccess("課程已成功加入願望清單");
