@@ -151,7 +151,7 @@ const cancleRentOrder = async () => {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: '確定',
-            cancelButtonText:'取消'
+            cancelButtonText: '取消'
         }).then(async (result) => {
             if (result.isConfirmed) {
                 Swal.fire(

@@ -17,7 +17,7 @@
   <!-- About-->
   <section class="page-section px-sm-3">
     <div class="container">
-      <div class="row" data-aos="slide-left">
+      <div class="row" data-aos="zoom-in-up">
         <div class="col-lg-4" style="padding: 0px;">
           <img src="../assets/index/other/2.jpg" class="myimg-full" alt="維修中">
         </div>
