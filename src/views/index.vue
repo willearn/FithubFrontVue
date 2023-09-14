@@ -8,7 +8,7 @@
           <h1 class="text-white ">FIT & STRONG</h1>
         </div>
         <div class="col-lg-10 align-self-baseline">
-          <RouterLink class="btn btn-primary btn-xl" to="course">Join Us</RouterLink>
+          <RouterLink class="btn btn-primary btn-xl" to="course">立即購課</RouterLink>
         </div>
       </div>
     </div>
@@ -45,12 +45,12 @@
       </div>
       <Carousel v-bind="settings" :breakpoints="breakpoints">
         <Slide :id="'carousel' + coach.employeeid" v-for=" coach in coachPics" :key="coach.employeeid"
-          class="carousel slide col-lg-3 px-sm-4" data-bs-touch="false" data-bs-interval="false">
+          class="carousel slide px-sm-5" data-bs-touch="false" data-bs-interval="false">
           <div class="carousel-inner" style="height: 360px">
             <div class="carousel-item" style="" v-for="(  pic, index  ) in   coach.coachpic  " :key="index"
               :class="{ active: index === 0 }">
-              <img style="width: 90%;height: 300px;" :src="`data:image/jpeg;base64,${pic.cpicfile}`" alt="維修中" />
-              <h4 style="margin: 0;">{{ coach.employeenamne }}</h4>
+              <img style="width: 100%;height: 300px;" :src="`data:image/jpeg;base64,${pic.cpicfile}`" alt="維修中" />
+              <h4 style="margin: 0;" class="mt-2">{{ coach.employeenamne }}</h4>
               <p class="text-muted">專長:{{ coach.specialtyname }}<i class="bi bi-envelope m-2"
                   :title="coach.employeeemail"></i><i class="bi bi-telephone" :title="coach.emploueephone"></i></p>
             </div>
@@ -74,85 +74,25 @@
     </div>
   </section>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-4" v-for="(image, index) in images" :key="index">
-        <img :src="image.src" @click="openLightbox(index)" alt="Image" class="myimg-full">
+  <!-- rentClassroom -->
+  <section class="page-section px-sm-3">
+    <div class="container">
+      <div class="text-center pt-1">
+        <h2>租借場地</h2>
+        <hr class="divider" />
       </div>
+      <div class="row">
+        <div class="col-lg-4" style="padding: 0px;" v-for="(image, index) in images" :key="index">
+          <img :src="image.src" @click="openLightbox(index)" alt="Image" class="myimg-full">
+        </div>
+      </div>
+      <vue-easy-lightbox :visible="lightboxVisible" :imgs="lightboxImages" :index="lightboxIndex"
+        @hide="closeLightbox"></vue-easy-lightbox>
     </div>
-    <vue-easy-lightbox :visible="lightboxVisible" :imgs="lightboxImages" :index="lightboxIndex"
-      @hide="closeLightbox"></vue-easy-lightbox>
-  </div>
-
-
-  <!-- classroom -->
-  <section class="page-section text-center px-sm-3">
-    <div id="portfolio">
-      <div class="container-fluid p-0">
-        <div class="text-center pt-1">
-          <h2>場地設備</h2>
-          <hr class="divider" />
-        </div>
-        <div class="row g-0">
-          <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="src/assets/index/classroom/攀岩教室.jpg" @click="handleLinkClick" title="攀岩教室">
-              <img class="img-fluid" src="../assets/index/classroom/攀岩教室.jpg" alt="攀岩教室" />
-              <div class="portfolio-box-caption">
-                <div class="project-category text-white-50">Category</div>
-                <div class="project-name">攀岩教室</div>
-              </div>
-            </a>
-          </div>
-          <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="src/assets/index/classroom/有氧大教室.jpg" title="有氧大教室">
-              <img class="img-fluid" src="../assets/index/classroom/有氧大教室.jpg" alt="有氧大教室" />
-              <div class="portfolio-box-caption">
-                <div class="project-category text-white-50">Category</div>
-                <div class="project-name">有氧大教室</div>
-              </div>
-            </a>
-          </div>
-          <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="src/assets/index/classroom/有氧小教室.jpg" title="有氧小教室">
-              <img class="img-fluid" src="../assets/index/classroom/有氧小教室.jpg" alt="有氧小教室" />
-              <div class="portfolio-box-caption">
-                <div class="project-category text-white-50">Category</div>
-                <div class="project-name">有氧小教室</div>
-              </div>
-            </a>
-          </div>
-          <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="src/assets/index/classroom/格鬥教室.jpg" title="格鬥教室">
-              <img class="img-fluid" src="../assets/index/classroom/格鬥教室.jpg" alt="格鬥教室" />
-              <div class="portfolio-box-caption">
-                <div class="project-category text-white-50">Category</div>
-                <div class="project-name">格鬥教室</div>
-              </div>
-            </a>
-          </div>
-          <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="src/assets/index/classroom/空中瑜珈.jpg" title="空中瑜珈">
-              <img class="img-fluid" src="../assets/index/classroom/空中瑜珈.jpg" alt="空中瑜珈" />
-              <div class="portfolio-box-caption">
-                <div class="project-category text-white-50">Category</div>
-                <div class="project-name">空中瑜珈</div>
-              </div>
-            </a>
-          </div>
-          <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="src/assets/index/classroom/飛輪教室.jpg" title="飛輪教室">
-              <img class="img-fluid" src="../assets/index/classroom/飛輪教室.jpg" alt="飛輪教室" />
-              <div class="portfolio-box-caption p-3">
-                <div class="project-category text-white-50">Category</div>
-                <div class="project-name">飛輪教室</div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
+    <div class="text-center mt-3">
+      <RouterLink class="btn btn-primary btn-xl" to="rent">立即租借</RouterLink>
     </div>
   </section>
-
 
   <!-- activity-->
   <section class="page-section px-sm-3">
@@ -161,15 +101,17 @@
         <h2>活動消息</h2>
         <hr class="divider" />
       </div>
-      <div class="row gx-4 gx-lg-5">
-        <div class="col-lg-3 col-md-3" v-for="(  activity, activityindex  ) in   activitys  " :key="activityindex">
-          <img :src="activity.activitypic" style="width: 80%;height: 300px;; cursor: pointer;" alt="維修中"
+      <Carousel v-bind="settings" :breakpoints="breakpoints">
+        <Slide style="flex-direction: column;justify-content: flex-start" class="px-sm-5"
+          v-for="(  activity, activityindex  ) in   activitys  " :key="activityindex">
+          <img style="width: 100%;height: 300px;" :src="activity.activitypic" alt="維修中"
             @click="handleImageClick(activity)">
-          <div>
-            <h3>{{ activity.activityname }}</h3>
-          </div>
-        </div>
-      </div>
+          <h3>{{ activity.activityname }}</h3>
+        </Slide>
+        <template #addons>
+          <Navigation />
+        </template>
+      </Carousel>
     </div>
   </section>
 
@@ -241,6 +183,8 @@
       </div>
     </div>
   </section>
+
+  <!-- 返回頂部 -->
   <n-back-top />
 </template>
 
@@ -261,7 +205,7 @@ const lightboxImages = ref([]);
 const lightboxIndex = ref(0);
 
 const openLightbox = (index) => {
-  lightboxImages.value = images.map((image) => ({ src: image.src, title: image.title, link: image.link }));
+  lightboxImages.value = images.map((image) => ({ src: image.src, title: image.title }));
   lightboxIndex.value = index;
   lightboxVisible.value = true;
 };
@@ -274,11 +218,22 @@ const images = [
   {
     src: 'src/assets/index/classroom/有氧大教室.jpg',
     title: '有氧大教室',
-    link: 'http://localhost:5173/rent'
   },
   {
     src: 'src/assets/index/classroom/有氧小教室.jpg',
     title: '有氧小教室'
+  },
+  {
+    src: 'src/assets/index/classroom/空中瑜珈.jpg',
+    title: '空中瑜珈'
+  },
+  {
+    src: 'src/assets/index/classroom/飛輪教室.jpg',
+    title: '飛輪教室'
+  },
+  {
+    src: 'src/assets/index/classroom/格鬥教室.jpg',
+    title: '格鬥教室'
   },
   {
     src: 'src/assets/index/classroom/攀岩教室.jpg',
@@ -296,7 +251,7 @@ import Swal from 'sweetalert2'
 
 const url = import.meta.env.VITE_API_JAVAURL
 
-// 設定教練橫向卷軸
+// 設定橫向卷軸
 const settings = {
   itemsToShow: 1,
   snapAlign: 'center',
@@ -308,7 +263,7 @@ const breakpoints = {
     snapAlign: 'center',
   },
   1024: {
-    itemsToShow: 5,
+    itemsToShow: 4,
     snapAlign: 'start',
   },
 };
@@ -434,16 +389,4 @@ onMounted(() => {
 
 </script>
 
-<<<<<<< HEAD
-<style scoped>
-#btn-back-to-top {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  display: none;
-  /* 初始時隱藏按鈕 */
-}
-</style>
-=======
 <style scoped></style>
->>>>>>> a0005be7a9b653da71b5d31631f9f610f2e8b388
