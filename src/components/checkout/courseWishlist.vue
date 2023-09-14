@@ -23,13 +23,19 @@
           <div
             type="button"
             class="bi bi-cart2"
-            @click="addWishlistToCart(item.classId)"
+            @click="
+              addWishlistToCart(item.classId, item.listId, item.wishAddSince)
+            "
           ></div>
           <div
             type="button"
             class="bi bi-trash-fill"
             @click="
-              deleteWishlistItem(item.classId, item.listId, item.wishAddSince)
+              deleteWishlistItemToDB(
+                item.classId,
+                item.listId,
+                item.wishAddSince
+              )
             "
           ></div>
         </td>
@@ -64,7 +70,7 @@ const { courseWishlistStore } = storeToRefs(wishlistStore);
 
 // Load Classes data
 const pageWishlistClasses = ref([]);
-const loadPageClasses = async () => {
+const loadPageWishlistClasses = async () => {
   console.log(courseWishlistStore.value);
   const URLAPI = `${URL}/classes/findAllClassesInMemberWishlist`;
   const response = await axios
@@ -80,30 +86,18 @@ const loadPageClasses = async () => {
 
   pageWishlistClasses.value = response.data;
   // console.log(pageClasses);
-};
-
-/*
-  Methods for delete cart items
-*/
-
-// Delete single wishlist item throuth deleting in store
-const deleteWishlistItem = (classId) => {
-  console.log(classId);
-  courseWishlistStore.value.splice(
-    courseWishlistStore.value.indexOf(classId),
-    1
-  );
-  // deleteWishlistItemToDB(classId);
+  updateWishlistDBtoStore(pageWishlistClasses);
 };
 
 /*
   Methods Add wishlist item to cart
 */
 // const emits = defineEmits(["addWishlistToCartEmit"]);
-const addWishlistToCart = (classId, listId) => {
+const addWishlistToCart = (classId, listId, wishAddSince) => {
   if (!courseCartStore.value.includes(classId)) {
     courseCartStore.value.push(classId);
-    deleteWishlistItem(listId);
+    deleteWishlistItemToDB(classId, listId, wishAddSince);
+
     handleSuccess("已成功加入您的購物車");
   } else {
     handleSuccess("課程已存在您的購物車");
@@ -111,11 +105,28 @@ const addWishlistToCart = (classId, listId) => {
 };
 
 /*
-  watcher for wishlist items in store
+  method for save DB wishlist items in store
 */
-watch(courseWishlistStore.value, () => {
-  loadPageClasses();
-});
+const updateWishlistDBtoStore = (pageWishlistClasses) => {
+  let wishlistTemp = [];
+  for (let i = 0; i < pageWishlistClasses.value.length; i++) {
+    wishlistTemp.push(pageWishlistClasses.value[i]["classId"]);
+  }
+  courseWishlistStore.value = wishlistTemp;
+};
+
+/*
+  Methods for delete wishlist items in store
+*/
+
+// Delete single wishlist item throuth deleting in store
+// 可刪
+const deleteWishlistItem = (classId) => {
+  courseWishlistStore.value.splice(
+    courseWishlistStore.value.indexOf(classId),
+    1
+  );
+};
 
 /*
   method for add and delete item to wishlish DB
@@ -133,10 +144,12 @@ const deleteWishlistItemToDB = async (classId, listId, wishAddSince) => {
     .catch((error) => {
       console.log(error.toJSON());
     });
+  // deleteWishlistItem(classId); // reload 自動複寫 store
+  loadPageWishlistClasses();
 };
 
 /*
-  Naive UI
+  Naive UI success modal
 */
 const dialog = useDialog();
 const handleSuccess = (contentText) => {
@@ -151,7 +164,7 @@ const handleSuccess = (contentText) => {
   LifeCycle Hooks
 */
 onMounted(() => {
-  loadPageClasses();
+  loadPageWishlistClasses();
 });
 </script>
 

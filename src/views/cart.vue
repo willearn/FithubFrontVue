@@ -340,17 +340,21 @@ const AddWishlistItemToDB = async (classId, e) => {
   Add classes to courseWishlistStore and local storage
 */
 const addToWishlist = (classId) => {
-  // Delete utem from cart ,then add to wishlist and DB
-  if (!courseWishlistStore.value.includes(classId)) {
-    deleteCartItem(classId);
-    courseWishlistStore.value.push(classId);
-    AddWishlistItemToDB(classId);
-    console.log(courseWishlistStore.value);
-
-    // Use Naive UI Dialog
-    handleSuccess("課程已成功加入願望清單");
+  if (localStorage.getItem("memberid") == null) {
+    alert("請先登入會員");
   } else {
-    handleSuccess("課程已存在您的願望清單");
+    // Delete utem from cart ,then add to wishlist and DB
+    if (!courseWishlistStore.value.includes(classId)) {
+      deleteCartItem(classId);
+      courseWishlistStore.value.push(classId);
+      AddWishlistItemToDB(classId);
+      console.log(courseWishlistStore.value);
+
+      // Use Naive UI Dialog
+      handleSuccess("課程已成功加入願望清單");
+    } else {
+      handleSuccess("課程已存在您的願望清單");
+    }
   }
 };
 
@@ -367,7 +371,7 @@ const CheckoutButtonActive = () => {
 };
 
 /*
-  Naive UI
+  Naive UI success modal
 */
 const dialog = useDialog();
 const handleSuccess = (contentText) => {

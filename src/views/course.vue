@@ -156,14 +156,14 @@ const URL = import.meta.env.VITE_API_JAVAURL;
 */
 
 const route = useRoute();
-const pageCourseCategoryId = ref(route.params["categoryid"]);
+const pageCourseCategoryId = ref(parseInt(route.params["categoryid"]));
 watch(
   () => route.params["categoryid"],
   async (newUrlCategoryId) => {
     // console.log(newUrlCategoryId);
     if (newUrlCategoryId == 0) {
       paginationData.page = 1; //每次換Category時 顯示所有資料的第一頁
-      pageCourseCategoryId.value = "0";
+      pageCourseCategoryId.value = 0;
       await loadPageCourses();
     } else {
       paginationData.page = 1; //每次換Category時 顯示所有資料的第一頁

@@ -198,6 +198,7 @@
 import { ref, reactive, onMounted, onBeforeUnmount, watch } from "vue";
 import { RouterLink, useRoute, useRouter } from "vue-router";
 import axios from "axios";
+import { useDialog } from "naive-ui";
 import courseCard from "../components/course/courseCard.vue";
 import FullCalendar from "../components/course/courseCalendar.vue";
 import CartIcon from "../components/course/util/icon-cart.vue";
@@ -362,7 +363,7 @@ const saveCourseCartToLocalStorage = (forwardOrStay) => {
 // add item to wishlish DB
 const AddWishlistItemToDB = async (classId) => {
   if (localStorage.getItem("memberid") == null) {
-    alert("請先登入會員");
+    handleSuccess("請先登入會員");
   } else {
     const reswishlist = await axios
       .post(`${URL}/wishlist`, {
@@ -372,8 +373,40 @@ const AddWishlistItemToDB = async (classId) => {
       .catch((error) => {
         console.log(error.toJSON());
       });
-    alert("課程已加入您的願望清單");
+    handleSuccess("課程已加入您的願望清單");
   }
+};
+
+/*
+  Add classes to courseWishlistStore and local storage
+*/
+const addToWishlist = (classId) => {
+  if (localStorage.getItem("memberid") == null) {
+    alert("請先登入會員");
+  } else {
+    // Delete utem from cart ,then add to wishlist and DB
+    if (!courseWishlistStore.value.includes(classId)) {
+      courseWishlistStore.value.push(classId);
+      AddWishlistItemToDB(classId);
+
+      // Use Naive UI Dialog
+      handleSuccess("課程已成功加入願望清單");
+    } else {
+      handleSuccess("課程已存在您的願望清單");
+    }
+  }
+};
+
+/*
+  Naive UI success modal
+*/
+const dialog = useDialog();
+const handleSuccess = (contentText) => {
+  dialog.success({
+    title: "Success",
+    content: contentText,
+    positiveText: "確定",
+  });
 };
 
 /*
