@@ -7,7 +7,7 @@
 /*
   imports
 */
-import { ref } from "vue";
+import { ref, reactive, onUpdated } from "vue";
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 
@@ -16,10 +16,16 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 */
 const props = defineProps({
   courseName: String,
+  calendarEvents: Array,
 });
 
 /*
-  Build Full Calendar
+  Emit
+*/
+const emit = defineEmits(["clickCalendarClassEmit"]);
+
+/*
+  Build FullCalendar
 */
 const calendarOptions = ref({
   plugins: [dayGridPlugin],
@@ -30,7 +36,22 @@ const calendarOptions = ref({
   // timeZone: 'UTC',
   locale: "en-us",
   buttonText: { today: "今日" },
-  events: [{ title: "Meeting", start: new Date() }],
+  events: [],
+  eventColor: "#ffc408",
+  interactive: true,
+  eventClick: (eventClickInfo) => {
+    // console.log(eventClickInfo.event._def.publicId);
+    let classId = eventClickInfo.event._def.publicId;
+    emit("clickCalendarClassEmit", classId);
+  },
+});
+
+/*
+  LifeCycle Hooks
+*/
+onUpdated(() => {
+  // When courseCalendar onMounted, props.calendarEvents still got no value
+  calendarOptions.value.events = props.calendarEvents;
 });
 </script>
 

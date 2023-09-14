@@ -85,81 +85,66 @@
             </div>
             <div class="col-6 mx-3">
               <div class="my-3">
-                <h4>授課教練</h4>
                 <div class="row align-items-center">
-                  <div class="col-12 col-md-5 col-lg-6">
-                    <select class="form-select" id="courseCoach" v-focus>
-                      <option selected style="display: none" value="">
-                        請選擇
-                      </option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
+                  <div class="rol">
+                    <div>課程時間:</div>
                   </div>
-                  <div class="col-12 col-md-5 col-lg-6">
-                    <button class="btn btn-secondary btn-sm">
-                      <i class="bi bi-lightbulb-fill"></i>&nbsp;&nbsp;教練專長
-                    </button>
+                  <div>
+                    <span>{{ displayClasses.classDate }}</span
+                    >&nbsp;&nbsp;
+                    <span>{{ displayClasses.classTime }}</span>
                   </div>
                 </div>
               </div>
+
               <div class="my-3">
-                <h4>課程時間:</h4>
-                <div class="row">
-                  <div class="col-12 col-md-5 col-lg-5">
-                    <label for="courseDate" class="mb-1">日期</label>
-                    <select class="form-select" id="courseDate">
-                      <option selected style="display: none" value="">
-                        請選擇
-                      </option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
-                  </div>
-                  <div class="col-12 col-md-5 col-lg-5">
-                    <label for="courseTime" class="mb-1">時段</label>
-                    <select class="form-select" id="courseTime">
-                      <option selected style="display: none" value="">
-                        請選擇
-                      </option>
-                      <option value="早上">早上</option>
-                      <option value="下午">下午</option>
-                      <option value="晚上">晚上</option>
-                    </select>
-                  </div>
-                </div>
+                <div>授課教練:</div>
+                <div>{{ displayClasses.employeename }}</div>
               </div>
+
+              <div class="my-3">
+                <div>地點:</div>
+                <div>{{ displayClasses.classroomName }}</div>
+              </div>
+
+              <div class="my-3">
+                <div>價格:</div>
+                <div>NT$&nbsp;{{ displayClasses.price }}</div>
+              </div>
+
               <div class="ml-2 my-3">
-                <h4>課程說明:</h4>
+                <div>課程說明:</div>
                 <p class="fs-6">
                   {{ pageCourse.courseDescription }}
                 </p>
               </div>
 
-              <span class="d-flex justify-content-end my-4">
-                <button
-                  class="btn btn btn-primary mx-2"
-                  data-bs-toggle="collapse"
-                  href="#collapseExample"
-                  role="button"
-                >
-                  <i type="button" class="bi bi-calendar-check"></i
-                  >&nbsp;&nbsp;&nbsp;查看課表
-                </button>
-                <button class="btn btn btn-primary mx-2">
-                  <i type="button" class="bi bi-heart-fill"></i
-                  >&nbsp;&nbsp;加入願望清單
-                </button>
-                <button class="btn btn btn-primary mx-2">
-                  <i type="button" class="bi bi-cart4"></i
-                  >&nbsp;&nbsp;加入購物車
-                </button>
-                <button class="btn btn btn-primary mx-2">
-                  <i type="button" class="bi bi-cart3"></i>&nbsp;&nbsp;直接購買
-                </button>
-              </span>
+              <div class="row justify-content-end my-4">
+                <div class="col-12 col-md-6 col-lg-4">
+                  <button class="btn btn btn-primary mx-2">
+                    <i type="button" class="bi bi-heart-fill"></i
+                    >&nbsp;&nbsp;加入願望清單
+                  </button>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <button
+                    class="btn btn btn-primary mx-2"
+                    @click="saveCourseCartToLocalStorage('stay')"
+                  >
+                    <i type="button" class="bi bi-cart4"></i
+                    >&nbsp;&nbsp;加入購物車
+                  </button>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <button
+                    class="btn btn btn-primary mx-2"
+                    @click="saveCourseCartToLocalStorage('forward')"
+                  >
+                    <i type="button" class="bi bi-cart3"></i
+                    >&nbsp;&nbsp;直接購買
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -167,18 +152,13 @@
 
       <hr />
 
-      <!-- 課表摺疊 -->
       <div class="row justify-content-center">
         <div class="col-12 col-md-10 col-lg-10">
-          <div class="collapse my-4" id="collapseExample">
-            I am calendar !!!
-            <!-- <FullCalendar></FullCalendar> -->
-          </div>
-        </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-10">
-          <FullCalendar></FullCalendar>
+          <FullCalendar
+            :courseName="pageCourse.courseName"
+            :calendarEvents="calendarEvents"
+            @click-calendar-class-emit="onClickedClass"
+          ></FullCalendar>
         </div>
       </div>
 
@@ -202,7 +182,6 @@
         </div>
       </div>
     </section>
-    <router-link class="btn btn-secondary" to="/cart">購物車</router-link>
   </div>
 
   <CartIcon></CartIcon>
@@ -213,19 +192,22 @@
   imports
 */
 
-import { ref, onMounted, watch } from "vue";
-import { RouterLink, useRoute } from "vue-router";
+import { ref, reactive, onMounted, onBeforeUnmount, watch } from "vue";
+import { RouterLink, useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import courseCard from "../components/course/courseCard.vue";
 import FullCalendar from "../components/course/courseCalendar.vue";
 import CartIcon from "../components/course/util/icon-cart.vue";
 import { vFocus } from "../directives/vFocus";
+import { useCartStore } from "../stores/courseStore.js";
+import { storeToRefs } from "pinia";
 const URL = import.meta.env.VITE_API_JAVAURL;
 
 /*
   router
 */
 const route = useRoute();
+const router = useRouter();
 
 /*
   watcher for router
@@ -237,23 +219,84 @@ watch(
   async (newUrlCourseId) => {
     // console.log(newUrlCourseId);
     await loadPageCourse();
+    await loadPageClasses();
   }
 );
+
+/*
+  Store and relative responsive datas and local storage
+*/
+const cartStore = useCartStore();
+const { courseCartStore } = storeToRefs(cartStore);
+const selectedClasses = ref([]);
+
+/*
+  Display Data
+*/
+const displayClasses = reactive({
+  classId: 0,
+  classDate: "",
+  classTime: "",
+  employeename: "",
+  classroomName: "",
+  price: "",
+});
+
+/*
+  Calendar
+*/
+const calendarEvents = ref([]);
 
 /*
 Load datas
 */
 
 // Load single course data
-const pageCourse = ref({});
+const pageCourse = ref([]);
 const loadPageCourse = async () => {
   const URLAPI = `${URL}/course/${route.params["courseid"]}`;
-  console.log(URLAPI);
   const response = await axios.get(URLAPI).catch((error) => {
     console.log(error.toJSON());
   });
   pageCourse.value = response.data;
-  console.log(pageCourse);
+  // console.log(pageCourse);
+};
+
+// Load Classes data
+const pageClasses = ref([]);
+const loadPageClasses = async () => {
+  const URLAPI = `${URL}/classes/findAllClassesInMonthRange/${route.params["courseid"]}`;
+  const response = await axios
+    .get(URLAPI, {
+      params: {
+        monthBefore: 1,
+        monthAfter: 1,
+      },
+    })
+    .catch((error) => {
+      console.log(error.toJSON());
+    });
+  // console.log(response.data);
+
+  pageClasses.value = response.data;
+  // console.log(pageClasses);
+
+  // imitial diaplay data
+  displayClasses.classId = pageClasses.value[0]["classId"];
+  displayClasses.classDate = pageClasses.value[0]["classDate"];
+  displayClasses.classTime = pageClasses.value[0]["classTime"];
+  displayClasses.employeename = pageClasses.value[0]["employeename"];
+  displayClasses.classroomName = pageClasses.value[0]["classroomName"];
+  displayClasses.price = pageClasses.value[0]["price"];
+
+  // put all classes data in calendar
+  calendarEvents.value = pageClasses.value.map((item) => {
+    return {
+      id: item["classId"],
+      title: item["classTime"],
+      start: item["classDate"],
+    };
+  });
 };
 
 // Load recommended courses data
@@ -273,46 +316,60 @@ const loadRecommendedCourses = async () => {
 };
 
 /*
+  Event obj. method
+*/
+
+const onClickedClass = (classId) => {
+  console.log("get emit: " + classId);
+
+  // update diaplay data
+  let clickedCLass = pageClasses.value.find((item) => {
+    return item.classId == classId;
+  });
+  displayClasses.classId = clickedCLass["classId"];
+  displayClasses.classDate = clickedCLass["classDate"];
+  displayClasses.classTime = clickedCLass["classTime"];
+  displayClasses.employeename = clickedCLass["employeename"];
+  displayClasses.classroomName = clickedCLass["classroomName"];
+  displayClasses.price = clickedCLass["price"];
+};
+
+const saveCourseCartToLocalStorage = (forwardOrStay) => {
+  console.log("saveCartToLocalStorage");
+  console.log(courseCartStore.value);
+  if (
+    // check classId have value and not repeat in LocalStorage
+    displayClasses.classId != 0 &&
+    !courseCartStore.value.includes(displayClasses.classId)
+  ) {
+    courseCartStore.value.push(displayClasses.classId);
+  }
+  if (forwardOrStay == "forward") {
+    console.log("forward");
+
+    router.push("/cart");
+  } else {
+    console.log("stay");
+  }
+};
+
+const saveCourseCartToDB = () => {
+  console.log("saveCartToDB");
+};
+
+/*
   LifeCycle Hooks
 */
+
 onMounted(() => {
   loadPageCourse();
+  loadPageClasses();
   loadRecommendedCourses();
 });
 
-/*
-  Build Calendar
-*/
-// // 取得下個月1號為日曆初始日期
-// const today = new Date()
-// const nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 1)
-// let year = nextMonth.getFullYear()
-// let month = String(nextMonth.getMonth()).padStart(2, '0')
-// let day = String(nextMonth.getDate()).padStart(2, '0')
-
-// // 如果月份為 01，年份加 1
-// if (month === '01') {
-//     year++
-// }
-// const nextMonthFormatted = `${year}-${month}-${day}`
-
-// const calendarEl = document.getElementById('calendar')
-// const calendar = new Calendar(calendarEl, {
-//     plugins: [dayGridPlugin],
-//     // headerToolbar: {
-//     //     left: '',
-//     //     center: 'title',
-//     //     right: '',
-//     // },
-//     initialView: 'dayGridMonth',
-//     initialDate: nextMonthFormatted,
-//     timeZone: 'UTC',
-//     locale: 'zh-tw',
-//     height: 700,
-//     events: [],
-
-// })
-// calendar.render()
+onBeforeUnmount(() => {
+  saveCourseCartToDB();
+});
 </script>
 
 <style scoped>

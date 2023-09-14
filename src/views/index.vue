@@ -17,7 +17,7 @@
   <!-- About-->
   <section class="page-section px-sm-3">
     <div class="container">
-      <div class="row" data-aos="slide-left">
+      <div class="row" data-aos="zoom-in-up">
         <div class="col-lg-4" style="padding: 0px;">
           <img src="../assets/index/other/2.jpg" class="myimg-full" alt="維修中">
         </div>
@@ -241,8 +241,7 @@
       </div>
     </div>
   </section>
-
-  <button ref="mybutton" class="btn btn-primary " id="btn-back-to-top">TOP</button>
+  <n-back-top />
 </template>
 
 
@@ -425,37 +424,17 @@ const handleImageClick = (activity) => {
 };
 
 
-// 返回頁頂
-function backToTop() {
-  // document.body.scrollTop = 0;
-  // document.documentElement.scrollTop = 0;
-}
-
-function scrollFunction() {
-  if (
-    document.body.scrollTop > 300 ||
-    document.documentElement.scrollTop > 300
-  ) {
-    mybutton.value.style.display = 'block';
-  } else {
-    mybutton.value.style.display = 'none';
-  }
-}
-
 onMounted(() => {
   AOS.init({
     once: true // 動畫只執行一次
   });
   getActivitys();
   getCoachPics();
-  // mybutton.value.addEventListener('click', backToTop);
-  // mybutton.value.style.display = 'block';
-  // window.addEventListener('scroll', scrollFunction);
-  // scrollFunction(); // 初始化時檢查滾動位置以設置按鈕的初始狀態
 });
 
 </script>
 
+<<<<<<< HEAD
 <style scoped>
 #btn-back-to-top {
   position: fixed;
@@ -465,3 +444,6 @@ onMounted(() => {
   /* 初始時隱藏按鈕 */
 }
 </style>
+=======
+<style scoped></style>
+>>>>>>> a0005be7a9b653da71b5d31631f9f610f2e8b388
