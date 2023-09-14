@@ -115,7 +115,7 @@
                   }"
                   @click="changePage('coupon')"
                 >
-                  我的折價券
+                  折價券
                 </button>
               </li>
             </ul>
