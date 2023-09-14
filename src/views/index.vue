@@ -74,6 +74,17 @@
     </div>
   </section>
 
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4" v-for="(image, index) in images" :key="index">
+        <img :src="image.src" @click="openLightbox(index)" alt="Image" class="myimg-full">
+      </div>
+    </div>
+    <vue-easy-lightbox :visible="lightboxVisible" :imgs="lightboxImages" :index="lightboxIndex"
+      @hide="closeLightbox"></vue-easy-lightbox>
+  </div>
+
+
   <!-- classroom -->
   <section class="page-section text-center px-sm-3">
     <div id="portfolio">
@@ -243,6 +254,39 @@ import { GoogleMap, Marker, InfoWindow } from "vue3-google-map";
 // 橫向卷軸
 import { Carousel, Navigation, Pagination, Slide } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
+// 租借場地圖片燈箱
+import VueEasyLightbox from 'vue-easy-lightbox'
+
+const lightboxVisible = ref(false);
+const lightboxImages = ref([]);
+const lightboxIndex = ref(0);
+
+const openLightbox = (index) => {
+  lightboxImages.value = images.map((image) => ({ src: image.src, title: image.title, link: image.link }));
+  lightboxIndex.value = index;
+  lightboxVisible.value = true;
+};
+
+const closeLightbox = () => {
+  lightboxVisible.value = false;
+};
+
+const images = [
+  {
+    src: 'src/assets/index/classroom/有氧大教室.jpg',
+    title: '有氧大教室',
+    link: 'http://localhost:5173/rent'
+  },
+  {
+    src: 'src/assets/index/classroom/有氧小教室.jpg',
+    title: '有氧小教室'
+  },
+  {
+    src: 'src/assets/index/classroom/攀岩教室.jpg',
+    title: '攀岩教室'
+  }
+];
+
 
 // 滾動動畫
 import AOS from 'aos';
@@ -253,7 +297,7 @@ import Swal from 'sweetalert2'
 
 const url = import.meta.env.VITE_API_JAVAURL
 
-
+// 設定教練橫向卷軸
 const settings = {
   itemsToShow: 1,
   snapAlign: 'center',
