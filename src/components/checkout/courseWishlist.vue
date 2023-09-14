@@ -11,7 +11,7 @@
         <th scope="col"></th>
       </tr>
     </thead>
-    <tbody v-for="(item, index) in pageClasses">
+    <tbody v-for="(item, index) in pageWishlistClasses">
       <tr>
         <th scope="row">{{ index + 1 }}</th>
         <td><img src=https://picsum.photos/id/17/200 alt="..." /></td>
@@ -28,7 +28,9 @@
           <div
             type="button"
             class="bi bi-trash-fill"
-            @click="deleteWishlistItem(item.classId)"
+            @click="
+              deleteWishlistItem(item.classId, item.listId, item.wishAddSince)
+            "
           ></div>
         </td>
       </tr>
@@ -61,18 +63,22 @@ const { courseWishlistStore } = storeToRefs(wishlistStore);
 */
 
 // Load Classes data
-const pageClasses = ref([]);
+const pageWishlistClasses = ref([]);
 const loadPageClasses = async () => {
   console.log(courseWishlistStore.value);
-  const URLAPI = `${URL}/classes/findClassesByIds`;
+  const URLAPI = `${URL}/classes/findAllClassesInMemberWishlist`;
   const response = await axios
-    .post(URLAPI, courseWishlistStore.value)
+    .get(URLAPI, {
+      params: {
+        memberId: localStorage.getItem("memberid"),
+      },
+    })
     .catch((error) => {
       console.log(error.toJSON());
     });
   // console.log(response);
 
-  pageClasses.value = response.data;
+  pageWishlistClasses.value = response.data;
   // console.log(pageClasses);
 };
 
@@ -94,10 +100,10 @@ const deleteWishlistItem = (classId) => {
   Methods Add wishlist item to cart
 */
 // const emits = defineEmits(["addWishlistToCartEmit"]);
-const addWishlistToCart = (classId) => {
+const addWishlistToCart = (classId, listId) => {
   if (!courseCartStore.value.includes(classId)) {
     courseCartStore.value.push(classId);
-    deleteWishlistItem(classId);
+    deleteWishlistItem(listId);
     handleSuccess("已成功加入您的購物車");
   } else {
     handleSuccess("課程已存在您的購物車");
@@ -116,11 +122,13 @@ watch(courseWishlistStore.value, () => {
 */
 
 // delete(actually is put, just add deletedate ) item to wishlish DB
-const deleteWishlistItemToDB = async (classId) => {
+const deleteWishlistItemToDB = async (classId, listId, wishAddSince) => {
   const reswishlist = await axios
-    .put(`${URL}/wishlist/${classId}`, {
+    .put(`${URL}/wishlist/${listId}`, {
+      listId: listId,
       memberId: localStorage.getItem("memberid"),
       classId: classId,
+      wishAddSince: wishAddSince,
     })
     .catch((error) => {
       console.log(error.toJSON());
