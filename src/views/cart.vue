@@ -165,8 +165,18 @@
               v-else-if="cartOrWishListOrCoupon == 'wishlist'"
             ></courseWishlist>
           </div>
+          <!-- Coupon page start -->
+          <div class="p-2 bg-light border">
+            <div
+              class="rol-12 rol-md-9 row-lg-8"
+              v-if="cartOrWishListOrCoupon == 'coupon'"
+            >
+              <memberCoupon></memberCoupon>
+            </div>
+          </div>
+          <!-- Coupon page End -->
         </div>
-        <!-- 結帳 card -->
+        <!-- 結帳 card start -->
         <div
           v-if="cartOrWishListOrCoupon == 'cart'"
           class="col-12 col-md-3 col-lg-2"
@@ -188,6 +198,7 @@
             </div>
           </div>
         </div>
+        <!-- 結帳 card end -->
       </div>
     </div>
   </section>
@@ -205,6 +216,7 @@ import { useCartStore, useWishlistStore } from "../stores/courseStore.js";
 import { storeToRefs } from "pinia";
 import ProgressBar from "../components/checkout/util/progressbar.vue";
 import courseWishlist from "../components/checkout/courseWishlist.vue";
+import memberCoupon from "../components/checkout/memberCoupon.vue";
 const URL = import.meta.env.VITE_API_JAVAURL;
 
 /*
@@ -228,7 +240,7 @@ const changePage = (pageName) => {
     pageState.isActiveOrDisableWishlist = true;
     pageState.isActiveOrDisableCoupon = false;
   } else {
-    alert("coupon not yet");
+    cartOrWishListOrCoupon.value = "coupon";
     pageState.isActiveOrDisableCart = false;
     pageState.isActiveOrDisableWishlist = false;
     pageState.isActiveOrDisableCoupon = true;
