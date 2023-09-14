@@ -141,7 +141,7 @@
 /*
   imports
 */
-import { ref, reactive, onMounted, watch } from "vue";
+import { ref, reactive, onMounted, watch, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 import courseCard from "../components/course/courseCard.vue";
@@ -156,12 +156,12 @@ const URL = import.meta.env.VITE_API_JAVAURL;
 */
 
 const route = useRoute();
-const pageCourseCategoryId = ref("0");
+const pageCourseCategoryId = ref(route.params["categoryid"]);
 watch(
   () => route.params["categoryid"],
   async (newUrlCategoryId) => {
     // console.log(newUrlCategoryId);
-    if (newUrlCategoryId == undefined) {
+    if (newUrlCategoryId == 0) {
       paginationData.page = 1; //每次換Category時 顯示所有資料的第一頁
       pageCourseCategoryId.value = "0";
       await loadPageCourses();
@@ -267,7 +267,7 @@ watch(
   () => paginationData.page,
   async () => {
     // console.log(newUrlCategoryId);
-    if (route.params["categoryid"] == undefined) {
+    if (route.params["categoryid"] == 0) {
       await loadPageCourses();
     } else {
       await loadPageCoursesOfSingleCategory();
@@ -278,9 +278,18 @@ watch(
 /*
   LifeCycle Hooks
 */
-onMounted(() => {
+onBeforeMount(() => {
+  // pageCourseCategoryId.value = route.params["categoryid"];
   loadAllCourseCategories();
-  loadPageCourses();
+});
+
+onMounted(() => {
+  // choose which page to load
+  if (route.params["categoryid"] == 0) {
+    loadPageCourses();
+  } else {
+    loadPageCoursesOfSingleCategory();
+  }
 });
 </script>
 

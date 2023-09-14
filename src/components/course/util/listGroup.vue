@@ -1,7 +1,7 @@
 <template>
   <div class="list-group d-flex justify-content-center my-5">
     <RouterLink
-      to="/course"
+      to="/course/0"
       :disabled="pageCourseCategoryId == 0"
       class="list-group-item list-group-item-action"
       :class="{ disabled: pageCourseCategoryId == 0 }"
@@ -34,7 +34,7 @@ import { RouterLink } from "vue-router";
 const props = defineProps({
   urlPattern: String,
   allCourseCategories: Object,
-  pageCourseCategoryId: String,
+  pageCourseCategoryId: Number,
 });
 </script>
 

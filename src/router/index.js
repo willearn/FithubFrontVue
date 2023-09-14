@@ -16,69 +16,74 @@ const router = createRouter({
       component: () => import("../views/rent.vue"),
     },
     {
-      path: '/rentorder',
-      name: 'rentorder',
-      component: () => import('../views/rentorder.vue'),
-    }, {
-      path: '/activity',
-      name: 'activity',
-      component: () => import('../views/activity.vue')
-    }, {
-      path: '/login',
-      name: 'login',
-      component: () => import('../views/login.vue')
-    }, {
-      path: '/register',
-      name: 'register',
-      component: () => import('../views/register.vue')
-    },{
-      path: '/member',
-      name: 'member',
-      component: () => import('../views/member.vue'),
-      meta:{
-        needLogin: true
-      }
-    },{
-      path: '/editprofile',
-      name: 'editprofile',
-      component: () => import('../views/editprofile.vue'),
-      meta:{
-        needLogin: true
-      }
-    },{
-      path: '/editpassword',
-      name: 'editpassword',
-      component: () => import('../views/editpassword.vue'),
-      meta:{
-        needLogin: true
-      } 
-    },{
-      path: '/forgotpassword',
-      name: 'forgotpassword',
-      component: () => import('../views/forgotpassword.vue'),
-    },{
-      path: '/resetpassword/:token',
-      name: 'resetpassword',
-      component: () => import('../views/resetpassword.vue'),
-    },{
-      path: '/showorder',
-      name: 'showorder',
-      component: () => import('../views/showorder.vue'),
-      meta:{
-        needLogin: true
-      } 
-    },{
-      path: '/showrentorder',
-      name: 'showrentorder',
-      component: () => import('../views/showrentorder.vue'),
-      meta:{
-        needLogin: true
-      } 
+      path: "/rentorder",
+      name: "rentorder",
+      component: () => import("../views/rentorder.vue"),
     },
     {
-      path: "/course",
-      name: "course",
-      component: () => import("../views/course.vue"),
+      path: "/activity",
+      name: "activity",
+      component: () => import("../views/activity.vue"),
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: () => import("../views/login.vue"),
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: () => import("../views/register.vue"),
+    },
+    {
+      path: "/member",
+      name: "member",
+      component: () => import("../views/member.vue"),
+      meta: {
+        needLogin: true,
+      },
+    },
+    {
+      path: "/editprofile",
+      name: "editprofile",
+      component: () => import("../views/editprofile.vue"),
+      meta: {
+        needLogin: true,
+      },
+    },
+    {
+      path: "/editpassword",
+      name: "editpassword",
+      component: () => import("../views/editpassword.vue"),
+      meta: {
+        needLogin: true,
+      },
+    },
+    {
+      path: "/forgotpassword",
+      name: "forgotpassword",
+      component: () => import("../views/forgotpassword.vue"),
+    },
+    {
+      path: "/resetpassword/:token",
+      name: "resetpassword",
+      component: () => import("../views/resetpassword.vue"),
+    },
+    {
+      path: "/showorder",
+      name: "showorder",
+      component: () => import("../views/showorder.vue"),
+      meta: {
+        needLogin: true,
+      },
+    },
+    {
+      path: "/showrentorder",
+      name: "showrentorder",
+      component: () => import("../views/showrentorder.vue"),
+      meta: {
+        needLogin: true,
+      },
     },
     {
       path: "/course/:categoryid",

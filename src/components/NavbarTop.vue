@@ -3,26 +3,59 @@
   <nav class="navbar navbar-expand-lg navbar-light fixed-top mynav" :id="navId">
     <div class="container px-4 px-lg-5">
       <router-link class="navbar-brand" to="/">Fithub</router-link>
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
-        aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      <button
+        class="navbar-toggler navbar-toggler-right"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarResponsive"
+        aria-controls="navbarResponsive"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ms-auto my-2 my-lg-0">
-          <li class="nav-item"><router-link class="nav-link" to="/course">課程</router-link></li>
-          <li class="nav-item"><router-link class="nav-link" to="/rent">場地租借</router-link></li>
-          <li class="nav-item"><router-link class="nav-link" to="/">最新消息</router-link></li>
-          <li class="nav-item"><router-link class="nav-link" to="/">教練團隊</router-link></li>
-          <li class="nav-item" v-if="!isLogin"><router-link class="nav-link" to="/login"><i
-                class="bi bi-person-fill"></i>會員登入</router-link></li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/course/0">課程</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/rent">場地租借</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/">最新消息</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/">教練團隊</router-link>
+          </li>
+          <li class="nav-item" v-if="!isLogin">
+            <router-link class="nav-link" to="/login"
+              ><i class="bi bi-person-fill"></i>會員登入</router-link
+            >
+          </li>
           <li class="nav-item dropdown" v-if="isLogin">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="dropdownMenuLink"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
               <i class="bi bi-person-fill"></i>
               {{ membername }}
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <li><router-link class="dropdown-item" to="/member">會員專區</router-link></li>
-              <li><router-link class="dropdown-item" to="/login" @click="logout">登出</router-link></li>
+              <li>
+                <router-link class="dropdown-item" to="/member"
+                  >會員專區</router-link
+                >
+              </li>
+              <li>
+                <router-link class="dropdown-item" to="/login" @click="logout"
+                  >登出</router-link
+                >
+              </li>
             </ul>
           </li>
         </ul>
@@ -32,7 +65,7 @@
 </template>
 
 <script setup>
-import router from "@/router"
+import router from "@/router";
 import { ref, onMounted } from "vue";
 
 const isLogin = ref();
@@ -40,31 +73,29 @@ const membername = ref();
 const navId = ref(null); // 定义navId变量
 
 const logout = () => {
-  window.localStorage.setItem("isLogin", "")
-  window.localStorage.setItem("token", "")
-  window.localStorage.setItem("memberid", "")
-  window.localStorage.setItem("memberemail", "")
-  window.localStorage.setItem("membername", "")
+  window.localStorage.setItem("isLogin", "");
+  window.localStorage.setItem("token", "");
+  window.localStorage.setItem("memberid", "");
+  window.localStorage.setItem("memberemail", "");
+  window.localStorage.setItem("membername", "");
 };
 
-router.beforeResolve(to => {
-  isLogin.value = window.localStorage.getItem("isLogin") === 'true';
+router.beforeResolve((to) => {
+  isLogin.value = window.localStorage.getItem("isLogin") === "true";
   membername.value = localStorage.getItem("membername");
-})
+});
 
 onMounted(() => {
-  isLogin.value = window.localStorage.getItem("isLogin") === 'true';
+  isLogin.value = window.localStorage.getItem("isLogin") === "true";
   // 检查是否是首页
-})
-
+});
 
 router.afterEach((to, from) => {
   // 检查是否是首页
-  if (to.name === 'home') {
-    navId.value = 'mainNav'; // 设置 ID
+  if (to.name === "home") {
+    navId.value = "mainNav"; // 设置 ID
   } else {
     navId.value = null; // 清除 ID
   }
 });
-
 </script>
