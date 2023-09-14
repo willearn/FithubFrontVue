@@ -5,6 +5,7 @@ import router from "@/router"
 import { ref, reactive } from "vue";
 import { GoogleLogin, decodeCredential } from 'vue3-google-login'
 import Swal from 'sweetalert2'
+import { useReCaptcha } from 'vue-recaptcha-v3';
 
 const url = import.meta.env.VITE_API_JAVAURL
 
@@ -14,10 +15,13 @@ const data = ref()
 //   data.value = response
 // }
 
+
+
 const loginData = reactive({
   memberemail: "",
   memberpassword: "",
 });
+
 
 const submit = async () => {
   try {
@@ -75,6 +79,7 @@ const callback = async (response) => {
                   <div class="form-outline mb-4">
                     <input type="password" class="form-control form-control-lg" v-model="loginData.memberpassword" />
                   </div>
+
                   <div class="pt-1 mb-4">
                     <button class="btn btn-dark btn-lg btn-block" type="button" @click="submit">登入</button>
                   </div>
