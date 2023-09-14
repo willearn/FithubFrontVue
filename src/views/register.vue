@@ -110,7 +110,12 @@ const sendVerificationCode = async () => {
     const response = await axios.post(`${url}/verificationcode`, verify);
     if (response.status == 200) {
       startCountdown();
-      alert("發送成功，請至信箱收取驗證碼")
+      Swal.fire({
+      title: '發送成功，請至信箱收取驗證碼',
+      icon: 'success',
+      confirmButtonText: '確定'
+    })
+      // alert("發送成功，請至信箱收取驗證碼")
     }
   } catch (error) {
     if (error.response.status == 400) {
