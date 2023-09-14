@@ -121,7 +121,10 @@
 
               <div class="row justify-content-end my-4">
                 <div class="col-12 col-md-6 col-lg-4">
-                  <button class="btn btn btn-primary mx-2">
+                  <button
+                    class="btn btn btn-primary mx-2"
+                    @click="AddWishlistItemToDB(displayClasses.classId)"
+                  >
                     <i type="button" class="bi bi-heart-fill"></i
                     >&nbsp;&nbsp;加入願望清單
                   </button>
@@ -353,8 +356,24 @@ const saveCourseCartToLocalStorage = (forwardOrStay) => {
   }
 };
 
-const saveCourseCartToDB = () => {
-  console.log("saveCartToDB");
+/*
+  method for add item to wishlish DB
+*/
+// add item to wishlish DB
+const AddWishlistItemToDB = async (classId) => {
+  if (localStorage.getItem("memberid") == null) {
+    alert("請先登入會員");
+  } else {
+    const reswishlist = await axios
+      .post(`${URL}/wishlist`, {
+        memberId: localStorage.getItem("memberid"),
+        classId: classId,
+      })
+      .catch((error) => {
+        console.log(error.toJSON());
+      });
+    alert("課程已加入您的願望清單");
+  }
 };
 
 /*
@@ -365,10 +384,6 @@ onMounted(() => {
   loadPageCourse();
   loadPageClasses();
   loadRecommendedCourses();
-});
-
-onBeforeUnmount(() => {
-  saveCourseCartToDB();
 });
 </script>
 
