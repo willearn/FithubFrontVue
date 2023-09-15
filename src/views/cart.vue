@@ -186,14 +186,15 @@
               <h4 class="card-title">總價:</h4>
               <p class="card-text">NT$&nbsp;{{ totalPrice }}</p>
               <div class="d-grid gap-3 col-12 mx-auto">
-                <router-link
+                <button
                   class="btn btn-primary"
                   :class="{
                     disabled: isCheckoutButtonActive,
                   }"
-                  to="/checkout"
-                  >結帳</router-link
+                  @click="toCheckoutOrNot"
                 >
+                  結帳
+                </button>
               </div>
             </div>
           </div>
@@ -209,7 +210,7 @@
   imports
  */
 import { ref, reactive, onMounted, computed, watch, onUpdated } from "vue";
-import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import axios from "axios";
 import { useDialog, useMessage } from "naive-ui";
 import { useCartStore, useWishlistStore } from "../stores/courseStore.js";
@@ -218,6 +219,11 @@ import ProgressBar from "../components/checkout/util/progressbar.vue";
 import courseWishlist from "../components/checkout/courseWishlist.vue";
 import memberCoupon from "../components/checkout/memberCoupon.vue";
 const URL = import.meta.env.VITE_API_JAVAURL;
+
+/*
+  Route
+*/
+const router = useRouter();
 
 /*
   Decide which page to render
@@ -235,10 +241,14 @@ const changePage = (pageName) => {
     pageState.isActiveOrDisableWishlist = false;
     pageState.isActiveOrDisableCoupon = false;
   } else if (pageName == "wishlist") {
-    cartOrWishListOrCoupon.value = "wishlist";
-    pageState.isActiveOrDisableCart = false;
-    pageState.isActiveOrDisableWishlist = true;
-    pageState.isActiveOrDisableCoupon = false;
+    if (localStorage.getItem("memberid") == "") {
+      handleMessage("請先登入會員");
+    } else {
+      cartOrWishListOrCoupon.value = "wishlist";
+      pageState.isActiveOrDisableCart = false;
+      pageState.isActiveOrDisableWishlist = true;
+      pageState.isActiveOrDisableCoupon = false;
+    }
   } else {
     cartOrWishListOrCoupon.value = "coupon";
     pageState.isActiveOrDisableCart = false;
@@ -349,14 +359,25 @@ const addToWishlist = (classId) => {
 };
 
 /*
-  checkout button active verification
+  Go to checkout or not
 */
+
+// button active verification
 const isCheckoutButtonActive = ref(null);
 const CheckoutButtonActive = () => {
-  if (totalPrice.value == 0 || localStorage.getItem("memberid") == null) {
+  if (totalPrice.value == 0) {
     isCheckoutButtonActive.value = true;
   } else {
     isCheckoutButtonActive.value = false;
+  }
+};
+
+//
+const toCheckoutOrNot = () => {
+  if (localStorage.getItem("memberid") == "") {
+    handleMessage("請先登入會員");
+  } else {
+    router.push("checkout");
   }
 };
 
