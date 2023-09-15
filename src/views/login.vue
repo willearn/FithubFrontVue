@@ -7,6 +7,7 @@ import { GoogleLogin, decodeCredential } from 'vue3-google-login'
 import Swal from 'sweetalert2'
 import GoogleReCaptchaV2 from "../components/member/GoogleReCaptchaV2.vue";
 
+
 const url = import.meta.env.VITE_API_JAVAURL
 
 const data = ref()
@@ -25,9 +26,6 @@ const loginData = reactive({
 
 const checkreCaptcha = value => {
   recaptcha.value = JSON.parse(value)
-  console.log("recaptcha")
-  console.log(recaptcha.value)
-  console.log(recaptcha.value == true)
 }
 
 
@@ -57,12 +55,12 @@ const submit = async () => {
         })
         return
       }
-    }else{
+    } else {
       Swal.fire({
-          title: '請先驗證',
-          icon: 'error',
-          confirmButtonText: '確定'
-        })
+        title: '請先驗證',
+        icon: 'error',
+        confirmButtonText: '確定'
+      })
     }
 
   } catch (error) {
