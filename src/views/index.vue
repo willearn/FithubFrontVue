@@ -268,7 +268,9 @@ const breakpoints = {
   },
 };
 
-
+// 取得LinePay回傳資訊
+const transactionId = ref(null);
+const orderId = ref(null);
 
 // 設定GoogleMap
 const center = { lat: 22.62808625882824, lng: 120.29252321578828 };
@@ -385,6 +387,12 @@ onMounted(() => {
   });
   getActivitys();
   getCoachPics();
+   // 获取 URL 查询参数
+  const queryParams = new URLSearchParams(window.location.search);
+  transactionId.value = queryParams.get('transactionId');
+  orderId.value = queryParams.get('orderId');
+  console.log(transactionId.value);
+  console.log(orderId.value);
 });
 
 </script>

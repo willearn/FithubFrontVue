@@ -66,7 +66,8 @@
                     </tbody>
                 </table>
                 <button type="submit" class="btn btn-primary btn-lg" @click="cancleRentOrder">取消返回</button>
-                <button type="submit" class="btn btn-primary btn-lg offset-1" @click="insertRentOrder">送出訂單</button>
+                <button type="submit" class="btn btn-primary btn-lg offset-1" @click="insertEcpayOrder">送出訂單</button>
+                <button type="submit" class="btn btn-primary btn-lg offset-1" @click="insertLineOrder">line</button>
             </div>
         </div>
     </section>
@@ -94,9 +95,10 @@ const rentOrderStore = useRentOrderStore();
 const { selectedClassroom } = storeToRefs(rentOrderStore);
 // console.log(selectedClassroom.value)
 
+const linePayData = ref(null);
 
-// 新增訂單
-const insertRentOrder = async () => {
+// 綠界新增訂單
+const insertEcpayOrder = async () => {
     try {
 
         // 金流日期需求格式
@@ -135,7 +137,34 @@ const insertRentOrder = async () => {
         }
 
     } catch (error) {
-        console.error('insertRentOrder Error:', error);
+        console.error('insertEcpayOrder Error:', error);
+    }
+};
+
+// LinePay新增訂單
+const insertLineOrder = async () => {
+    try {
+        // 建立LinePay需要的訂單資訊
+        const lineRentOrder = reactive({
+            rentorderid: '',
+            rentamount: selectedClassroom.value.classroomPrice,
+            classroomname: selectedClassroom.value.classroomName
+        });
+        lineRentOrder.rentorderid = selectedClassroom.value.rentOrderid;
+        // console.log(lineRentOrder)
+
+        // 由後端整理格式  取得line需要的 header內容 以及json字串的訂單內容
+        const linepayCheckoutResponse = await axios.post(`${url}/linepay/linepayCheckout`, lineRentOrder);
+        linePayData.value = linepayCheckoutResponse.data
+        // console.log(linePayData.value);
+        
+        // 開啟付款頁面
+        const orderWebUrl = linePayData.value.info.paymentUrl.web
+        // console.log(orderWebUrl);
+
+        window.location.href = orderWebUrl;
+    } catch (error) {
+        console.error('insertLineOrder Error:', error);
     }
 };
 
