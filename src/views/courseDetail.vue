@@ -197,7 +197,7 @@
 import { ref, reactive, onMounted, onBeforeUnmount, watch } from "vue";
 import { RouterLink, useRoute, useRouter } from "vue-router";
 import axios from "axios";
-import { useDialog } from "naive-ui";
+import { useDialog, useMessage } from "naive-ui";
 import courseCard from "../components/course/courseCard.vue";
 import FullCalendar from "../components/course/courseCalendar.vue";
 import CartIcon from "../components/course/util/icon-cart.vue";
@@ -312,7 +312,7 @@ const loadPageClasses = async () => {
 const pageWishlistClasses = ref([]);
 const loadPageWishlistClasses = async () => {
   // console.log(courseWishlistStore.value);
-  if (localStorage.getItem("memberid") != null) {
+  if (localStorage.getItem("memberid") != "") {
     // check login or not
     const URLAPI = `${URL}/classes/findAllClassesInMemberWishlist`;
     const response = await axios
@@ -404,8 +404,8 @@ const AddWishlistItemToDB = async (classId) => {
   Add classes to courseWishlistStore and local storage
 */
 const addToWishlist = (classId) => {
-  if (localStorage.getItem("memberid") == null) {
-    handleSuccess("請先登入會員");
+  if (localStorage.getItem("memberid") == "") {
+    handleMessage("請先登入會員");
   } else {
     if (!courseWishlistStore.value.includes(classId)) {
       AddWishlistItemToDB(classId);
@@ -413,7 +413,7 @@ const addToWishlist = (classId) => {
       // Use Naive UI Dialog
       handleSuccess("課程已成功加入願望清單");
     } else {
-      handleSuccess("課程已存在您的願望清單");
+      handleMessage("課程已存在您的願望清單");
     }
   }
 };
@@ -433,11 +433,18 @@ const updateWishlistDBtoStore = (pageWishlistClasses) => {
   Naive UI success modal
 */
 const dialog = useDialog();
+const messageNaive = useMessage();
 const handleSuccess = (contentText) => {
   dialog.success({
     title: "Success",
     content: contentText,
     positiveText: "確定",
+  });
+};
+const handleMessage = (messageText) => {
+  messageNaive.info(messageText, {
+    closable: true,
+    duration: 5000,
   });
 };
 

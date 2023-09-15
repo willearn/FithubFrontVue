@@ -211,7 +211,7 @@
 import { ref, reactive, onMounted, computed, watch, onUpdated } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
-import { useDialog } from "naive-ui";
+import { useDialog, useMessage } from "naive-ui";
 import { useCartStore, useWishlistStore } from "../stores/courseStore.js";
 import { storeToRefs } from "pinia";
 import ProgressBar from "../components/checkout/util/progressbar.vue";
@@ -304,16 +304,6 @@ const deleteCartItem = (classId) => {
   courseCartStore.value.splice(courseCartStore.value.indexOf(classId), 1);
 };
 
-// Delete cart items throuth deleting in store
-// Not use yet
-const deleteCartItems = (itemsIds) => {
-  for (let i = 0; i < itemsIds.length; i++) {
-    let index = courseCartStore.value.indexOf(itemsIds[i]);
-    let deleteId = courseCartStore.value.splice(index, 1);
-    console.log(deleteId);
-  }
-};
-
 /*
   watcher for cart items in store
 */
@@ -340,8 +330,8 @@ const AddWishlistItemToDB = async (classId) => {
   Add classes to courseWishlistStore and local storage
 */
 const addToWishlist = (classId) => {
-  if (localStorage.getItem("memberid") == null) {
-    alert("請先登入會員");
+  if (localStorage.getItem("memberid") == "") {
+    handleMessage("請先登入會員");
   } else {
     // Delete utem from cart ,then add to wishlist and DB
     if (!courseWishlistStore.value.includes(classId)) {
@@ -353,7 +343,7 @@ const addToWishlist = (classId) => {
       // Use Naive UI Dialog
       handleSuccess("課程已成功加入願望清單");
     } else {
-      handleSuccess("課程已存在您的願望清單");
+      handleMessage("課程已存在您的願望清單");
     }
   }
 };
@@ -374,11 +364,18 @@ const CheckoutButtonActive = () => {
   Naive UI success modal
 */
 const dialog = useDialog();
+const messageNaive = useMessage();
 const handleSuccess = (contentText) => {
   dialog.success({
     title: "Success",
     content: contentText,
     positiveText: "確定",
+  });
+};
+const handleMessage = (messageText) => {
+  messageNaive.info(messageText, {
+    closable: true,
+    duration: 5000,
   });
 };
 
