@@ -286,12 +286,14 @@ const loadPageClasses = async () => {
   // console.log(pageClasses);
 
   // imitial diaplay data
-  displayClasses.classId = pageClasses.value[0]["classId"];
-  displayClasses.classDate = pageClasses.value[0]["classDate"];
-  displayClasses.classTime = pageClasses.value[0]["classTime"];
-  displayClasses.employeename = pageClasses.value[0]["employeename"];
-  displayClasses.classroomName = pageClasses.value[0]["classroomName"];
-  displayClasses.price = pageClasses.value[0]["price"];
+  if ((pageClasses.value.length = 0)) {
+    displayClasses.classId = pageClasses.value[0]["classId"];
+    displayClasses.classDate = pageClasses.value[0]["classDate"];
+    displayClasses.classTime = pageClasses.value[0]["classTime"];
+    displayClasses.employeename = pageClasses.value[0]["employeename"];
+    displayClasses.classroomName = pageClasses.value[0]["classroomName"];
+    displayClasses.price = pageClasses.value[0]["price"];
+  }
 
   // put all classes data in calendar
   calendarEvents.value = pageClasses.value.map((item) => {

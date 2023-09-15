@@ -75,7 +75,7 @@
           <listGroup
             class="d-flex justify-content-center"
             :allCourseCategories="allCourseCategories"
-            :pageCourseCategoryId="pageCourseCategoryId"
+            :pageCourseCategoryId="parseInt(pageCourseCategoryId)"
             tabindex="0"
             v-focus
           ></listGroup>
@@ -87,7 +87,7 @@
             {{
               allCourseCategories.find((item) => {
                 return item.categoryId == pageCourseCategoryId;
-              }).categoryName
+              })["categoryName"]
             }}課程列表
           </h1>
           <h1 v-else class="text-center mb-4">全部課程列表</h1>
@@ -160,12 +160,14 @@ const pageCourseCategoryId = ref(parseInt(route.params["categoryid"]));
 watch(
   () => route.params["categoryid"],
   async (newUrlCategoryId) => {
-    // console.log(newUrlCategoryId);
     if (newUrlCategoryId == 0) {
       paginationData.page = 1; //每次換Category時 顯示所有資料的第一頁
       pageCourseCategoryId.value = 0;
       await loadPageCourses();
-    } else {
+    } else if (
+      route.params["categoryid"] != 0 &&
+      route.params["categoryid"] != undefined
+    ) {
       paginationData.page = 1; //每次換Category時 顯示所有資料的第一頁
       pageCourseCategoryId.value = newUrlCategoryId;
       await loadPageCoursesOfSingleCategory();
@@ -218,7 +220,6 @@ const loadPageCourses = async () => {
 // Load course data of single category
 const loadPageCoursesOfSingleCategory = async () => {
   if (pageCourseCategoryId != 0) {
-    console.log(pageCourseCategoryId);
     const URLAPI = `${URL}/course/page/${pageCourseCategoryId.value}`;
     const response = await axios.get(URLAPI, {
       params: {
@@ -244,9 +245,9 @@ const loadPageCoursesOfSingleCategory = async () => {
 
 //trigger @click pagination後換頁
 const changePage = (nextOrLast, pageChoose) => {
-  console.log(
-    "In Main Page, arg1 is: " + nextOrLast + " ,arg2 is: " + pageChoose
-  );
+  // console.log(
+  //   "In Main Page, arg1 is: " + nextOrLast + " ,arg2 is: " + pageChoose
+  // );
   if (nextOrLast == 0 && paginationData.page != pageChoose) {
     paginationData.page = pageChoose;
   } else if (
@@ -266,10 +267,12 @@ const changePage = (nextOrLast, pageChoose) => {
 watch(
   () => paginationData.page,
   async () => {
-    // console.log(newUrlCategoryId);
     if (route.params["categoryid"] == 0) {
       await loadPageCourses();
-    } else {
+    } else if (
+      route.params["categoryid"] != 0 &&
+      route.params["categoryid"] != undefined
+    ) {
       await loadPageCoursesOfSingleCategory();
     }
   }
@@ -287,7 +290,10 @@ onMounted(() => {
   // choose which page to load
   if (route.params["categoryid"] == 0) {
     loadPageCourses();
-  } else {
+  } else if (
+    route.params["categoryid"] != 0 &&
+    route.params["categoryid"] != undefined
+  ) {
     loadPageCoursesOfSingleCategory();
   }
 });
