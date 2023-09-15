@@ -65,12 +65,20 @@
 </template>
 
 <script setup>
+/*
+  imports
+*/
 import router from "@/router";
 import { ref, onMounted } from "vue";
+import { storeToRefs } from "pinia";
+import { useWishlistStore } from "../stores/courseStore";
 
 const isLogin = ref();
 const membername = ref();
 const navId = ref(null); // 定义navId变量
+
+const wishlistStore = useWishlistStore();
+const { courseWishlistStore } = storeToRefs(wishlistStore);
 
 const logout = () => {
   window.localStorage.setItem("isLogin", "");
@@ -78,6 +86,7 @@ const logout = () => {
   window.localStorage.setItem("memberid", "");
   window.localStorage.setItem("memberemail", "");
   window.localStorage.setItem("membername", "");
+  courseWishlistStore.value = []; // 清空願望清單
 };
 
 router.beforeResolve((to) => {

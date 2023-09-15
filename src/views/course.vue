@@ -86,6 +86,7 @@
           <h1 v-if="pageCourseCategoryId != 0" class="text-center mb-4">
             {{
               allCourseCategories.find((item) => {
+                console.log("rander page h1");
                 return item.categoryId == pageCourseCategoryId;
               })["categoryName"]
             }}課程列表
@@ -283,7 +284,10 @@ watch(
 */
 onBeforeMount(() => {
   // pageCourseCategoryId.value = route.params["categoryid"];
+  console.log("onBeforeMount1");
   loadAllCourseCategories();
+  console.log("onBeforeMount2");
+  console.log(allCourseCategories.value);
 });
 
 onMounted(() => {
