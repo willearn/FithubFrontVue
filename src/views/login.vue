@@ -5,7 +5,7 @@ import router from "@/router"
 import { ref, reactive } from "vue";
 import { GoogleLogin, decodeCredential } from 'vue3-google-login'
 import Swal from 'sweetalert2'
-import { useReCaptcha } from 'vue-recaptcha-v3';
+import GoogleReCaptchaV2 from "../components/member/GoogleReCaptchaV2.vue";
 
 const url = import.meta.env.VITE_API_JAVAURL
 
@@ -16,25 +16,55 @@ const data = ref()
 // }
 
 
+const recaptcha = ref(Boolean)
 
 const loginData = reactive({
   memberemail: "",
   memberpassword: "",
 });
 
+const checkreCaptcha = value => {
+  recaptcha.value = JSON.parse(value)
+  console.log("recaptcha")
+  console.log(recaptcha.value)
+  console.log(recaptcha.value == true)
+}
+
 
 const submit = async () => {
   try {
-    let res = await login(loginData.memberemail, loginData.memberpassword)
-    if (res.status == 0) {
-      router.push({ name: "home" })
-    } else {
+    console.log(!loginData.memberemail.trim())
+
+    if (!loginData.memberemail.trim() || !loginData.memberpassword.trim()) {
       Swal.fire({
-        title: '帳號密碼錯誤',
+        title: '請輸入帳號密碼',
         icon: 'error',
         confirmButtonText: '確定'
       })
+      return
     }
+
+
+    if (recaptcha.value == true) {
+      let res = await login(loginData.memberemail, loginData.memberpassword)
+      if (res.status == 0) {
+        router.push({ name: "home" })
+      } else {
+        Swal.fire({
+          title: '帳號密碼錯誤',
+          icon: 'error',
+          confirmButtonText: '確定'
+        })
+        return
+      }
+    }else{
+      Swal.fire({
+          title: '請先驗證',
+          icon: 'error',
+          confirmButtonText: '確定'
+        })
+    }
+
   } catch (error) {
 
   }
@@ -79,7 +109,7 @@ const callback = async (response) => {
                   <div class="form-outline mb-4">
                     <input type="password" class="form-control form-control-lg" v-model="loginData.memberpassword" />
                   </div>
-
+                  <GoogleReCaptchaV2 @recaptcha="checkreCaptcha"></GoogleReCaptchaV2>
                   <div class="pt-1 mb-4">
                     <button class="btn btn-dark btn-lg btn-block" type="button" @click="submit">登入</button>
                   </div>
