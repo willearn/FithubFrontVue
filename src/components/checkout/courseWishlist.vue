@@ -71,22 +71,25 @@ const { courseWishlistStore } = storeToRefs(wishlistStore);
 // Load Classes data
 const pageWishlistClasses = ref([]);
 const loadPageWishlistClasses = async () => {
-  console.log(courseWishlistStore.value);
-  const URLAPI = `${URL}/classes/findAllClassesInMemberWishlist`;
-  const response = await axios
-    .get(URLAPI, {
-      params: {
-        memberId: localStorage.getItem("memberid"),
-      },
-    })
-    .catch((error) => {
-      console.log(error.toJSON());
-    });
-  // console.log(response);
+  // console.log(courseWishlistStore.value);
+  if (localStorage.getItem("memberid") != null) {
+    // check login or not
+    const URLAPI = `${URL}/classes/findAllClassesInMemberWishlist`;
+    const response = await axios
+      .get(URLAPI, {
+        params: {
+          memberId: localStorage.getItem("memberid"),
+        },
+      })
+      .catch((error) => {
+        console.log(error.toJSON());
+      });
+    // console.log(response);
 
-  pageWishlistClasses.value = response.data;
-  // console.log(pageClasses);
-  updateWishlistDBtoStore(pageWishlistClasses);
+    pageWishlistClasses.value = response.data;
+    // console.log(pageClasses);
+    updateWishlistDBtoStore(pageWishlistClasses);
+  }
 };
 
 /*

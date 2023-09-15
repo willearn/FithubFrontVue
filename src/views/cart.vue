@@ -325,7 +325,7 @@ watch(courseCartStore.value, () => {
   method for add and delete item to wishlish DB
 */
 // add item to wishlish DB
-const AddWishlistItemToDB = async (classId, e) => {
+const AddWishlistItemToDB = async (classId) => {
   const reswishlist = await axios
     .post(`${URL}/wishlist`, {
       memberId: localStorage.getItem("memberid"),

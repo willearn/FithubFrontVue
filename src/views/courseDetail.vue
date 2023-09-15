@@ -123,7 +123,7 @@
                 <div class="col-12 col-md-6 col-lg-4">
                   <button
                     class="btn btn btn-primary mx-2"
-                    @click="AddWishlistItemToDB(displayClasses.classId)"
+                    @click="addToWishlist(displayClasses.classId)"
                   >
                     <i type="button" class="bi bi-heart-fill"></i
                     >&nbsp;&nbsp;加入願望清單
@@ -178,7 +178,6 @@
               class="col-3 mx-2 my-3"
               :cardAmount="index"
               :course="course"
-              :isLike="isLike"
             >
             </courseCard>
           </div>
@@ -203,7 +202,7 @@ import courseCard from "../components/course/courseCard.vue";
 import FullCalendar from "../components/course/courseCalendar.vue";
 import CartIcon from "../components/course/util/icon-cart.vue";
 import { vFocus } from "../directives/vFocus";
-import { useCartStore } from "../stores/courseStore.js";
+import { useCartStore, useWishlistStore } from "../stores/courseStore.js";
 import { storeToRefs } from "pinia";
 const URL = import.meta.env.VITE_API_JAVAURL;
 
@@ -222,7 +221,7 @@ watch(
   () => route.params["courseid"],
 
   async (newUrlCourseId) => {
-    if (newUrlCourseId !== undefined) {
+    if (newUrlCourseId != undefined) {
       // console.log(newUrlCourseId);
       await loadPageCourse();
       await loadPageClasses();
@@ -235,6 +234,8 @@ watch(
 */
 const cartStore = useCartStore();
 const { courseCartStore } = storeToRefs(cartStore);
+const wishlistStore = useWishlistStore();
+const { courseWishlistStore } = storeToRefs(wishlistStore);
 
 /*
   Display Data
@@ -288,7 +289,7 @@ const loadPageClasses = async () => {
   // console.log(pageClasses);
 
   // imitial diaplay data
-  if ((pageClasses.value.length = 0)) {
+  if (pageClasses.value.length != 0) {
     displayClasses.classId = pageClasses.value[0]["classId"];
     displayClasses.classDate = pageClasses.value[0]["classDate"];
     displayClasses.classTime = pageClasses.value[0]["classTime"];
@@ -307,9 +308,32 @@ const loadPageClasses = async () => {
   });
 };
 
+// Load wishlist classes data
+const pageWishlistClasses = ref([]);
+const loadPageWishlistClasses = async () => {
+  // console.log(courseWishlistStore.value);
+  if (localStorage.getItem("memberid") != null) {
+    // check login or not
+    const URLAPI = `${URL}/classes/findAllClassesInMemberWishlist`;
+    const response = await axios
+      .get(URLAPI, {
+        params: {
+          memberId: localStorage.getItem("memberid"),
+        },
+      })
+      .catch((error) => {
+        console.log(error.toJSON());
+      });
+    // console.log(response);
+
+    pageWishlistClasses.value = response.data;
+    // console.log(pageClasses);
+    updateWishlistDBtoStore(pageWishlistClasses);
+  }
+};
+
 // Load recommended courses data
 const recommendedCourses = ref([]);
-let isLike = ref(false); //可拿掉
 const loadRecommendedCourses = async () => {
   const URLAPI = `${URL}/course/page`;
   const response = await axios.get(URLAPI, {
@@ -366,19 +390,14 @@ const saveCourseCartToLocalStorage = (forwardOrStay) => {
 */
 // add item to wishlish DB
 const AddWishlistItemToDB = async (classId) => {
-  if (localStorage.getItem("memberid") == null) {
-    handleSuccess("請先登入會員");
-  } else {
-    const reswishlist = await axios
-      .post(`${URL}/wishlist`, {
-        memberId: localStorage.getItem("memberid"),
-        classId: classId,
-      })
-      .catch((error) => {
-        console.log(error.toJSON());
-      });
-    handleSuccess("課程已加入您的願望清單");
-  }
+  const resWishlist = await axios
+    .post(`${URL}/wishlist`, {
+      memberId: localStorage.getItem("memberid"),
+      classId: classId,
+    })
+    .catch((error) => {
+      console.log(error.toJSON());
+    });
 };
 
 /*
@@ -386,19 +405,28 @@ const AddWishlistItemToDB = async (classId) => {
 */
 const addToWishlist = (classId) => {
   if (localStorage.getItem("memberid") == null) {
-    alert("請先登入會員");
+    handleSuccess("請先登入會員");
   } else {
-    // Delete utem from cart ,then add to wishlist and DB
     if (!courseWishlistStore.value.includes(classId)) {
-      courseWishlistStore.value.push(classId);
       AddWishlistItemToDB(classId);
-
+      courseWishlistStore.value.push(classId);
       // Use Naive UI Dialog
       handleSuccess("課程已成功加入願望清單");
     } else {
       handleSuccess("課程已存在您的願望清單");
     }
   }
+};
+
+/*
+  method for save DB wishlist items in store
+*/
+const updateWishlistDBtoStore = (pageWishlistClasses) => {
+  let wishlistTemp = [];
+  for (let i = 0; i < pageWishlistClasses.value.length; i++) {
+    wishlistTemp.push(pageWishlistClasses.value[i]["classId"]);
+  }
+  courseWishlistStore.value = wishlistTemp;
 };
 
 /*
@@ -421,6 +449,7 @@ onMounted(() => {
   loadPageCourse();
   loadPageClasses();
   loadRecommendedCourses();
+  loadPageWishlistClasses();
 });
 </script>
 
