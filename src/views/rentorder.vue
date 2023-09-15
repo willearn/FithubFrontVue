@@ -66,8 +66,8 @@
                     </tbody>
                 </table>
                 <button type="submit" class="btn btn-primary btn-lg" @click="cancleRentOrder">取消返回</button>
-                <button type="submit" class="btn btn-primary btn-lg offset-1" @click="insertEcpayOrder">送出訂單</button>
-                <button type="submit" class="btn btn-primary btn-lg offset-1" @click="insertLineOrder">line</button>
+                <button type="submit" class="btn btn-primary btn-lg offset-1" @click="insertEcpayOrder">綠界金流</button>
+                <button type="submit" class="btn btn-primary btn-lg" @click="insertLineOrder">LinePay</button>
             </div>
         </div>
     </section>
@@ -93,7 +93,7 @@ const router = useRouter();
 // 取得pinia全域
 const rentOrderStore = useRentOrderStore();
 const { selectedClassroom } = storeToRefs(rentOrderStore);
-// console.log(selectedClassroom.value)
+console.log(selectedClassroom.value)
 
 const linePayData = ref(null);
 
@@ -157,7 +157,7 @@ const insertLineOrder = async () => {
         const linepayCheckoutResponse = await axios.post(`${url}/linepay/linepayCheckout`, lineRentOrder);
         linePayData.value = linepayCheckoutResponse.data
         // console.log(linePayData.value);
-        
+
         // 開啟付款頁面
         const orderWebUrl = linePayData.value.info.paymentUrl.web
         // console.log(orderWebUrl);

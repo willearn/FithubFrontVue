@@ -36,7 +36,7 @@
 
 
     <!-- rent -->
-    <section class="page-section" id="rent">
+    <section class="page-section">
         <div class="container text-center">
             <div class="col-lg-12 col-md-10">
                 <h1>場地租借</h1>
@@ -65,7 +65,7 @@
         </div>
     </section>
 
-    <section class="page-section" id="rent">
+    <section class="page-section">
         <div class="container text-center">
             <h1>場地介紹</h1>
             <hr class="divider" />
