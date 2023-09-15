@@ -220,10 +220,13 @@ const router = useRouter();
 // const pageCourseId = ref(route.params["courseid"]);
 watch(
   () => route.params["courseid"],
+
   async (newUrlCourseId) => {
-    // console.log(newUrlCourseId);
-    await loadPageCourse();
-    await loadPageClasses();
+    if (newUrlCourseId !== undefined) {
+      // console.log(newUrlCourseId);
+      await loadPageCourse();
+      await loadPageClasses();
+    }
   }
 );
 
@@ -232,7 +235,6 @@ watch(
 */
 const cartStore = useCartStore();
 const { courseCartStore } = storeToRefs(cartStore);
-const selectedClasses = ref([]);
 
 /*
   Display Data
@@ -326,7 +328,7 @@ const loadRecommendedCourses = async () => {
 */
 
 const onClickedClass = (classId) => {
-  console.log("get emit: " + classId);
+  // console.log("get emit: " + classId);
 
   // update diaplay data
   let clickedCLass = pageClasses.value.find((item) => {
