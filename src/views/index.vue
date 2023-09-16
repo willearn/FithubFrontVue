@@ -14,35 +14,34 @@
     </div>
   </header>
 
+
   <!-- About-->
-  <section class="page-section px-sm-3">
-    <div class="container">
-      <div class="row" data-aos="zoom-in-up">
-        <div class="col-lg-4" style="padding: 0px;">
-          <img src="../assets/index/other/2.jpg" class="myimg-full" alt="維修中">
-        </div>
-        <div class="col-lg-8" style="background-color: #FFBF3C;">
-          <div class="ms-5">
-            <h1>Fithub 健身房</h1>
-            <h3 class="mt-5">
-              成立這個健身房的理念源於對健康和幸福的承諾。我們相信每個人都應該擁有實現健康目標的機會，無論年齡或健身水平如何。
-            </h3>
-            <h3 class="mt-5">
-              我們的健身房致力於營造一個充滿正能量和支持的環境，讓會員能夠自信地追求他們的健身和健康目標。我們提供專業的設施、優質的教練團隊和多元化的課程，以確保每個人都能找到適合自己的運動方式。我們相信，健康不僅僅是身體的狀態，更是心靈的寧靜。通過運動，我們可以擁有更健康、更充實的生活，這正是我們健身房存在的意義所在。
-            </h3>
-          </div>
+  <div class="container col-log-11 my-5">
+    <div class="row justify-content-center" data-aos="zoom-in-up">
+      <div class="col-lg-4" style="padding: 0px;">
+        <img src="../assets/index/other/2.jpg" class="myimg-full" alt="維修中">
+      </div>
+      <div class="col-lg-7" style="background-color: #FFBF3C;">
+        <div class="ms-5">
+          <h1>關於我們</h1>
+          <h3 class="mt-5">
+            成立這個健身房的理念源於對健康和幸福的承諾。我們相信每個人都應該擁有實現健康目標的機會，無論年齡或健身水平如何。
+          </h3>
+          <h3 class="mt-5">
+            我們的健身房致力於營造一個充滿正能量和支持的環境，讓會員能夠自信地追求他們的健身和健康目標。我們提供專業的設施、優質的教練團隊和多元化的課程，以確保每個人都能找到適合自己的運動方式。我們相信，健康不僅僅是身體的狀態，更是心靈的寧靜。通過運動，我們可以擁有更健康、更充實的生活，這正是我們健身房存在的意義所在。
+          </h3>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
   <!-- Team-->
-  <section class="page-section px-sm-3">
-    <div class="container mybg-light">
-      <div class="text-center pt-1">
-        <h2>專業團隊</h2>
-        <hr class="divider" />
-      </div>
+  <div class="container col-lg-11 mybg-light">
+    <div class="text-center pt-1">
+      <h2>專業團隊</h2>
+      <hr class="divider" />
+    </div>
+    <div>
       <Carousel v-bind="settings" :breakpoints="breakpoints">
         <Slide :id="'carousel' + coach.employeeid" v-for=" coach in coachPics" :key="coach.employeeid"
           class="carousel slide px-sm-5" data-bs-touch="false" data-bs-interval="false">
@@ -72,48 +71,44 @@
         </template>
       </Carousel>
     </div>
-  </section>
+  </div>
 
   <!-- rentClassroom -->
-  <section class="page-section px-sm-3">
-    <div class="container">
-      <div class="text-center pt-1">
-        <h2>租借場地</h2>
-        <hr class="divider" />
-      </div>
-      <div class="row">
-        <div class="col-lg-4" style="padding: 0px;" v-for="(image, index) in images" :key="index">
-          <img :src="image.src" @click="openLightbox(index)" alt="Image" class="myimg-full">
-        </div>
-      </div>
-      <vue-easy-lightbox :visible="lightboxVisible" :imgs="lightboxImages" :index="lightboxIndex"
-        @hide="closeLightbox"></vue-easy-lightbox>
+  <div class="container col-lg-11">
+    <div class="text-center pt-1">
+      <h2>租借場地</h2>
+      <hr class="divider" />
     </div>
-    <div class="text-center mt-3">
+    <div class="row">
+      <div class="col-lg-4" style="padding: 0px;" v-for="(image, index) in images" :key="index">
+        <img :src="image.src" @click="openLightbox(index)" alt="Image" class="myimg-full">
+      </div>
+    </div>
+    <vue-easy-lightbox :visible="lightboxVisible" :imgs="lightboxImages" :index="lightboxIndex"
+      @hide="closeLightbox"></vue-easy-lightbox>
+    <div class="text-center my-3">
       <RouterLink class="btn btn-primary btn-xl" to="rent">立即租借</RouterLink>
     </div>
-  </section>
+  </div>
 
   <!-- activity-->
-  <section class="page-section px-sm-3">
-    <div class="container px-4 text-center mybg-light">
-      <div class="text-center pt-1">
-        <h2>活動消息</h2>
-        <hr class="divider" />
-      </div>
-      <Carousel v-bind="settings" :breakpoints="breakpoints">
-        <Slide style="flex-direction: column;justify-content: flex-start" class="px-sm-5"
-          v-for="(  activity, activityindex  ) in   activitys  " :key="activityindex">
-          <img style="width: 100%;height: 300px;" :src="activity.activitypic" alt="維修中"
-            @click="handleImageClick(activity)">
-          <h3>{{ activity.activityname }}</h3>
-        </Slide>
-        <template #addons>
-          <Navigation />
-        </template>
-      </Carousel>
+  <div class="container col-lg-11 mybg-light my-5">
+    <div class="text-center pt-1">
+      <h2>活動消息</h2>
+      <hr class="divider" />
     </div>
-  </section>
+    <Carousel v-bind="settings" :breakpoints="breakpoints">
+      <Slide style="flex-direction: column;justify-content: flex-start" class="px-sm-5"
+        v-for="(  activity, activityindex  ) in   activitys  " :key="activityindex">
+        <img style="width: 100%;height: 300px;" :src="activity.activitypic" alt="維修中" @click="handleImageClick(activity)">
+        <h3>{{ activity.activityname }}</h3>
+      </Slide>
+      <template #addons>
+        <Navigation />
+      </template>
+    </Carousel>
+  </div>
+
 
   <!-- Contact -->
   <section class="page-section">
@@ -268,9 +263,7 @@ const breakpoints = {
   },
 };
 
-// 取得LinePay回傳資訊
-const transactionId = ref(null);
-const orderId = ref(null);
+
 
 // 設定GoogleMap
 const center = { lat: 22.62808625882824, lng: 120.29252321578828 };
@@ -387,12 +380,6 @@ onMounted(() => {
   });
   getActivitys();
   getCoachPics();
-   // 获取 URL 查询参数
-  const queryParams = new URLSearchParams(window.location.search);
-  transactionId.value = queryParams.get('transactionId');
-  orderId.value = queryParams.get('orderId');
-  console.log(transactionId.value);
-  console.log(orderId.value);
 });
 
 </script>

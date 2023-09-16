@@ -34,11 +34,9 @@
         </div>
     </div>
 
-
-    <!-- rent -->
-    <section class="page-section">
-        <div class="container text-center">
-            <div class="col-lg-12 col-md-10">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-11 col-md-12">
                 <h1>場地租借</h1>
                 <hr class="divider" />
                 <label class="fs-3">場地:</label>
@@ -63,13 +61,14 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <section class="page-section">
-        <div class="container text-center">
-            <h1>場地介紹</h1>
-            <hr class="divider" />
-            <div class="col-lg-12 col-md-12">
+
+    <div class="container text-center">
+        <h1>場地介紹</h1>
+        <hr class="divider" />
+        <div class="row justify-content-center">
+            <div class="col-lg-11 col-md-12">
                 <table class="table table-bordered align-middle">
                     <thead>
                         <tr class="table-success">
@@ -95,7 +94,7 @@
                 </table>
             </div>
         </div>
-    </section>
+    </div>
 </template>
 
 

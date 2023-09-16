@@ -36,38 +36,50 @@
 
     <section class="page-section">
         <div class="container text-center">
-            <h1>訂單確認</h1>
+            <h1>選擇付款方式</h1>
             <hr class="divider" />
-            <div class="col-lg-12 col-md-12">
-            </div>
-            <div class="col-lg-12 col-md-12">
-                <table class="table table-bordered align-middle">
-                    <thead class="table-success">
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">圖片</th>
-                            <th scope="col">場地</th>
-                            <th scope="col">日期</th>
-                            <th scope="col">時段</th>
-                            <th scope="col">金額</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>
-                                <img :src="selectedClassroom.classroomPic" style="width: 400px;height: 400px;">
-                            </td>
-                            <td>{{ selectedClassroom.classroomName }}</td>
-                            <td>{{ selectedClassroom.rentdate }}</td>
-                            <td>{{ selectedClassroom.renttime }}</td>
-                            <td>{{ selectedClassroom.classroomPrice }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button type="submit" class="btn btn-primary btn-lg" @click="cancleRentOrder">取消返回</button>
-                <button type="submit" class="btn btn-primary btn-lg offset-1" @click="insertEcpayOrder">綠界金流</button>
-                <button type="submit" class="btn btn-primary btn-lg" @click="insertLineOrder">LinePay</button>
+            <div class="row justify-content-center">
+                <div class="col-lg-10 col-md-12">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-success">
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">圖片</th>
+                                <th scope="col">場地</th>
+                                <th scope="col">日期</th>
+                                <th scope="col">時段</th>
+                                <th scope="col">金額</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <img :src="selectedClassroom.classroomPic" style="width: 400px;height: 400px;">
+                                </td>
+                                <td>{{ selectedClassroom.classroomName }}</td>
+                                <td>{{ selectedClassroom.rentdate }}</td>
+                                <td>{{ selectedClassroom.renttime }}</td>
+                                <td>{{ selectedClassroom.classroomPrice }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="p-2 bg-light border">
+                        <div class="form-floating">
+                            <select v-model="payment" class="form-select">
+                                <option value="0" disabled>選擇付款方式</option>
+                                <option value="1">信用卡-綠界金流</option>
+                                <option value="2">LINE PAY</option>
+                            </select>
+                            <label for="floatingSelect">Pay with selects</label>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <button type="submit" class="btn btn-primary btn-lg" @click="cancleRentOrder">取消返回</button>
+                        <button type="submit" class="btn btn-primary btn-lg offset-1"
+                            @click="paymentMethod(payment)">結帳</button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -93,9 +105,28 @@ const router = useRouter();
 // 取得pinia全域
 const rentOrderStore = useRentOrderStore();
 const { selectedClassroom } = storeToRefs(rentOrderStore);
-console.log(selectedClassroom.value)
+// console.log(selectedClassroom.value)
 
-const linePayData = ref(null);
+// 選擇付款方式
+const payment = ref('0')
+
+// 執行選擇的付款方式
+function paymentMethod(params) {
+    if (params === "0") {
+        Swal.fire({
+            title: '請選擇付款方式',
+            icon: 'warning',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: '確定',
+        })
+    } else if (params === "1") {
+        insertEcpayOrder()
+    } else if (params === "2") {
+        insertLineOrder()
+    }
+}
+
+
 
 // 綠界新增訂單
 const insertEcpayOrder = async () => {
@@ -143,6 +174,9 @@ const insertEcpayOrder = async () => {
 
 // LinePay新增訂單
 const insertLineOrder = async () => {
+
+    const linePayData = ref(null);
+
     try {
         // 建立LinePay需要的訂單資訊
         const lineRentOrder = reactive({
