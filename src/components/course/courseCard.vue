@@ -6,10 +6,8 @@
       alt="..."
     />
     <div class="card-body">
-      <h5 class="card-text">課程名稱: {{ course.courseName }}</h5>
-      <div class="card-text mb-1">
-        課程分類:{{ course.courseCategories.categoryName }}
-      </div>
+      <h5 class="card-text">{{ course.courseName }}</h5>
+      <SimpleTag :tagText="course.courseCategories.categoryName"></SimpleTag>
       <div class="card-text mb-1">NT$ 100 起</div>
       <div class="d-flex justify-content-end">
         <RouterLink
@@ -28,6 +26,7 @@
   imports
 */
 import { RouterLink } from "vue-router";
+import SimpleTag from "../course/util/simpleTag.vue";
 
 /*
   props

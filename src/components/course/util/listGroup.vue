@@ -15,9 +15,9 @@
       :class="{ disabled: categoryId == pageCourseCategoryId }"
       >{{ categoryName }}</RouterLink
     >
-    <button class="list-group-item list-group-item-action" disabled>
+    <!-- <button class="list-group-item list-group-item-action" disabled>
       套餐
-    </button>
+    </button> -->
   </div>
 </template>
 
