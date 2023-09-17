@@ -1,7 +1,8 @@
 <template>
   <!-- 結帳頁面 -->
-  <section class="page-section" id="about">
-    <div class="container">
+  <section class="page-section">
+    <div class="container" style="padding-top: 10%;padding-bottom:10%">
+      <h1 class="text-center mb-5">訂單確認</h1>
       <!-- Progress Bar -->
       <div class="row justify-content-center mb-5">
         <div class="col-10 col-md-6 col-lg-6">
@@ -10,7 +11,7 @@
       </div>
       <!-- Order table start -->
       <div class="row justify-content-center">
-        <div class="col-11 col-md-9 col-lg-7">
+        <div class="col-11 col-md-9 col-lg-7 mydiv">
           <div>
             <table class="table caption-top">
               <caption>
@@ -67,17 +68,14 @@
                   <small class="text-muted">付款方式</small>
                 </blockquote>
 
-                <img
-                  src="../assets/index/other/ECPay.png"
-                  style="width: 200px; height: auto"
-                />
+                <img src="../assets/index/other/ECPay.png" style="width: 200px; height: auto" />
               </div>
 
               <!-- 付款方式 end -->
             </div>
           </div>
           <!-- 訂購人資訊 end -->
-          <hr />
+
         </div>
         <!-- 結帳 -->
         <div class="col-12 col-md-3 col-lg-2">
@@ -89,13 +87,10 @@
                 <!-- <button @click="postDataToApi" class="btn btn-primary">
                   結帳
                 </button> -->
-                <button
-                  @click="
-                    sendDataToBackend();
-                    postDataToApi();
-                  "
-                  class="btn btn-primary"
-                >
+                <button @click="
+                  sendDataToBackend();
+                postDataToApi();
+                " class="btn btn-primary">
                   結帳
                 </button>
               </div>
@@ -284,6 +279,7 @@ onMounted(() => {
 .text-danger {
   font-size: 8px;
 }
+
 .btn-primary {
   --bs-btn-color: #fff;
   --bs-btn-bg: #ffc408;

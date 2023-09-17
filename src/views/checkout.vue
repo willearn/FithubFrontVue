@@ -1,8 +1,9 @@
 <template>
   <!-- 結帳頁面 -->
   <section class="page-section">
-    <div class="container">
-      <div class="row justify-content-center mb-5 mt-5">
+    <div class="container" style="padding-top: 5%;">
+      <h1 class="text-center mb-5">選擇付款方式</h1>
+      <div class="row justify-content-center mb-5">
         <div class="col-12 col-md-6 col-lg-6">
           <ProgressBar :percent="50"></ProgressBar>
         </div>
@@ -27,10 +28,7 @@
                 <tr>
                   <th scope="row">{{ index + 1 }}</th>
                   <td>
-                    <img
-                      :src="`https://picsum.photos/300?random=${index + 15}`"
-                      style="width: 200px"
-                    />
+                    <img :src="`https://picsum.photos/300?random=${index + 15}`" style="width: 200px" />
                   </td>
                   <td>{{ item.courseName }}</td>
                   <td>{{ item.employeename }}</td>
@@ -42,14 +40,10 @@
           </div>
           <div class="p-2 bg-light border">
             <div class="form-floating">
-              <select
-                class="form-select"
-                id="floatingSelect"
-                aria-label="Floating label select example"
-                required
-              >
+              <select class="form-select" id="floatingSelect" aria-label="Floating label select example" required>
                 <option selected>選擇付款方式</option>
-                <option value="1">綠界金流</option>
+                <option value="1">信用卡-綠界金流</option>
+                <option value="2">LINE PAY</option>
               </select>
               <label for="floatingSelect">Pay with selects</label>
             </div>
@@ -67,9 +61,7 @@
               <!-- 顯示折扣金額 -->
               <div v-else-if="couponDiscount">折扣$ {{ couponDiscount }}</div>
               <div class="d-grid gap-3 col-12 mx-auto">
-                <router-link class="btn btn-primary" to="/ordercheck"
-                  >結帳</router-link
-                >
+                <router-link class="btn btn-primary" to="/ordercheck">結帳</router-link>
               </div>
             </div>
             <hr />
@@ -77,25 +69,13 @@
               <h5>優惠券</h5>
               <div id="alertContainer" class="alert-container"></div>
               <div class="col-12">
-                <label for="inputPassword2" class="visually-hidden"
-                  >促銷代碼</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="couponCode"
-                  id="inputPassword2"
-                  placeholder="促銷代碼"
-                />
+                <label for="inputPassword2" class="visually-hidden">促銷代碼</label>
+                <input type="text" class="form-control" v-model="couponCode" id="inputPassword2" placeholder="促銷代碼" />
               </div>
               <div class="col-12 my-2">
                 <div class="row d-grid justify-content-end">
                   <div class="col-12">
-                    <button
-                      type="submit"
-                      class="btn btn-primary mb-3"
-                      @click="submitCoupon"
-                    >
+                    <button type="submit" class="btn btn-primary mb-3" @click="submitCoupon">
                       輸入
                     </button>
                   </div>

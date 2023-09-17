@@ -1,72 +1,5 @@
 <template>
-  <div class="masthead">
-    <div id="carouselIndicators" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-indicators">
-        <button
-          type="button"
-          data-bs-target="#carouselIndicators"
-          data-bs-slide-to="0"
-          class="active"
-          aria-current="true"
-          aria-label="Slide 1"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselIndicators"
-          data-bs-slide-to="1"
-          aria-label="Slide 2"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselIndicators"
-          data-bs-slide-to="2"
-          aria-label="Slide 3"
-        ></button>
-      </div>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img
-            src="https://picsum.photos/1400/900?random=10"
-            class="d-block w-100"
-            alt="..."
-          />
-        </div>
-        <div class="carousel-item">
-          <img
-            src="https://picsum.photos/1400/900?random=11&grayscale"
-            class="d-block w-100"
-            alt="..."
-          />
-        </div>
-        <div class="carousel-item">
-          <img
-            src="https://picsum.photos/1400/900?random=12"
-            class="d-block w-100"
-            alt="..."
-          />
-        </div>
-      </div>
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#carouselIndicators"
-        data-bs-slide="prev"
-      >
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#carouselIndicators"
-        data-bs-slide="next"
-      >
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
-  </div>
-
+  <Carousel></Carousel>
   <!-- singlePage -->
   <div class="container">
     <section class="page-section" id="courseDetail">
@@ -75,13 +8,8 @@
         <div class="card col-12 col-md-11 col-lg-10 h-100 mb-4">
           <div class="row justify-content-center align-items-center">
             <div class="col-5 mx-3">
-              <img
-                src="https://picsum.photos/300/200?random=10"
-                class="card-img-top mt-3"
-                alt="..."
-                tabindex="0"
-                v-focus
-              />
+              <img src="https://picsum.photos/300/200?random=10" class="card-img-top mt-3" alt="..." tabindex="0"
+                v-focus />
             </div>
             <div class="col-6 mx-3">
               <div class="my-3">
@@ -90,8 +18,7 @@
                     <div>課程時間:</div>
                   </div>
                   <div>
-                    <span>{{ displayClasses.classDate }}</span
-                    >&nbsp;&nbsp;
+                    <span>{{ displayClasses.classDate }}</span>&nbsp;&nbsp;
                     <span>{{ displayClasses.classTime }}</span>
                   </div>
                 </div>
@@ -121,30 +48,18 @@
 
               <div class="row justify-content-end my-4">
                 <div class="col-12 col-md-6 col-lg-4">
-                  <button
-                    class="btn btn btn-primary mx-2"
-                    @click="addToWishlist(displayClasses.classId)"
-                  >
-                    <i type="button" class="bi bi-heart-fill"></i
-                    >&nbsp;&nbsp;加入願望清單
+                  <button class="btn btn btn-primary mx-2" @click="addToWishlist(displayClasses.classId)">
+                    <i type="button" class="bi bi-heart-fill"></i>&nbsp;&nbsp;加入願望清單
                   </button>
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
-                  <button
-                    class="btn btn btn-primary mx-2"
-                    @click="saveCourseCartToLocalStorage('stay')"
-                  >
-                    <i type="button" class="bi bi-cart4"></i
-                    >&nbsp;&nbsp;加入購物車
+                  <button class="btn btn btn-primary mx-2" @click="saveCourseCartToLocalStorage('stay')">
+                    <i type="button" class="bi bi-cart4"></i>&nbsp;&nbsp;加入購物車
                   </button>
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
-                  <button
-                    class="btn btn btn-primary mx-2"
-                    @click="saveCourseCartToLocalStorage('forward')"
-                  >
-                    <i type="button" class="bi bi-cart3"></i
-                    >&nbsp;&nbsp;直接購買
+                  <button class="btn btn btn-primary mx-2" @click="saveCourseCartToLocalStorage('forward')">
+                    <i type="button" class="bi bi-cart3"></i>&nbsp;&nbsp;直接購買
                   </button>
                 </div>
               </div>
@@ -157,11 +72,8 @@
 
       <div class="row justify-content-center">
         <div class="col-12 col-md-10 col-lg-10">
-          <FullCalendar
-            :courseName="pageCourse.courseName"
-            :calendarEvents="calendarEvents"
-            @click-calendar-class-emit="onClickedClass"
-          ></FullCalendar>
+          <FullCalendar :courseName="pageCourse.courseName" :calendarEvents="calendarEvents"
+            @click-calendar-class-emit="onClickedClass"></FullCalendar>
         </div>
       </div>
 
@@ -170,15 +82,9 @@
       <div class="row justify-content-center">
         <div class="col-12 col-md-10 col-lg-10">
           <h2 class="text-center">推薦課程</h2>
-          <div
-            class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center"
-          >
-            <courseCard
-              v-for="(course, index) in recommendedCourses"
-              class="col-3 mx-2 my-3"
-              :cardAmount="index"
-              :course="course"
-            >
+          <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
+            <courseCard v-for="(course, index) in recommendedCourses" class="col-3 mx-2 my-3" :cardAmount="index"
+              :course="course">
             </courseCard>
           </div>
         </div>
@@ -204,6 +110,7 @@ import CartIcon from "../components/course/util/icon-cart.vue";
 import { vFocus } from "../directives/vFocus";
 import { useCartStore, useWishlistStore } from "../stores/courseStore.js";
 import { storeToRefs } from "pinia";
+import Carousel from "../components/Carousel.vue";
 const URL = import.meta.env.VITE_API_JAVAURL;
 
 /*
@@ -469,6 +376,7 @@ onMounted(() => {
   --bs-btn-hover-border-color: #c34e2e;
   --bs-btn-active-bg: #c34e2e;
 }
+
 p {
   text-align: justify;
   /* padding: 1em; */

@@ -1,75 +1,5 @@
 <template>
-  <div class="masthead">
-    <div
-      id="carouselExampleIndicators"
-      class="carousel slide"
-      data-bs-ride="carousel"
-    >
-      <div class="carousel-indicators">
-        <button
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
-          data-bs-slide-to="0"
-          class="active"
-          aria-current="true"
-          aria-label="Slide 1"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
-          data-bs-slide-to="1"
-          aria-label="Slide 2"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselExampleIndicators"
-          data-bs-slide-to="2"
-          aria-label="Slide 3"
-        ></button>
-      </div>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img
-            src="https://picsum.photos/1400/900?random=10"
-            class="d-block w-100"
-            alt="..."
-          />
-        </div>
-        <div class="carousel-item">
-          <img
-            src="https://picsum.photos/1400/900?random=11&grayscale"
-            class="d-block w-100"
-            alt="..."
-          />
-        </div>
-        <div class="carousel-item">
-          <img
-            src="https://picsum.photos/1400/900?random=12"
-            class="d-block w-100"
-            alt="..."
-          />
-        </div>
-      </div>
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="prev"
-      >
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#carouselExampleIndicators"
-        data-bs-slide="next"
-      >
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
-  </div>
+  <Carousel></Carousel>
   <!-- 購物車 -->
   <section class="page-section">
     <div class="container">
@@ -83,38 +13,26 @@
           <div class="p-2 bg-light border">
             <ul class="nav nav-tabs">
               <li class="nav-item">
-                <button
-                  class="nav-link"
-                  :class="{
-                    active: pageState.isActiveOrDisableCart,
-                    disabled: pageState.isActiveOrDisableCart,
-                  }"
-                  @click="changePage('cart')"
-                >
+                <button class="nav-link" :class="{
+                  active: pageState.isActiveOrDisableCart,
+                  disabled: pageState.isActiveOrDisableCart,
+                }" @click="changePage('cart')">
                   購物車
                 </button>
               </li>
               <li class="nav-item">
-                <button
-                  class="nav-link"
-                  :class="{
-                    active: pageState.isActiveOrDisableWishlist,
-                    disabled: pageState.isActiveOrDisableWishlist,
-                  }"
-                  @click="changePage('wishlist')"
-                >
+                <button class="nav-link" :class="{
+                  active: pageState.isActiveOrDisableWishlist,
+                  disabled: pageState.isActiveOrDisableWishlist,
+                }" @click="changePage('wishlist')">
                   我的願望清單
                 </button>
               </li>
               <li class="nav-item">
-                <button
-                  class="nav-link"
-                  :class="{
-                    active: pageState.isActiveOrDisableCoupon,
-                    disabled: pageState.isActiveOrDisableCoupon,
-                  }"
-                  @click="changePage('coupon')"
-                >
+                <button class="nav-link" :class="{
+                  active: pageState.isActiveOrDisableCoupon,
+                  disabled: pageState.isActiveOrDisableCoupon,
+                }" @click="changePage('coupon')">
                   折價券
                 </button>
               </li>
@@ -122,10 +40,7 @@
           </div>
 
           <div class="p-2 bg-light border">
-            <table
-              v-if="cartOrWishListOrCoupon == 'cart'"
-              class="table align-middle text-center"
-            >
+            <table v-if="cartOrWishListOrCoupon == 'cart'" class="table align-middle text-center">
               <thead class="table-light">
                 <tr>
                   <th scope="col">#</th>
@@ -146,53 +61,33 @@
                   <td>{{ item.classDate }}&nbsp;{{ item.classTime }}</td>
                   <td>$NT &nbsp;{{ item.price }}</td>
                   <td>
-                    <div
-                      type="button"
-                      class="bi bi-heart-fill"
-                      @click="addToWishlist(item.classId)"
-                    ></div>
-                    <div
-                      type="button"
-                      class="bi bi-trash-fill"
-                      @click="deleteCartItem(item.classId)"
-                    ></div>
+                    <div type="button" class="bi bi-heart-fill" @click="addToWishlist(item.classId)"></div>
+                    <div type="button" class="bi bi-trash-fill" @click="deleteCartItem(item.classId)"></div>
                   </td>
                 </tr>
               </tbody>
             </table>
             <!-- wishlist -->
-            <courseWishlist
-              v-else-if="cartOrWishListOrCoupon == 'wishlist'"
-            ></courseWishlist>
+            <courseWishlist v-else-if="cartOrWishListOrCoupon == 'wishlist'"></courseWishlist>
           </div>
           <!-- Coupon page start -->
           <div class="p-2 bg-light border">
-            <div
-              class="rol-12 rol-md-9 row-lg-8"
-              v-if="cartOrWishListOrCoupon == 'coupon'"
-            >
+            <div class="rol-12 rol-md-9 row-lg-8" v-if="cartOrWishListOrCoupon == 'coupon'">
               <memberCoupon></memberCoupon>
             </div>
           </div>
           <!-- Coupon page End -->
         </div>
         <!-- 結帳 card start -->
-        <div
-          v-if="cartOrWishListOrCoupon == 'cart'"
-          class="col-12 col-md-3 col-lg-2"
-        >
+        <div v-if="cartOrWishListOrCoupon == 'cart'" class="col-12 col-md-3 col-lg-2">
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">總價:</h4>
               <p class="card-text">NT$&nbsp;{{ totalPrice }}</p>
               <div class="d-grid gap-3 col-12 mx-auto">
-                <button
-                  class="btn btn-primary"
-                  :class="{
-                    disabled: isCheckoutButtonActive,
-                  }"
-                  @click="toCheckoutOrNot"
-                >
+                <button class="btn btn-primary" :class="{
+                  disabled: isCheckoutButtonActive,
+                }" @click="toCheckoutOrNot">
                   結帳
                 </button>
               </div>
@@ -218,6 +113,7 @@ import { storeToRefs } from "pinia";
 import ProgressBar from "../components/checkout/util/progressbar.vue";
 import courseWishlist from "../components/checkout/courseWishlist.vue";
 import memberCoupon from "../components/checkout/memberCoupon.vue";
+import Carousel from "../components/Carousel.vue";
 const URL = import.meta.env.VITE_API_JAVAURL;
 
 /*
