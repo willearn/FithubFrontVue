@@ -57,19 +57,13 @@
                   <div class="widgets-link">
                     <ul>
                       <li>
-                        <router-link class="nav-link" to="/course/0"
-                          >課程</router-link
-                        >
+                        <router-link class="nav-link" to="/course/0">課程</router-link>
                       </li>
                       <li>
-                        <router-link class="nav-link" to="/rent"
-                          >場地租借</router-link
-                        >
+                        <router-link class="nav-link" to="/rent">場地租借</router-link>
                       </li>
                       <li>
-                        <router-link class="nav-link" to="/member"
-                          >會員專區</router-link
-                        >
+                        <router-link class="nav-link" to="/member">會員專區</router-link>
                       </li>
                     </ul>
                   </div>
@@ -85,15 +79,9 @@
                     <h4>Follow Us</h4>
                   </div>
                   <div class="footer-logo">
-                    <a href="#"
-                      ><img src="../assets/index/footer/013.png" alt=""
-                    /></a>
-                    <a href="#"
-                      ><img src="../assets/index/footer/023.png" alt=""
-                    /></a>
-                    <a href="#"
-                      ><img src="../assets/index/footer/043.png" alt=""
-                    /></a>
+                    <a href="#"><img src="../assets/index/footer/013.png" alt="" /></a>
+                    <a href="#"><img src="../assets/index/footer/023.png" alt="" /></a>
+                    <a href="#"><img src="../assets/index/footer/043.png" alt="" /></a>
                   </div>
                 </div>
               </div>
