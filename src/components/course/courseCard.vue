@@ -1,5 +1,5 @@
 <template>
-  <div class="card h-100">
+  <div class="card">
     <img
       :src="`https://picsum.photos/300/200?random=${cardAmount}`"
       class="card-img-top mt-3"

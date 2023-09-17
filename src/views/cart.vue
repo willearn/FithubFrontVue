@@ -115,7 +115,7 @@
                   }"
                   @click="changePage('coupon')"
                 >
-                  我的折價券
+                  折價券
                 </button>
               </li>
             </ul>
@@ -165,8 +165,18 @@
               v-else-if="cartOrWishListOrCoupon == 'wishlist'"
             ></courseWishlist>
           </div>
+          <!-- Coupon page start -->
+          <div class="p-2 bg-light border">
+            <div
+              class="rol-12 rol-md-9 row-lg-8"
+              v-if="cartOrWishListOrCoupon == 'coupon'"
+            >
+              <memberCoupon></memberCoupon>
+            </div>
+          </div>
+          <!-- Coupon page End -->
         </div>
-        <!-- 結帳 card -->
+        <!-- 結帳 card start -->
         <div
           v-if="cartOrWishListOrCoupon == 'cart'"
           class="col-12 col-md-3 col-lg-2"
@@ -176,13 +186,20 @@
               <h4 class="card-title">總價:</h4>
               <p class="card-text">NT$&nbsp;{{ totalPrice }}</p>
               <div class="d-grid gap-3 col-12 mx-auto">
-                <router-link class="btn btn-primary" to="/checkout"
-                  >結帳</router-link
+                <button
+                  class="btn btn-primary"
+                  :class="{
+                    disabled: isCheckoutButtonActive,
+                  }"
+                  @click="toCheckoutOrNot"
                 >
+                  結帳
+                </button>
               </div>
             </div>
           </div>
         </div>
+        <!-- 結帳 card end -->
       </div>
     </div>
   </section>
@@ -192,15 +209,21 @@
 /*
   imports
  */
-import { ref, reactive, onMounted, computed, watch } from "vue";
-import { useRoute } from "vue-router";
+import { ref, reactive, onMounted, computed, watch, onUpdated } from "vue";
+import { useRouter } from "vue-router";
 import axios from "axios";
-import { useDialog } from "naive-ui";
+import { useDialog, useMessage } from "naive-ui";
 import { useCartStore, useWishlistStore } from "../stores/courseStore.js";
 import { storeToRefs } from "pinia";
 import ProgressBar from "../components/checkout/util/progressbar.vue";
 import courseWishlist from "../components/checkout/courseWishlist.vue";
+import memberCoupon from "../components/checkout/memberCoupon.vue";
 const URL = import.meta.env.VITE_API_JAVAURL;
+
+/*
+  Route
+*/
+const router = useRouter();
 
 /*
   Decide which page to render
@@ -218,12 +241,16 @@ const changePage = (pageName) => {
     pageState.isActiveOrDisableWishlist = false;
     pageState.isActiveOrDisableCoupon = false;
   } else if (pageName == "wishlist") {
-    cartOrWishListOrCoupon.value = "wishlist";
-    pageState.isActiveOrDisableCart = false;
-    pageState.isActiveOrDisableWishlist = true;
-    pageState.isActiveOrDisableCoupon = false;
+    if (localStorage.getItem("memberid") == "") {
+      handleMessage("請先登入會員");
+    } else {
+      cartOrWishListOrCoupon.value = "wishlist";
+      pageState.isActiveOrDisableCart = false;
+      pageState.isActiveOrDisableWishlist = true;
+      pageState.isActiveOrDisableCoupon = false;
+    }
   } else {
-    alert("coupon not yet");
+    cartOrWishListOrCoupon.value = "coupon";
     pageState.isActiveOrDisableCart = false;
     pageState.isActiveOrDisableWishlist = false;
     pageState.isActiveOrDisableCoupon = true;
@@ -287,16 +314,6 @@ const deleteCartItem = (classId) => {
   courseCartStore.value.splice(courseCartStore.value.indexOf(classId), 1);
 };
 
-// Delete cart items throuth deleting in store
-// Not use yet
-const deleteCartItems = (itemsIds) => {
-  for (let i = 0; i < itemsIds.length; i++) {
-    let index = courseCartStore.value.indexOf(itemsIds[i]);
-    let deleteId = courseCartStore.value.splice(index, 1);
-    console.log(deleteId);
-  }
-};
-
 /*
   watcher for cart items in store
 */
@@ -308,7 +325,7 @@ watch(courseCartStore.value, () => {
   method for add and delete item to wishlish DB
 */
 // add item to wishlish DB
-const AddWishlistItemToDB = async (classId, e) => {
+const AddWishlistItemToDB = async (classId) => {
   const reswishlist = await axios
     .post(`${URL}/wishlist`, {
       memberId: localStorage.getItem("memberid"),
@@ -323,28 +340,63 @@ const AddWishlistItemToDB = async (classId, e) => {
   Add classes to courseWishlistStore and local storage
 */
 const addToWishlist = (classId) => {
-  // Delete utem from cart ,then add to wishlist
-  if (!courseWishlistStore.value.includes(classId)) {
-    deleteCartItem(classId);
-    courseWishlistStore.value.push(classId);
-    // AddWishlistItemToDB(classId);
-    console.log(courseWishlistStore.value);
-    // Use Naive UI Dialog
-    handleSuccess("課程已成功加入願望清單");
+  if (localStorage.getItem("memberid") == "") {
+    handleMessage("請先登入會員");
   } else {
-    handleSuccess("課程已存在您的願望清單");
+    // Delete utem from cart ,then add to wishlist and DB
+    if (!courseWishlistStore.value.includes(classId)) {
+      deleteCartItem(classId);
+      courseWishlistStore.value.push(classId);
+      AddWishlistItemToDB(classId);
+      console.log(courseWishlistStore.value);
+
+      // Use Naive UI Dialog
+      handleSuccess("課程已成功加入願望清單");
+    } else {
+      handleMessage("課程已存在您的願望清單");
+    }
   }
 };
 
 /*
-  Naive UI
+  Go to checkout or not
+*/
+
+// button active verification
+const isCheckoutButtonActive = ref(null);
+const CheckoutButtonActive = () => {
+  if (totalPrice.value == 0) {
+    isCheckoutButtonActive.value = true;
+  } else {
+    isCheckoutButtonActive.value = false;
+  }
+};
+
+//
+const toCheckoutOrNot = () => {
+  if (localStorage.getItem("memberid") == "") {
+    handleMessage("請先登入會員");
+  } else {
+    router.push("checkout");
+  }
+};
+
+/*
+  Naive UI success modal
 */
 const dialog = useDialog();
+const messageNaive = useMessage();
 const handleSuccess = (contentText) => {
   dialog.success({
     title: "Success",
     content: contentText,
     positiveText: "確定",
+  });
+};
+const handleMessage = (messageText) => {
+  messageNaive.info(messageText, {
+    closable: true,
+    duration: 5000,
   });
 };
 
@@ -353,6 +405,11 @@ const handleSuccess = (contentText) => {
 */
 onMounted(() => {
   loadPageClasses();
+  CheckoutButtonActive();
+});
+
+onUpdated(() => {
+  CheckoutButtonActive();
 });
 </script>
 

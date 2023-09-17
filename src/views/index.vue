@@ -5,7 +5,7 @@
       <div data-aos="slide-right" class="row gx-4 gx-lg-5 h-75 align-items-center justify-content-center">
         <div class="col-lg-10 align-self-end">
           <h3 class="text-white">KEEP&emsp;YOUR&emsp;BODY</h3>
-          <h1 class="text-white ">FIT & STRONG</h1>
+          <h1 class="text-white">FIT & STRONG</h1>
         </div>
         <div class="col-lg-10 align-self-baseline">
           <RouterLink class="btn btn-primary btn-xl" to="course">立即購課</RouterLink>
@@ -122,9 +122,16 @@
               <InfoWindow>
                 <div id="contet" class="fs-5">
                   <h4 class="text-center">Fithub健身房</h4>
-                  <p><i class="bi bi-telephone-inbound-fill"></i> 02-2468-0666</p>
-                  <p><i class="bi bi-clock-fill"></i>周一至周六 06:00~24:00周日 08:00~24:00</p>
-                  <p><i class="bi bi-geo-alt-fill"></i>基隆市信義區東明路177號3F</p>
+                  <p>
+                    <i class="bi bi-telephone-inbound-fill"></i> 02-2468-0666
+                  </p>
+                  <p>
+                    <i class="bi bi-clock-fill"></i>周一至周六 06:00~24:00周日
+                    08:00~24:00
+                  </p>
+                  <p>
+                    <i class="bi bi-geo-alt-fill"></i>基隆市信義區東明路177號3F
+                  </p>
                 </div>
               </InfoWindow>
             </Marker>
@@ -170,8 +177,11 @@
                 <label for="message">Message</label>
               </div>
               <!-- Submit Button -->
-              <div><button class="btn btn-primary btn-xl" id="submitButton" type="submit"
-                  @click="submitForm">Submit</button></div>
+              <div>
+                <button class="btn btn-primary btn-xl" id="submitButton" type="submit" @click="submitForm">
+                  Submit
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -183,11 +193,10 @@
   <n-back-top />
 </template>
 
-
 <script setup>
-import axios from 'axios'
-import { ref, onMounted, reactive } from 'vue';
-import { useRoute, useRouter } from 'vue-router'
+import axios from "axios";
+import { ref, onMounted, reactive } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { GoogleMap, Marker, InfoWindow } from "vue3-google-map";
 // 橫向卷軸
 import { Carousel, Navigation, Pagination, Slide } from 'vue3-carousel'
@@ -238,32 +247,28 @@ const images = [
 
 
 // 滾動動畫
-import AOS from 'aos';
-import 'aos/dist/aos.css'; // You can also use <link> for styles
+import AOS from "aos";
+import "aos/dist/aos.css"; // You can also use <link> for styles
 
 // 動態ALERT
-import Swal from 'sweetalert2'
-
-const url = import.meta.env.VITE_API_JAVAURL
+import Swal from "sweetalert2";
 
 // 設定橫向卷軸
 const settings = {
   itemsToShow: 1,
-  snapAlign: 'center',
+  snapAlign: "center",
 };
 
 const breakpoints = {
   700: {
     itemsToShow: 3.5,
-    snapAlign: 'center',
+    snapAlign: "center",
   },
   1024: {
     itemsToShow: 4,
     snapAlign: 'start',
   },
 };
-
-
 
 // 設定GoogleMap
 const center = { lat: 22.62808625882824, lng: 120.29252321578828 };
@@ -275,85 +280,83 @@ const router = useRouter();
 const mybutton = ref(null);
 
 // 儲存活動資訊
-const activitys = ref([])
+const activitys = ref([]);
 
 // 儲存教練資訊
-const coachPics = ref([])
+const coachPics = ref([]);
 
 //取得表單內容
 const formData = reactive({
-  name: '',
-  email: '',
-  phone: '',
-  message: '',
-  subject: ''
-})
-
+  name: "",
+  email: "",
+  phone: "",
+  message: "",
+  subject: "",
+});
 
 // 取得教練資料
 const getCoachPics = async () => {
   try {
-    const response = await axios.get(`${url}/employees/findCoachDataPicSpecialty`);
+    const response = await axios.get(
+      `${url}/employees/findCoachDataPicSpecialty`
+    );
     coachPics.value = response.data;
     console.log(coachPics.value);
-
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
   }
 };
 
 // 取得活動資料並排序和篩選是否顯示
 const getActivitys = async () => {
   try {
-    const response = await axios.get(`${url}/activity/filteredAndSortedActivities`);
+    const response = await axios.get(
+      `${url}/activity/filteredAndSortedActivities`
+    );
     activitys.value = response.data;
     console.log(activitys.value);
-
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
   }
 };
-
 
 // 寄信聯絡我們
 const submitForm = async () => {
   try {
-
     if (
-      formData.name === '' ||
-      formData.email === '' ||
-      formData.phone === '' ||
-      formData.message === '' ||
-      formData.subject === ''
+      formData.name === "" ||
+      formData.email === "" ||
+      formData.phone === "" ||
+      formData.message === "" ||
+      formData.subject === ""
     ) {
       // 如果有任何一個字段為空，執行錯誤處理邏輯
       Swal.fire({
-        title: '請填寫全部欄位。',
+        title: "請填寫全部欄位。",
         // text: '請填寫全部欄位。',
-        icon: 'warning',
-        confirmButtonText: '確定'
-      })
-      return
+        icon: "warning",
+        confirmButtonText: "確定",
+      });
+      return;
     }
 
     const response = await axios.post(`${url}/index/sendEmail`, formData);
 
     if (response.status === 200) {
       Swal.fire({
-        title: '送出成功',
-        icon: 'success',
-        confirmButtonText: '確定'
-      })
+        title: "送出成功",
+        icon: "success",
+        confirmButtonText: "確定",
+      });
     } else {
       Swal.fire({
-        title: '送出成功',
-        icon: 'error',
-        confirmButtonText: '確定'
-      })
+        title: "送出成功",
+        icon: "error",
+        confirmButtonText: "確定",
+      });
     }
-
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
   }
 };
 
@@ -367,21 +370,19 @@ const handleImageClick = (activity) => {
         activityid: activity.activityid,
       },
     });
-  }
-  catch (error) {
-    console.error('Error:', error);
+  } catch (error) {
+    console.error("Error:", error);
   }
 };
 
 
 onMounted(() => {
   AOS.init({
-    once: true // 動畫只執行一次
+    once: true, // 動畫只執行一次
   });
   getActivitys();
   getCoachPics();
 });
-
 </script>
 
 <style scoped></style>
