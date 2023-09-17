@@ -51,7 +51,7 @@
 
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
-import { useDialog } from "naive-ui";
+import { useDialog, useMessage } from "naive-ui";
 import { useCartStore, useWishlistStore } from "../../stores/courseStore.js";
 import { storeToRefs } from "pinia";
 const URL = import.meta.env.VITE_API_JAVAURL;
@@ -101,9 +101,9 @@ const addWishlistToCart = (classId, listId, wishAddSince) => {
     courseCartStore.value.push(classId);
     deleteWishlistItemToDB(classId, listId, wishAddSince);
 
-    handleSuccess("已成功加入您的購物車");
+    handleMessage("已成功加入您的購物車");
   } else {
-    handleSuccess("課程已存在您的購物車");
+    handleMessage("課程已存在您的購物車");
   }
 };
 
@@ -123,7 +123,7 @@ const updateWishlistDBtoStore = (pageWishlistClasses) => {
 */
 
 // Delete single wishlist item throuth deleting in store
-// 可刪
+// 可刪，因爲store的值會被複寫
 const deleteWishlistItem = (classId) => {
   courseWishlistStore.value.splice(
     courseWishlistStore.value.indexOf(classId),
@@ -149,6 +149,7 @@ const deleteWishlistItemToDB = async (classId, listId, wishAddSince) => {
     });
   // deleteWishlistItem(classId); // reload 自動複寫 store
   loadPageWishlistClasses();
+  handleMessage("已取消您的願望收藏");
 };
 
 /*
@@ -160,6 +161,14 @@ const handleSuccess = (contentText) => {
     title: "Success",
     content: contentText,
     positiveText: "確定",
+  });
+};
+
+const messageNaive = useMessage();
+const handleMessage = (messageText) => {
+  messageNaive.info(messageText, {
+    closable: true,
+    duration: 5000,
   });
 };
 

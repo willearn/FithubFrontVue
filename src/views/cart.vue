@@ -206,6 +206,7 @@ const totalPrice = computed(() => {
 // Delete single cart items throuth deleting in store
 const deleteCartItem = (classId) => {
   courseCartStore.value.splice(courseCartStore.value.indexOf(classId), 1);
+  handleMessage("已刪除您的購物車商品");
 };
 
 /*
