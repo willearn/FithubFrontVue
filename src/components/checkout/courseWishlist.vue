@@ -11,7 +11,7 @@
         <th scope="col"></th>
       </tr>
     </thead>
-    <tbody v-for="(item, index) in pageClasses">
+    <tbody v-for="(item, index) in pageWishlistClasses">
       <tr>
         <th scope="row">{{ index + 1 }}</th>
         <td><img src=https://picsum.photos/id/17/200 alt="..." /></td>
@@ -23,12 +23,20 @@
           <div
             type="button"
             class="bi bi-cart2"
-            @click="addWishlistToCart(item.classId)"
+            @click="
+              addWishlistToCart(item.classId, item.listId, item.wishAddSince)
+            "
           ></div>
           <div
             type="button"
             class="bi bi-trash-fill"
-            @click="deleteWishlistItem(item.classId)"
+            @click="
+              deleteWishlistItemToDB(
+                item.classId,
+                item.listId,
+                item.wishAddSince
+              )
+            "
           ></div>
         </td>
       </tr>
@@ -61,43 +69,38 @@ const { courseWishlistStore } = storeToRefs(wishlistStore);
 */
 
 // Load Classes data
-const pageClasses = ref([]);
-const loadPageClasses = async () => {
-  console.log(courseWishlistStore.value);
-  const URLAPI = `${URL}/classes/findClassesByIds`;
-  const response = await axios
-    .post(URLAPI, courseWishlistStore.value)
-    .catch((error) => {
-      console.log(error.toJSON());
-    });
-  // console.log(response);
+const pageWishlistClasses = ref([]);
+const loadPageWishlistClasses = async () => {
+  // console.log(courseWishlistStore.value);
+  if (localStorage.getItem("memberid") != null) {
+    // check login or not
+    const URLAPI = `${URL}/classes/findAllClassesInMemberWishlist`;
+    const response = await axios
+      .get(URLAPI, {
+        params: {
+          memberId: localStorage.getItem("memberid"),
+        },
+      })
+      .catch((error) => {
+        console.log(error.toJSON());
+      });
+    // console.log(response);
 
-  pageClasses.value = response.data;
-  // console.log(pageClasses);
-};
-
-/*
-  Methods for delete cart items
-*/
-
-// Delete single wishlist item throuth deleting in store
-const deleteWishlistItem = (classId) => {
-  console.log(classId);
-  courseWishlistStore.value.splice(
-    courseWishlistStore.value.indexOf(classId),
-    1
-  );
-  // deleteWishlistItemToDB(classId);
+    pageWishlistClasses.value = response.data;
+    // console.log(pageClasses);
+    updateWishlistDBtoStore(pageWishlistClasses);
+  }
 };
 
 /*
   Methods Add wishlist item to cart
 */
 // const emits = defineEmits(["addWishlistToCartEmit"]);
-const addWishlistToCart = (classId) => {
+const addWishlistToCart = (classId, listId, wishAddSince) => {
   if (!courseCartStore.value.includes(classId)) {
     courseCartStore.value.push(classId);
-    deleteWishlistItem(classId);
+    deleteWishlistItemToDB(classId, listId, wishAddSince);
+
     handleSuccess("已成功加入您的購物車");
   } else {
     handleSuccess("課程已存在您的購物車");
@@ -105,30 +108,51 @@ const addWishlistToCart = (classId) => {
 };
 
 /*
-  watcher for wishlist items in store
+  method for save DB wishlist items in store
 */
-watch(courseWishlistStore.value, () => {
-  loadPageClasses();
-});
+const updateWishlistDBtoStore = (pageWishlistClasses) => {
+  let wishlistTemp = [];
+  for (let i = 0; i < pageWishlistClasses.value.length; i++) {
+    wishlistTemp.push(pageWishlistClasses.value[i]["classId"]);
+  }
+  courseWishlistStore.value = wishlistTemp;
+};
+
+/*
+  Methods for delete wishlist items in store
+*/
+
+// Delete single wishlist item throuth deleting in store
+// 可刪
+const deleteWishlistItem = (classId) => {
+  courseWishlistStore.value.splice(
+    courseWishlistStore.value.indexOf(classId),
+    1
+  );
+};
 
 /*
   method for add and delete item to wishlish DB
 */
 
 // delete(actually is put, just add deletedate ) item to wishlish DB
-const deleteWishlistItemToDB = async (classId) => {
+const deleteWishlistItemToDB = async (classId, listId, wishAddSince) => {
   const reswishlist = await axios
-    .put(`${URL}/wishlist/${classId}`, {
+    .put(`${URL}/wishlist/${listId}`, {
+      listId: listId,
       memberId: localStorage.getItem("memberid"),
       classId: classId,
+      wishAddSince: wishAddSince,
     })
     .catch((error) => {
       console.log(error.toJSON());
     });
+  // deleteWishlistItem(classId); // reload 自動複寫 store
+  loadPageWishlistClasses();
 };
 
 /*
-  Naive UI
+  Naive UI success modal
 */
 const dialog = useDialog();
 const handleSuccess = (contentText) => {
@@ -143,7 +167,7 @@ const handleSuccess = (contentText) => {
   LifeCycle Hooks
 */
 onMounted(() => {
-  loadPageClasses();
+  loadPageWishlistClasses();
 });
 </script>
 

@@ -6,13 +6,15 @@ import memberNavBar from "../components/member/memberNavBar.vue";
 import Paging from "../components/member/Paging.vue";
 import PageSize from "../components/member/PageSize.vue";
 import SearchTextBox from '../components/member/SearchTextBox.vue'
-
+import { useRentOrderStore } from "../stores/rentorder.js"
+import { storeToRefs } from 'pinia'
 
 const url = import.meta.env.VITE_API_JAVAURL
 
 onMounted(() => {
     loadDatas()
 });
+
 
 const memberData = ref({})
 
@@ -31,16 +33,38 @@ const datas = reactive({
 
 const loadDatas = async () => {
     datas.memberId = window.localStorage.getItem("memberid")
-    
+
     // const response = await axios.get(`${url}/rent/list/bymemberid/${window.localStorage.getItem("memberid")}`)
-    const response = await axios.post(`${url}/rent/list/findPageByDate`,datas)
+    const response = await axios.post(`${url}/rent/list/findPageByDate`, datas)
 
     console.log(response.data)
 
     rentOrders.value = response.data.list
-    
+
     totalPages.value = +datas.rows === 0 ? 1 : Math.ceil(response.data.count / datas.rows)
 
+}
+
+// 點擊未付款時取得該筆訂單資料存到pinia持久化
+const getRentOrder = async (id) => {
+    let rentOrder = reactive({})
+    const response = await axios.get(`${url}/rent/findById/${id}`)
+    rentOrder = response.data
+    // console.log(rentOrder)
+
+    const rentOrderStore = useRentOrderStore();
+    const { selectedClassroom } = storeToRefs(rentOrderStore)
+
+    const rentOrderData = reactive({
+        classroomName: rentOrder.classroom.classroomName,
+        classroomPic: rentOrder.classroom.classroomPic,
+        classroomPrice: rentOrder.classroom.classroomPrice,
+        classroomid: rentOrder.classroom.classroomId,
+        rentOrderid: rentOrder.rentorderid,
+        rentdate: rentOrder.rentdate,
+        renttime: rentOrder.renttime
+    })
+    selectedClassroom.value = rentOrderData
 }
 
 //paging 由子元件觸發
@@ -100,8 +124,8 @@ const inputHandler = value => {
         </div>
     </div>
 
-    <div class="container m-5">
-        <div class="row">
+    <div class="container my-5">
+        <div class="row justify-content-center">
             <div class="col-lg-2">
                 <memberNavBar></memberNavBar>
             </div>
@@ -109,11 +133,11 @@ const inputHandler = value => {
                 <h1 class="text-center">場地租借訂單</h1>
                 <hr>
                 <div class="col-3">
-                                <PageSize @pageSizeChange="changeHandler"></PageSize>
-                            </div>
-                            <div class="col-3">
-                                <SearchTextBox @searchInput="inputHandler"></SearchTextBox>
-                            </div>
+                    <PageSize @pageSizeChange="changeHandler"></PageSize>
+                </div>
+                <div class="col-3">
+                    <SearchTextBox @searchInput="inputHandler"></SearchTextBox>
+                </div>
                 <table id="rentorderTable" class="table table-bordered mt-3">
                     <thead class="align-middle text-center">
                         <tr class="table-success">
@@ -131,7 +155,15 @@ const inputHandler = value => {
                             <td>{{ rent.rentdate }}</td>
                             <td>{{ rent.renttime }}</td>
                             <td>{{ rent.classroomName }}</td>
-                            <td>{{ rent.rentstatus }}</td>
+                            <td>
+                                <template v-if="rent.rentstatus === '未付款'">
+                                    <router-link @click="getRentOrder(rent.rentorderid)" to="/rentorder">{{ rent.rentstatus
+                                    }}</router-link>
+                                </template>
+                                <template v-else>
+                                    {{ rent.rentstatus }}
+                                </template>
+                            </td>
                             <td>{{ rent.rentamount }}</td>
                         </tr>
                     </tbody>

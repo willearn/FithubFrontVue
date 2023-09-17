@@ -47,13 +47,13 @@ const emit = defineEmits([
 
 const toNaborPage = (nextOrLast) => {
   let pageChoose = 0;
-  console.log("arg1 is: " + nextOrLast + " ,arg2 is: " + pageChoose);
+  // console.log("arg1 is: " + nextOrLast + " ,arg2 is: " + pageChoose);
   // 傳送event至parent componont
   emit("clickNaborCoursePage-emit", nextOrLast, pageChoose);
 };
 const toAnyPage = (pageChoose) => {
   let nextOrLast = 0;
-  console.log("arg1 is: " + nextOrLast + " ,arg2 is: " + pageChoose);
+  // console.log("arg1 is: " + nextOrLast + " ,arg2 is: " + pageChoose);
   // 傳送event至parent componont
   emit("clickAnyCoursePage-emit", nextOrLast, pageChoose);
 };

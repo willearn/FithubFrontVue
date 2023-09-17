@@ -1,9 +1,11 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useRentOrderStore = defineStore('rentorder', () => {
-
-  const selectedClassroom = ref(null);
-
-  return { selectedClassroom }
+export const useRentOrderStore = defineStore('rentorder', {
+  state: () => ({
+    selectedClassroom: ref(null)
+  }),
+  persist: {
+    storage: sessionStorage,
+  },
 })
