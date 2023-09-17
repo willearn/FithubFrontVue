@@ -8,7 +8,7 @@
           <h1 class="text-white">FIT & STRONG</h1>
         </div>
         <div class="col-lg-10 align-self-baseline">
-          <RouterLink class="btn btn-primary btn-xl" to="course">立即購課</RouterLink>
+          <RouterLink class="btn btn-primary btn-xl" to="course/0">立即購課</RouterLink>
         </div>
       </div>
     </div>
@@ -203,6 +203,7 @@ import { Carousel, Navigation, Pagination, Slide } from 'vue3-carousel'
 import 'vue3-carousel/dist/carousel.css'
 // 租借場地圖片燈箱
 import VueEasyLightbox from 'vue-easy-lightbox'
+const url = import.meta.env.VITE_API_JAVAURL
 
 const lightboxVisible = ref(false);
 const lightboxImages = ref([]);
