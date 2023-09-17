@@ -1,7 +1,6 @@
 <template>
-  <Carousel></Carousel>
   <!-- 購物車 -->
-  <section class="page-section">
+  <section class="page-section" style="padding-top: 5%;padding-bottom: 5%;">
     <div class="container">
       <div class="row justify-content-center mb-5">
         <div class="col-12 col-md-6 col-lg-6">
@@ -113,7 +112,6 @@ import { storeToRefs } from "pinia";
 import ProgressBar from "../components/checkout/util/progressbar.vue";
 import courseWishlist from "../components/checkout/courseWishlist.vue";
 import memberCoupon from "../components/checkout/memberCoupon.vue";
-import Carousel from "../components/Carousel.vue";
 const URL = import.meta.env.VITE_API_JAVAURL;
 
 /*
