@@ -3,15 +3,9 @@
   <nav class="navbar navbar-expand-lg navbar-light fixed-top mynav" :id="navId">
     <div class="container px-4 px-lg-5">
       <router-link class="navbar-brand" to="/">Fithub</router-link>
-      <button
-        class="navbar-toggler navbar-toggler-right"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarResponsive"
-        aria-controls="navbarResponsive"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+        aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -22,39 +16,21 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/rent">場地租借</router-link>
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/">最新消息</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/">教練團隊</router-link>
-          </li>
           <li class="nav-item" v-if="!isLogin">
-            <router-link class="nav-link" to="/login"
-              ><i class="bi bi-person-fill"></i>會員登入</router-link
-            >
+            <router-link class="nav-link" to="/login"><i class="bi bi-person-fill"></i>會員登入</router-link>
           </li>
           <li class="nav-item dropdown" v-if="isLogin">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="dropdownMenuLink"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
               <i class="bi bi-person-fill"></i>
               {{ membername }}
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <li>
-                <router-link class="dropdown-item" to="/member"
-                  >會員專區</router-link
-                >
+                <router-link class="dropdown-item" to="/member">會員專區</router-link>
               </li>
               <li>
-                <router-link class="dropdown-item" to="/login" @click="logout"
-                  >登出</router-link
-                >
+                <router-link class="dropdown-item" to="/login" @click="logout">登出</router-link>
               </li>
             </ul>
           </li>

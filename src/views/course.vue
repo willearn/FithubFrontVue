@@ -1,84 +1,12 @@
 <template>
-  <div class="masthead">
-    <div id="carouselIndicators" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-indicators">
-        <button
-          type="button"
-          data-bs-target="#carouselIndicators"
-          data-bs-slide-to="0"
-          class="active"
-          aria-current="true"
-          aria-label="Slide 1"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselIndicators"
-          data-bs-slide-to="1"
-          aria-label="Slide 2"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselIndicators"
-          data-bs-slide-to="2"
-          aria-label="Slide 3"
-        ></button>
-      </div>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img
-            src="https://picsum.photos/1400/900?random=10"
-            class="d-block w-100"
-            alt="..."
-          />
-        </div>
-        <div class="carousel-item">
-          <img
-            src="https://picsum.photos/1400/900?random=11&grayscale"
-            class="d-block w-100"
-            alt="..."
-          />
-        </div>
-        <div class="carousel-item">
-          <img
-            src="https://picsum.photos/1400/900?random=12"
-            class="d-block w-100"
-            alt="..."
-          />
-        </div>
-      </div>
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#carouselIndicators"
-        data-bs-slide="prev"
-      >
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#carouselIndicators"
-        data-bs-slide="next"
-      >
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
-  </div>
-
+  <Carousel></Carousel>
   <section class="page-section" id="courseView">
     <div class="container">
       <!-- SideBar -->
       <div class="row">
         <div class="col-2">
-          <listGroup
-            class="d-flex justify-content-center"
-            :allCourseCategories="allCourseCategories"
-            :pageCourseCategoryId="parseInt(pageCourseCategoryId)"
-            tabindex="0"
-            v-focus
-          ></listGroup>
+          <listGroup class="d-flex justify-content-center" :allCourseCategories="allCourseCategories"
+            :pageCourseCategoryId="parseInt(pageCourseCategoryId)" tabindex="0" v-focus></listGroup>
         </div>
 
         <!-- cards for course -->
@@ -93,25 +21,14 @@
           </h1>
           <h1 v-else class="text-center mb-4">全部課程列表</h1>
           <!-- <input type="text" v-focus> -->
-          <div
-            class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center"
-          >
-            <courseCard
-              v-for="(course, index) in pageCourses"
-              class="col-3 mx-2 my-3"
-              :cardAmount="index"
-              :course="course"
-            ></courseCard>
+          <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
+            <courseCard v-for="(course, index) in pageCourses" class="col-3 mx-2 my-3" :cardAmount="index"
+              :course="course"></courseCard>
           </div>
 
-          <pagination
-            v-if="paginationData.showPagination"
-            :totalPages="paginationData.totalPages"
-            :page="paginationData.page"
-            class="d-flex justify-content-center mt-3"
-            @clickNaborCoursePage-emit="changePage"
-            @clickAnyCoursePage-emit="changePage"
-          >
+          <pagination v-if="paginationData.showPagination" :totalPages="paginationData.totalPages"
+            :page="paginationData.page" class="d-flex justify-content-center mt-3" @clickNaborCoursePage-emit="changePage"
+            @clickAnyCoursePage-emit="changePage">
           </pagination>
         </div>
       </div>
@@ -150,6 +67,7 @@ import CartIcon from "../components/course/util/icon-cart.vue";
 import pagination from "../components/course/util/pagination.vue";
 import listGroup from "../components/course/util/listGroup.vue";
 import { vFocus } from "../directives/vFocus";
+import Carousel from "../components/Carousel.vue";
 const URL = import.meta.env.VITE_API_JAVAURL;
 
 /*
