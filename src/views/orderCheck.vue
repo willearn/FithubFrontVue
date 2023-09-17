@@ -86,7 +86,16 @@
               <h4 class="card-title">總價:</h4>
               <p class="card-text">$NT&nbsp;{{ totalPrice - dis }}</p>
               <div class="d-grid gap-3 col-12 mx-auto">
-                <button @click="postDataToApi" class="btn btn-primary">
+                <!-- <button @click="postDataToApi" class="btn btn-primary">
+                  結帳
+                </button> -->
+                <button
+                  @click="
+                    sendDataToBackend();
+                    postDataToApi();
+                  "
+                  class="btn btn-primary"
+                >
                   結帳
                 </button>
               </div>
@@ -205,6 +214,29 @@ const postDataToApi = async () => {
     }
   } catch (error) {
     console.error("發生錯誤", error);
+  }
+};
+
+// 创建一个ref来存储已使用量
+const couponUsed = ref(parseInt(localStorage.getItem("used")) || 0);
+
+// 创建一个方法来向后端发送数据
+const sendDataToBackend = async () => {
+  try {
+    // 先将 couponUsed 值加一
+    couponUsed.value += 1;
+    console.log("使用量 " + couponUsed.value);
+
+    const response = await axios.put(`${URL}/coupons/update/1`, null, {
+      params: {
+        couponused: couponUsed.value.toString(), // 将值作为请求参数发送
+      },
+    });
+
+    // 处理后端响应
+    console.log("后端响应：", response.data);
+  } catch (error) {
+    console.error("发送数据到后端时出错：", error);
   }
 };
 
