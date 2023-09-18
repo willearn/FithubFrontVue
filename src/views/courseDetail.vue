@@ -300,7 +300,7 @@ const loadRecommendedCourses = async () => {
   const URLAPI = `${URL}/course/page`;
   const response = await axios.get(URLAPI, {
     params: {
-      p: 1,
+      p: Math.floor(Math.random() * 5) + 1, // 隨機產生1~5正整數
       size: 3,
     },
   });
