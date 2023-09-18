@@ -1,11 +1,13 @@
 <template>
   <!-- 結帳頁面 -->
   <section class="page-section">
-    <div class="container" style="padding-top: 5%;">
-      <h1 class="text-center mb-5">選擇付款方式</h1>
-      <div class="row justify-content-center mb-5">
-        <div class="col-12 col-md-6 col-lg-6">
-          <ProgressBar :percent="50"></ProgressBar>
+    <div class="container">
+      <div class="row justify-content-center mb-5 mt-5">
+        <hr />
+        <div class="row justify-content-center mb-5">
+          <div class="col-10 col-md-6 col-lg-6">
+            <ProgressBar :percent="50"></ProgressBar>
+          </div>
         </div>
       </div>
 
@@ -28,7 +30,10 @@
                 <tr>
                   <th scope="row">{{ index + 1 }}</th>
                   <td>
-                    <img :src="`https://picsum.photos/300?random=${index + 15}`" style="width: 200px" />
+                    <img
+                      :src="`https://picsum.photos/300?random=${index + 15}`"
+                      style="width: 200px"
+                    />
                   </td>
                   <td>{{ item.courseName }}</td>
                   <td>{{ item.employeename }}</td>
@@ -40,7 +45,12 @@
           </div>
           <div class="p-2 bg-light border">
             <div class="form-floating">
-              <select class="form-select" id="floatingSelect" aria-label="Floating label select example" required>
+              <select
+                class="form-select"
+                id="floatingSelect"
+                aria-label="Floating label select example"
+                required
+              >
                 <option selected>選擇付款方式</option>
                 <option value="1">信用卡-綠界金流</option>
                 <option value="2">LINE PAY</option>
@@ -61,7 +71,9 @@
               <!-- 顯示折扣金額 -->
               <div v-else-if="couponDiscount">折扣$ {{ couponDiscount }}</div>
               <div class="d-grid gap-3 col-12 mx-auto">
-                <router-link class="btn btn-primary" to="/ordercheck">結帳</router-link>
+                <router-link class="btn btn-primary" to="/ordercheck"
+                  >結帳</router-link
+                >
               </div>
             </div>
             <hr />
@@ -69,13 +81,25 @@
               <h5>優惠券</h5>
               <div id="alertContainer" class="alert-container"></div>
               <div class="col-12">
-                <label for="inputPassword2" class="visually-hidden">促銷代碼</label>
-                <input type="text" class="form-control" v-model="couponCode" id="inputPassword2" placeholder="促銷代碼" />
+                <label for="inputPassword2" class="visually-hidden"
+                  >促銷代碼</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="couponCode"
+                  id="inputPassword2"
+                  placeholder="促銷代碼"
+                />
               </div>
               <div class="col-12 my-2">
                 <div class="row d-grid justify-content-end">
                   <div class="col-12">
-                    <button type="submit" class="btn btn-primary mb-3" @click="submitCoupon">
+                    <button
+                      type="submit"
+                      class="btn btn-primary mb-3"
+                      @click="submitCoupon"
+                    >
                       輸入
                     </button>
                   </div>
@@ -83,6 +107,13 @@
               </div>
             </div>
           </div>
+          <!-- back -->
+          <div class="row justify-content-center">
+            <router-link class="col-8 my-4 text-center" to="/cart">
+              <button class="btn btn-primary">回上頁</button>
+            </router-link>
+          </div>
+          <!-- back -->
         </div>
       </div>
     </div>
@@ -160,6 +191,8 @@ const submitCoupon = async () => {
       if (currentDate > couponEndDate) {
         showAlert("優惠已截止", "alert-danger");
         couponDiscount.value = "";
+        localStorage.setItem("dis", "0");
+        localStorage.setItem("used", "0");
       } else {
         // 計算總金額
         const total = totalPrice.value;
@@ -167,6 +200,8 @@ const submitCoupon = async () => {
         if (total < couponthreshold.value) {
           showAlert("總金額未達到使用門檻", "alert-warning");
           couponDiscount.value = "";
+          localStorage.setItem("dis", "0");
+          localStorage.setItem("used", "0");
         } else {
           console.log(couponUsed);
           console.log(couponceil);
@@ -174,6 +209,8 @@ const submitCoupon = async () => {
           if (couponUsed >= couponceil) {
             showAlert("優惠券已用完", "alert-danger");
             couponDiscount.value = "";
+            localStorage.setItem("dis", "0");
+            localStorage.setItem("used", "0");
           } else {
             // 可使用數量為超出限制，繼續處理優惠券
             var dis = couponDiscount.value;
@@ -187,15 +224,84 @@ const submitCoupon = async () => {
         }
       }
     } else {
-      showAlert("發生錯誤", "alert-danger"); // 處理後端返回的錯誤
+      showAlert("優惠券不存在", "alert-danger"); // 處理後端返回的錯誤
       couponDiscount.value = "";
+      localStorage.setItem("dis", "0");
+      localStorage.setItem("used", "0");
     }
   } catch (err) {
     console.error(err);
-    showAlert("發生錯誤", "alert-danger");
+    showAlert("優惠券不存在", "alert-danger");
     couponDiscount.value = "";
+    localStorage.setItem("dis", "0");
+    localStorage.setItem("used", "0");
   }
 };
+// const submitCoupon = async () => {
+//   try {
+//     // console.log(couponCode.value);
+//     const response = await axios.get(`${URL}/coupons/api/${couponCode.value}`, {
+//       couponcode: couponCode.value,
+//     });
+
+//     if (response.status === 200) {
+//       // console.log(response.data);
+//       couponDiscount.value = response.data.coupondiscount;
+//       couponenddate.value = response.data.couponenddate;
+//       couponthreshold.value = response.data.couponthreshold;
+//       // 獲取當前日期
+//       const currentDate = new Date();
+
+//       // 將截止日期字串解析為日期對象
+//       const couponEndDate = new Date(couponenddate.value);
+
+//       // 確保為數字類型
+//       const couponUsed = parseInt(response.data.couponused, 10);
+//       const couponceil = parseInt(response.data.couponceil, 10);
+
+//       // 檢查是否過期
+//       if (currentDate > couponEndDate) {
+//         showAlert("優惠已截止", "alert-danger");
+//         couponDiscount.value = "";
+//       } else {
+//         // 計算總金額
+//         const total = totalPrice.value;
+//         // 檢查是否達到使用門檻
+//         if (total < couponthreshold.value) {
+//           showAlert("總金額未達到使用門檻", "alert-warning");
+//           couponDiscount.value = "";
+//         } else {
+//           console.log(couponUsed);
+//           console.log(couponceil);
+//           // 檢查已使用量是否超出限制
+//           if (couponUsed >= couponceil) {
+//             showAlert("優惠券已用完", "alert-danger");
+//             couponDiscount.value = "";
+//           } else {
+//             // 可使用數量為超出限制，繼續處理優惠券
+//             var dis = couponDiscount.value;
+//             localStorage.setItem("dis", dis);
+//             showAlert("優惠碼已使用", "alert-success");
+//             var used = couponUsed;
+//             localStorage.setItem("used", used);
+
+//             console.log(used);
+//           }
+//         }
+//       }
+//     } else if (response.status === 404) {
+//       showAlert("優惠碼不存在", "alert-danger");
+//       couponDiscount.value = "";
+//     } else {
+//       showAlert("優惠碼不存在", "alert-danger"); // 處理其他后端返回的錯誤
+//       couponDiscount.value = "";
+//     }
+//   } catch (err) {
+//     console.error(err);
+//     showAlert("發生錯誤", "alert-danger");
+//     couponDiscount.value = "";
+//   }
+// };
 
 function showAlert(message, alertClass) {
   const alertContainer = document.getElementById("alertContainer");
