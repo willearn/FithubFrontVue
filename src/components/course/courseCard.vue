@@ -1,10 +1,20 @@
 <template>
   <div class="card">
-    <img
+    <!-- <img
       :src="`https://picsum.photos/300/200?random=${cardAmount}`"
       class="card-img-top mt-3"
       alt="..."
+    /> -->
+    <img
+      v-show="loadImgFactor"
+      :src="`${URL}/course/getImg?cid=${course.courseId}`"
+      class="card-img-top mt-3"
+      alt="not Found"
+      @load="loadImg"
     />
+    <n-space v-if="!loadImgFactor" justify="center" Align="center">
+      <n-spin size="large" stroke="#ffc408" />
+    </n-space>
     <div class="card-body">
       <h5 class="card-text">{{ course.courseName }}</h5>
       <SimpleTag :tagText="course.courseCategories.categoryName"></SimpleTag>
@@ -25,8 +35,10 @@
 /*
   imports
 */
+import { ref, onMounted, onBeforeMount, onUpdated } from "vue";
 import { RouterLink } from "vue-router";
 import SimpleTag from "../course/util/simpleTag.vue";
+import { NSpace, NSpin } from "naive-ui";
 
 /*
   props
@@ -34,8 +46,25 @@ import SimpleTag from "../course/util/simpleTag.vue";
 const props = defineProps({
   cardAmount: Number,
   course: Object,
+  URL: String,
 });
 // console.log(props.cardAmount);
+
+// Load CourseImg
+const loadImgFactor = ref(false);
+const loadImg = () => {
+  loadImgFactor.value = true;
+};
+
+/*
+  Life Cycle Hooks
+*/
+// onUpdated(() => {
+//   renderTiming.value = true;
+// });
+// onMounted(() => {
+//   renderTiming.value = true;
+// });
 </script>
 
 <style scoped>
@@ -76,5 +105,10 @@ const props = defineProps({
   background-clip: border-box;
   border: var(--bs-card-border-width) solid var(--bs-card-border-color);
   border-radius: var(--bs-card-border-radius);
+}
+
+.card-img-top {
+  width: 100%;
+  height: 100%;
 }
 </style>

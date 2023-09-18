@@ -9,12 +9,15 @@
           <div class="row justify-content-center align-items-center">
             <div class="col-5 mx-3">
               <img
-                src="https://picsum.photos/300/200?random=10"
-                class="card-img-top mt-3"
-                alt="..."
-                tabindex="0"
-                v-focus
+                v-show="loadImgFactor"
+                :src="`${URL}/course/getImg?cid=${route.params['courseid']}`"
+                class="card-img mt-3"
+                alt="not Found"
+                @load="loadImg"
               />
+              <n-space v-if="!loadImgFactor" justify="center" Align="center">
+                <n-spin size="large" stroke="#ffc408" />
+              </n-space>
             </div>
             <div class="col-6 mx-3">
               <div class="my-3">
@@ -120,6 +123,7 @@
               class="col-3 mx-2 my-3"
               :cardAmount="index"
               :course="course"
+              :URL="URL"
             >
             </courseCard>
           </div>
@@ -136,10 +140,10 @@
   imports
 */
 
-import { ref, reactive, onMounted, onBeforeUnmount, watch } from "vue";
+import { ref, reactive, onMounted, watch } from "vue";
 import { RouterLink, useRoute, useRouter } from "vue-router";
 import axios from "axios";
-import { useDialog, useMessage } from "naive-ui";
+import { useDialog, useMessage, NSpace, NSpin } from "naive-ui";
 import courseCard from "../components/course/courseCard.vue";
 import FullCalendar from "../components/course/courseCalendar.vue";
 import CartIcon from "../components/course/util/icon-cart.vue";
@@ -352,6 +356,13 @@ const saveCourseCartToLocalStorage = (forwardOrStay) => {
   }
 };
 
+// Load CourseImg
+const loadImgFactor = ref(false);
+const loadImg = () => {
+  loadImgFactor.value = true;
+  console.log("afterloaded");
+};
+
 /*
   method for add item to wishlish DB
 */
@@ -441,5 +452,12 @@ p {
   text-align: justify;
   /* padding: 1em; */
   text-indent: 2em;
+}
+
+.card-img,
+.card-img-top,
+.card-img-bottom {
+  width: 100%;
+  height: 100%;
 }
 </style>

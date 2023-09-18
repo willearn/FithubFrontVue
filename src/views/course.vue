@@ -5,8 +5,13 @@
       <!-- SideBar -->
       <div class="row">
         <div class="col-2">
-          <listGroup class="d-flex justify-content-center" :allCourseCategories="allCourseCategories"
-            :pageCourseCategoryId="parseInt(pageCourseCategoryId)" tabindex="0" v-focus></listGroup>
+          <listGroup
+            class="d-flex justify-content-center"
+            :allCourseCategories="allCourseCategories"
+            :pageCourseCategoryId="parseInt(pageCourseCategoryId)"
+            tabindex="0"
+            v-focus
+          ></listGroup>
         </div>
 
         <!-- cards for course -->
@@ -21,14 +26,26 @@
           </h1>
           <h1 v-else class="text-center mb-4">全部課程列表</h1>
           <!-- <input type="text" v-focus> -->
-          <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
-            <courseCard v-for="(course, index) in pageCourses" class="col-3 mx-2 my-3" :cardAmount="index"
-              :course="course"></courseCard>
+          <div
+            class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center"
+          >
+            <courseCard
+              v-for="(course, index) in pageCourses"
+              class="col-3 mx-2 my-3"
+              :cardAmount="index"
+              :course="course"
+              :URL="URL"
+            ></courseCard>
           </div>
 
-          <pagination v-if="paginationData.showPagination" :totalPages="paginationData.totalPages"
-            :page="paginationData.page" class="d-flex justify-content-center mt-3" @clickNaborCoursePage-emit="changePage"
-            @clickAnyCoursePage-emit="changePage">
+          <pagination
+            v-if="paginationData.showPagination"
+            :totalPages="paginationData.totalPages"
+            :page="paginationData.page"
+            class="d-flex justify-content-center mt-3"
+            @clickNaborCoursePage-emit="changePage"
+            @clickAnyCoursePage-emit="changePage"
+          >
           </pagination>
         </div>
       </div>
