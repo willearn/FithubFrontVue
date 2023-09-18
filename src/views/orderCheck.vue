@@ -3,6 +3,9 @@
   <section class="page-section" id="about">
     <div class="container">
       <!-- Progress Bar -->
+      <hr />
+      <hr />
+      <hr />
       <div class="row justify-content-center mb-5">
         <div class="col-10 col-md-6 col-lg-6">
           <ProgressBar :percent="75"></ProgressBar>
@@ -101,6 +104,13 @@
               </div>
             </div>
           </div>
+          <!-- back -->
+          <div class="row justify-content-center">
+            <router-link class="col-8 my-4 text-center" to="/checkout">
+              <button class="btn btn-primary">回上頁</button>
+            </router-link>
+          </div>
+          <!-- back -->
         </div>
       </div>
     </div>
