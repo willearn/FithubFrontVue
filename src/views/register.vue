@@ -222,7 +222,7 @@ router.beforeResolve(async (to) => {
                   <div>
                     <label class="form-label mb-1">信箱</label><span v-if="!registerData.memberemail"
                       class="text-danger">*</span>
-                    <input class="form-control" list="datalistOptions" id="exampleDataList"
+                    <!-- <input class="form-control" list="datalistOptions" id="exampleDataList"
                       placeholder="Type to search..." v-model="registerData.memberemail">
                     <datalist id="datalistOptions">
                       <option :value="`${registerData.memberemail}@gmail.com`">
@@ -235,10 +235,10 @@ router.beforeResolve(async (to) => {
                       </option>
                       <option :value="`${registerData.memberemail}@gmail.com`">
                       </option>
-                    </datalist>
+                    </datalist> -->
 
-                    <!-- <input type="email" class="form-control form-control-lg" v-model="registerData.memberemail"
-                      placeholder="abc123456@example.com" /> -->
+                    <input type="email" class="form-control form-control-lg" v-model="registerData.memberemail"
+                      placeholder="abc123456@example.com" />
                     <div class="my-1">
                       <input type="button" class="btn btn-secondary" v-model="verifybutton.button"
                         @click="sendVerificationCode" id="verifybtn">
