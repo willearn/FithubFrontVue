@@ -1,12 +1,9 @@
 <template>
   <!-- 結帳頁面 -->
   <section class="page-section">
-    <div class="container" style="padding-top: 10%;padding-bottom:10%">
+    <div class="container" style="padding-top: 10%; padding-bottom: 10%">
       <h1 class="text-center mb-5">訂單確認</h1>
       <!-- Progress Bar -->
-      <hr />
-      <hr />
-      <hr />
       <div class="row justify-content-center mb-5">
         <div class="col-10 col-md-6 col-lg-6">
           <ProgressBar :percent="75"></ProgressBar>
@@ -71,14 +68,16 @@
                   <small class="text-muted">付款方式</small>
                 </blockquote>
 
-                <img src="../assets/index/other/ECPay.png" style="width: 200px; height: auto" />
+                <img
+                  src="../assets/index/other/ECPay.png"
+                  style="width: 200px; height: auto"
+                />
               </div>
 
               <!-- 付款方式 end -->
             </div>
           </div>
           <!-- 訂購人資訊 end -->
-
         </div>
         <!-- 結帳 -->
         <div class="col-12 col-md-3 col-lg-2">
@@ -90,10 +89,13 @@
                 <!-- <button @click="postDataToApi" class="btn btn-primary">
                   結帳
                 </button> -->
-                <button @click="
-                  sendDataToBackend();
-                postDataToApi();
-                " class="btn btn-primary">
+                <button
+                  @click="
+                    sendDataToBackend();
+                    postDataToApi();
+                  "
+                  class="btn btn-primary"
+                >
                   結帳
                 </button>
               </div>
