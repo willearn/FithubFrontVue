@@ -178,6 +178,7 @@ const couponDiscount = ref("");
 const couponenddate = ref("");
 const couponthreshold = ref("");
 const error = ref("");
+const couponId = ref("");
 
 const submitCoupon = async () => {
   try {
@@ -187,10 +188,12 @@ const submitCoupon = async () => {
     });
 
     if (response.status === 200) {
-      // console.log(response.data);
+      console.log(response.data);
       couponDiscount.value = response.data.coupondiscount;
       couponenddate.value = response.data.couponenddate;
       couponthreshold.value = response.data.couponthreshold;
+      // couponId.value = response.data.couponid;
+      // console.log(couponId.value);
       // 獲取當前日期
       const currentDate = new Date();
 
@@ -200,6 +203,8 @@ const submitCoupon = async () => {
       // 確保為數字類型
       const couponUsed = parseInt(response.data.couponused, 10);
       const couponceil = parseInt(response.data.couponceil, 10);
+      const couponId = parseInt(response.data.couponid, 10);
+      console.log(couponId);
 
       // 檢查是否過期
       if (currentDate > couponEndDate) {
@@ -207,6 +212,7 @@ const submitCoupon = async () => {
         couponDiscount.value = "";
         localStorage.setItem("dis", "0");
         localStorage.setItem("used", "0");
+        localStorage.setItem("cid", "0");
       } else {
         // 計算總金額
         const total = totalPrice.value;
@@ -216,6 +222,7 @@ const submitCoupon = async () => {
           couponDiscount.value = "";
           localStorage.setItem("dis", "0");
           localStorage.setItem("used", "0");
+          localStorage.setItem("cid", "0");
         } else {
           console.log(couponUsed);
           console.log(couponceil);
@@ -225,6 +232,7 @@ const submitCoupon = async () => {
             couponDiscount.value = "";
             localStorage.setItem("dis", "0");
             localStorage.setItem("used", "0");
+            localStorage.setItem("cid", "0");
           } else {
             // 可使用數量為超出限制，繼續處理優惠券
             var dis = couponDiscount.value;
@@ -232,8 +240,9 @@ const submitCoupon = async () => {
             showAlert("優惠碼已使用", "alert-success");
             var used = couponUsed;
             localStorage.setItem("used", used);
-
-            console.log(used);
+            var cid = couponId;
+            localStorage.setItem("cid", cid);
+            console.log(cid);
           }
         }
       }
@@ -242,6 +251,7 @@ const submitCoupon = async () => {
       couponDiscount.value = "";
       localStorage.setItem("dis", "0");
       localStorage.setItem("used", "0");
+      localStorage.setItem("cid", "0");
     }
   } catch (err) {
     console.error(err);
@@ -249,73 +259,9 @@ const submitCoupon = async () => {
     couponDiscount.value = "";
     localStorage.setItem("dis", "0");
     localStorage.setItem("used", "0");
+    localStorage.setItem("cid", "0");
   }
 };
-// const submitCoupon = async () => {
-//   try {
-//     // console.log(couponCode.value);
-//     const response = await axios.get(`${URL}/coupons/api/${couponCode.value}`, {
-//       couponcode: couponCode.value,
-//     });
-
-//     if (response.status === 200) {
-//       // console.log(response.data);
-//       couponDiscount.value = response.data.coupondiscount;
-//       couponenddate.value = response.data.couponenddate;
-//       couponthreshold.value = response.data.couponthreshold;
-//       // 獲取當前日期
-//       const currentDate = new Date();
-
-//       // 將截止日期字串解析為日期對象
-//       const couponEndDate = new Date(couponenddate.value);
-
-//       // 確保為數字類型
-//       const couponUsed = parseInt(response.data.couponused, 10);
-//       const couponceil = parseInt(response.data.couponceil, 10);
-
-//       // 檢查是否過期
-//       if (currentDate > couponEndDate) {
-//         showAlert("優惠已截止", "alert-danger");
-//         couponDiscount.value = "";
-//       } else {
-//         // 計算總金額
-//         const total = totalPrice.value;
-//         // 檢查是否達到使用門檻
-//         if (total < couponthreshold.value) {
-//           showAlert("總金額未達到使用門檻", "alert-warning");
-//           couponDiscount.value = "";
-//         } else {
-//           console.log(couponUsed);
-//           console.log(couponceil);
-//           // 檢查已使用量是否超出限制
-//           if (couponUsed >= couponceil) {
-//             showAlert("優惠券已用完", "alert-danger");
-//             couponDiscount.value = "";
-//           } else {
-//             // 可使用數量為超出限制，繼續處理優惠券
-//             var dis = couponDiscount.value;
-//             localStorage.setItem("dis", dis);
-//             showAlert("優惠碼已使用", "alert-success");
-//             var used = couponUsed;
-//             localStorage.setItem("used", used);
-
-//             console.log(used);
-//           }
-//         }
-//       }
-//     } else if (response.status === 404) {
-//       showAlert("優惠碼不存在", "alert-danger");
-//       couponDiscount.value = "";
-//     } else {
-//       showAlert("優惠碼不存在", "alert-danger"); // 處理其他后端返回的錯誤
-//       couponDiscount.value = "";
-//     }
-//   } catch (err) {
-//     console.error(err);
-//     showAlert("發生錯誤", "alert-danger");
-//     couponDiscount.value = "";
-//   }
-// };
 
 function showAlert(message, alertClass) {
   const alertContainer = document.getElementById("alertContainer");
