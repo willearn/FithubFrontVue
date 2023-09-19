@@ -29,7 +29,7 @@
                 <td>{{ selectedClassroom.classroomName }}</td>
                 <td>{{ selectedClassroom.rentdate }}</td>
                 <td>{{ selectedClassroom.renttime }}</td>
-                <td>{{ selectedClassroom.classroomPrice.toLocaleString() }}</td>
+                <td>$NT {{ selectedClassroom.classroomPrice.toLocaleString() }}</td>
               </tr>
             </tbody>
           </table>

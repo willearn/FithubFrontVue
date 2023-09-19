@@ -132,7 +132,7 @@ const inputHandler = value => {
                                     {{ rent.rentstatus }}
                                 </template>
                             </td>
-                            <td>{{ rent.rentamount }}</td>
+                            <td>{{ rent.rentamount.toLocaleString() }}</td>
                         </tr>
                     </tbody>
                 </table>

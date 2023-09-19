@@ -7,28 +7,14 @@
         <h1>場地租借</h1>
         <hr class="divider" />
         <label class="fs-3">場地:</label>
-        <select
-          class="form-select-lg me-sm-5"
-          v-model="selectedClassroomId"
-          @change="handleOptionChange"
-        >
+        <select class="form-select-lg me-sm-5" v-model="selectedClassroomId" @change="handleOptionChange">
           <option disabled selected value="0">請先選擇場地</option>
-          <option
-            v-for="classroom in openClassrooms"
-            :key="classroom.name"
-            :value="classroom.classroomId"
-          >
+          <option v-for="classroom in openClassrooms" :key="classroom.name" :value="classroom.classroomId">
             {{ classroom.classroomName }}
           </option>
         </select>
         <label class="fs-3">日期:</label>
-        <input
-          type="date"
-          class="form-select-lg me-sm-5"
-          v-model="selectedDate"
-          :min="minDate"
-          :max="maxDate"
-        />
+        <input type="date" class="form-select-lg me-sm-5" v-model="selectedDate" :min="minDate" :max="maxDate" />
         <label class="fs-3">時段:</label>
         <select class="form-select-lg me-sm-5" v-model="selectedTime">
           <option disabled selected value="0">請選擇時段</option>
@@ -62,10 +48,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(classroom, classroomindex) in classroomData"
-              :key="classroomindex"
-            >
+            <tr v-for="(classroom, classroomindex) in classroomData" :key="classroomindex">
               <td class="col-lg-2 col-md-2">{{ classroom.classroomName }}</td>
               <td class="col-lg-2 col-md-2">
                 {{ classroom.classroomCapacity }}
@@ -74,15 +57,11 @@
                 {{ classroom.classroomDescription }}
               </td>
               <td class="col-lg-2 col-md-2">
-                {{ classroom.classroomPrice.toLocaleString() }}
+               $NT {{ classroom.classroomPrice.toLocaleString() }}
               </td>
               <td class="col-lg-2 col-md-2">{{ classroom.classroomStatus }}</td>
               <td class="col-lg-2 col-md-2">
-                <img
-                  :src="classroom.classroomPic"
-                  class="img-fluid"
-                  alt="維修中"
-                />
+                <img :src="classroom.classroomPic" class="img-fluid" alt="維修中" />
               </td>
             </tr>
           </tbody>

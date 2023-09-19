@@ -37,7 +37,7 @@
     <section class="page-section" id="team">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-8 mybg-light">
+                <div class="col-lg-8 mybg-light" style="padding-left: 100px;padding-right: 100px;">
                     <div class="text-center">
                         <h1>{{ activityDeatil.activityname }}</h1>
                         <h2>{{ activityDeatil.activitydate }}</h2>
@@ -78,9 +78,17 @@ const getActivityDeatil = async () => {
         activityDeatil.value = response.data;
 
         const activityDeatilDiv = document.getElementById('activityDeatil');
+        
 
         // 將activityDescription的内容設置為<div>的innerHTML
         activityDeatilDiv.innerHTML = activityDeatil.value.activitydescription;
+
+        const dynamicParagraph = activityDeatilDiv.querySelector('img');
+        if (dynamicParagraph) {
+            dynamicParagraph.style.width = '100%'; 
+            dynamicParagraph.style.height = '100%'; 
+        }
+       
     } catch (error) {
         console.error('Error:', error);
     }
@@ -92,8 +100,8 @@ const goBack = () => {
     });
 }
 
-onMounted(() => {
-    getActivityDeatil();
+onMounted(async () => {
+    await getActivityDeatil();
 });
 </script>
 
