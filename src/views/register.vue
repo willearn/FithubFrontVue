@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import router from "@/router";
 import Swal from 'sweetalert2'
 
@@ -111,10 +111,10 @@ const sendVerificationCode = async () => {
     if (response.status == 200) {
       startCountdown();
       Swal.fire({
-      title: '發送成功，請至信箱收取驗證碼',
-      icon: 'success',
-      confirmButtonText: '確定'
-    })
+        title: '發送成功，請至信箱收取驗證碼',
+        icon: 'success',
+        confirmButtonText: '確定'
+      })
       // alert("發送成功，請至信箱收取驗證碼")
     }
   } catch (error) {
@@ -202,6 +202,8 @@ router.beforeResolve(async (to) => {
   console.log("test")
 });
 
+
+
 </script>
 
 <template>
@@ -219,8 +221,24 @@ router.beforeResolve(async (to) => {
                   <!-- 信箱 -->
                   <div>
                     <label class="form-label mb-1">信箱</label><span v-if="!registerData.memberemail"
-                      class="text-danger">*</span><input type="email" class="form-control form-control-lg"
-                      v-model="registerData.memberemail" placeholder="abc123456@example.com" />
+                      class="text-danger">*</span>
+                    <!-- <input class="form-control" list="datalistOptions" id="exampleDataList"
+                      placeholder="Type to search..." v-model="registerData.memberemail">
+                    <datalist id="datalistOptions">
+                      <option :value="`${registerData.memberemail}@gmail.com`">
+                      </option>
+                      <option :value="`${registerData.memberemail}@gmail.com`">
+                      </option>
+                      <option :value="`${registerData.memberemail}@gmail.com`">
+                      </option>
+                      <option :value="`${registerData.memberemail}@gmail.com`">
+                      </option>
+                      <option :value="`${registerData.memberemail}@gmail.com`">
+                      </option>
+                    </datalist> -->
+
+                    <input type="email" class="form-control form-control-lg" v-model="registerData.memberemail"
+                      placeholder="abc123456@example.com" />
                     <div class="my-1">
                       <input type="button" class="btn btn-secondary" v-model="verifybutton.button"
                         @click="sendVerificationCode" id="verifybtn">
@@ -307,7 +325,6 @@ router.beforeResolve(async (to) => {
             </div>
           </div>
         </div>
-      </div>
     </div>
-  </section>
-</template>
+  </div>
+</section></template>
