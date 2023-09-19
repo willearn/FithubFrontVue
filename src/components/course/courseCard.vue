@@ -35,7 +35,7 @@
 /*
   imports
 */
-import { ref, onMounted, onBeforeMount, onUpdated } from "vue";
+import { ref } from "vue";
 import { RouterLink } from "vue-router";
 import SimpleTag from "../course/util/simpleTag.vue";
 import { NSpace, NSpin } from "naive-ui";
@@ -50,21 +50,14 @@ const props = defineProps({
 });
 // console.log(props.cardAmount);
 
+/*
+  Load data
+*/
 // Load CourseImg
 const loadImgFactor = ref(false);
 const loadImg = () => {
   loadImgFactor.value = true;
 };
-
-/*
-  Life Cycle Hooks
-*/
-// onUpdated(() => {
-//   renderTiming.value = true;
-// });
-// onMounted(() => {
-//   renderTiming.value = true;
-// });
 </script>
 
 <style scoped>

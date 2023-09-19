@@ -69,7 +69,16 @@
               <tbody v-for="(item, index) in pageClasses">
                 <tr>
                   <th scope="row">{{ index + 1 }}</th>
-                  <td><img src=https://picsum.photos/id/17/200 alt="..." /></td>
+                  <td>
+                    <!-- <img src=https://picsum.photos/id/17/200 alt="..." /> -->
+                    <img
+                      v-show="loadImgFactor"
+                      :src="`${URL}/course/getImg?cid=${item.courseId}`"
+                      class="cart-img-left mt-3"
+                      alt="not Found"
+                      @load="loadImg"
+                    />
+                  </td>
                   <td>{{ item.courseName }}</td>
                   <td>{{ item.employeename }}</td>
                   <td>{{ item.classDate }}&nbsp;{{ item.classTime }}</td>
@@ -231,6 +240,12 @@ const loadPageClasses = async () => {
   // console.log(pageClasses);
 };
 
+// Load CourseImg
+const loadImgFactor = ref(false);
+const loadImg = () => {
+  loadImgFactor.value = true;
+};
+
 /*
   computed total price
 */
@@ -290,7 +305,7 @@ const addToWishlist = (classId) => {
       console.log(courseWishlistStore.value);
 
       // Use Naive UI Dialog
-      handleSuccess("課程已成功加入願望清單");
+      handleMessage("課程已成功加入願望清單");
     } else {
       handleMessage("課程已存在您的願望清單");
     }
@@ -360,5 +375,9 @@ onUpdated(() => {
   --bs-btn-hover-bg: #e83015;
   --bs-btn-hover-border-color: #c34e2e;
   --bs-btn-active-bg: #c34e2e;
+}
+.cart-img-left {
+  width: 50%;
+  height: 50%;
 }
 </style>

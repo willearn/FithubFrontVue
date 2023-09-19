@@ -14,7 +14,16 @@
     <tbody v-for="(item, index) in pageWishlistClasses">
       <tr>
         <th scope="row">{{ index + 1 }}</th>
-        <td><img src=https://picsum.photos/id/17/200 alt="..." /></td>
+        <td>
+          <!-- <img src=https://picsum.photos/id/17/200 alt="..." /> -->
+          <img
+            v-show="loadImgFactor"
+            :src="`${URL}/course/getImg?cid=${item.courseId}`"
+            class="cart-img-left mt-3"
+            alt="not Found"
+            @load="loadImg"
+          />
+        </td>
         <td>{{ item.courseName }}</td>
         <td>{{ item.employeename }}</td>
         <td>{{ item.classDate }}&nbsp;{{ item.classTime }}</td>
@@ -90,6 +99,12 @@ const loadPageWishlistClasses = async () => {
     // console.log(pageClasses);
     updateWishlistDBtoStore(pageWishlistClasses);
   }
+};
+
+// Load CourseImg
+const loadImgFactor = ref(false);
+const loadImg = () => {
+  loadImgFactor.value = true;
 };
 
 /*
@@ -180,4 +195,9 @@ onMounted(() => {
 });
 </script>
 
-<style></style>
+<style scoped>
+.cart-img-left {
+  width: 50%;
+  height: 50%;
+}
+</style>
