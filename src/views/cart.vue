@@ -346,15 +346,10 @@ const toCheckoutOrNot = async () => {
     return;
   }
 
+  // soldout verification
   let i = 0;
   for (let classId of courseCartStore.value) {
-    console.log(classId);
     const res = await getAlreadyBuy(classId);
-    console.log(res);
-    console.log(res.data);
-    //
-    console.log(res.data["applicantsCeil"] - res.data["orderAmount"]);
-    //
     if (res.data["applicantsCeil"] - res.data["orderAmount"] <= 0) {
       handleWarning(`很抱歉，${res.data["courseName"]}課程已經售完囉!`);
       deleteCartItem(res.data["classId"]);

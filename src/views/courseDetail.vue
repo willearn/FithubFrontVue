@@ -350,9 +350,26 @@ const onClickedClass = async (classId) => {
   displayClasses.alreadyBuyAmount = resAlreadyBuy.data["orderAmount"];
 };
 
-const saveCourseCartToLocalStorage = (forwardOrStay) => {
-  // console.log("saveCartToLocalStorage");
-  // console.log(courseCartStore.value);
+const saveCourseCartToLocalStorage = async (forwardOrStay) => {
+  // soldout verification start
+  if (displayClasses.applicantsCeil - displayClasses.alreadyBuyAmount <= 0) {
+    handleWarning("很抱歉，課程已經售完囉!");
+    return;
+  } else {
+    const res = await getAlreadyBuy(displayClasses.classId);
+    let i = 0;
+    for (let classId of courseCartStore.value) {
+      const res = await getAlreadyBuy(classId);
+      if (res.data["applicantsCeil"] - res.data["orderAmount"] <= 0) {
+        handleWarning(`很抱歉，課程已經售完囉!`);
+        deleteCartItem(res.data["classId"]);
+        return;
+      }
+      i++;
+    }
+  }
+  // soldout verification end
+
   if (
     // check classId have value and not repeat in LocalStorage
     displayClasses.classId != 0 &&
@@ -428,6 +445,13 @@ const messageNaive = useMessage();
 const handleSuccess = (contentText) => {
   dialog.success({
     title: "Success",
+    content: contentText,
+    positiveText: "確定",
+  });
+};
+const handleWarning = (contentText) => {
+  dialog.warning({
+    title: "可惜了",
     content: contentText,
     positiveText: "確定",
   });
