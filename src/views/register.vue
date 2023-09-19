@@ -62,7 +62,7 @@ const register = async () => {
     return;
   }
 
-  if (!verifystatus) {
+  if (!verifystatus.value) {
     Swal.fire({
       title: '請驗證信箱',
       icon: 'warning',
@@ -202,6 +202,19 @@ router.beforeResolve(async (to) => {
   console.log("test")
 });
 
+const inputTestData = () => {
+  registerData.memberemail = "tw3555488@gmail.com"
+  registerData.memberpassword = "P@ssw0rd"
+  registerData.memberphoneno = "0912345678"
+  registerData.membername = "陳慶君"
+  registerData.membergender = "男"
+  registerData.membercity = "高雄市"
+  registerData.memberzone = "旗山區"
+  registerData.memberaddress = "鳳楠路108巷17號"
+  registerData.memberbirthday = "2000-02-02"
+
+  checkpassword.againpassword = "P@ssw0rd"
+}
 
 
 </script>
@@ -220,23 +233,11 @@ router.beforeResolve(async (to) => {
                   <hr>
                   <!-- 信箱 -->
                   <div>
+                    <div>
+                      <input type="button" value="測試資料" class="btn btn-secondary ms-1" @click="inputTestData"/>
+                    </div>
                     <label class="form-label mb-1">信箱</label><span v-if="!registerData.memberemail"
                       class="text-danger">*</span>
-                    <!-- <input class="form-control" list="datalistOptions" id="exampleDataList"
-                      placeholder="Type to search..." v-model="registerData.memberemail">
-                    <datalist id="datalistOptions">
-                      <option :value="`${registerData.memberemail}@gmail.com`">
-                      </option>
-                      <option :value="`${registerData.memberemail}@gmail.com`">
-                      </option>
-                      <option :value="`${registerData.memberemail}@gmail.com`">
-                      </option>
-                      <option :value="`${registerData.memberemail}@gmail.com`">
-                      </option>
-                      <option :value="`${registerData.memberemail}@gmail.com`">
-                      </option>
-                    </datalist> -->
-
                     <input type="email" class="form-control form-control-lg" v-model="registerData.memberemail"
                       placeholder="abc123456@example.com" />
                     <div class="my-1">
@@ -325,6 +326,7 @@ router.beforeResolve(async (to) => {
             </div>
           </div>
         </div>
+      </div>
     </div>
-  </div>
-</section></template>
+  </section>
+</template>
