@@ -33,7 +33,7 @@
                   <td>{{ item.courseName }}</td>
                   <td>{{ item.employeename }}</td>
                   <td>{{ item.classDate }}&nbsp;{{ item.classTime }}</td>
-                  <td>$NT &nbsp;{{ item.price }}</td>
+                  <td>NT$ &nbsp;{{ item.price.toLocaleString() }}</td>
                   <!-- <td>折扣金額(待補)</td> -->
                 </tr>
               </tbody>
@@ -84,7 +84,9 @@
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">總價:</h4>
-              <p class="card-text">$NT&nbsp;{{ totalPrice - dis }}</p>
+              <p class="card-text">
+                NT$&nbsp;{{ (totalPrice - dis).toLocaleString() }}
+              </p>
               <div class="d-grid gap-3 col-12 mx-auto">
                 <!-- <button @click="postDataToApi" class="btn btn-primary">
                   結帳

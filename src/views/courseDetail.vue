@@ -42,7 +42,11 @@
               </div>
 
               <div class="my-3">
-                <div>價格:&nbsp;NT$&nbsp;{{ displayClasses.price }}</div>
+                <div>
+                  價格:&nbsp;NT$&nbsp;{{
+                    displayClasses.price.toLocaleString()
+                  }}
+                </div>
               </div>
 
               <div class="ml-2 my-3">
@@ -53,7 +57,16 @@
               </div>
 
               <div class="ml-2 my-3">
-                <div v-if="displayClasses.alreadyBuyAmount != undefined">
+                <div
+                  v-if="
+                    displayClasses.alreadyBuyAmount != undefined &&
+                    displayClasses.applicantsCeil <
+                      displayClasses.alreadyBuyAmount
+                  "
+                >
+                  剩餘名額:&nbsp;0
+                </div>
+                <div v-else-if="displayClasses.alreadyBuyAmount != undefined">
                   剩餘名額:&nbsp;{{
                     displayClasses.applicantsCeil -
                     displayClasses.alreadyBuyAmount
