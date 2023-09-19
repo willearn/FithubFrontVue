@@ -23,16 +23,22 @@
                   <th scope="col">課程教練</th>
                   <th scope="col">課程時間</th>
                   <th scope="col">單價</th>
-                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody v-for="(item, index) in pageClasses">
                 <tr>
-                  <th scope="row">{{ index + 1 }}</th>
+                  <td scope="row">{{ index + 1 }}</td>
                   <td>
-                    <img
+                    <!-- <img
                       :src="`https://picsum.photos/300?random=${index + 15}`"
                       style="width: 200px"
+                    /> -->
+                    <img
+                      v-show="loadImgFactor"
+                      :src="`${URL}/course/getImg?cid=${item.courseId}`"
+                      class="cart-img-left mt-3"
+                      alt="not Found"
+                      @load="loadImg"
                     />
                   </td>
                   <td>{{ item.courseName }}</td>
@@ -156,6 +162,12 @@ const loadPageClasses = async () => {
 
   pageClasses.value = response.data;
   // console.log(pageClasses);
+};
+
+// Load CourseImg
+const loadImgFactor = ref(false);
+const loadImg = () => {
+  loadImgFactor.value = true;
 };
 
 /*
@@ -343,5 +355,9 @@ onMounted(() => {
   --bs-btn-hover-bg: #e83015;
   --bs-btn-hover-border-color: #c34e2e;
   --bs-btn-active-bg: #c34e2e;
+}
+.cart-img-left {
+  width: 50%;
+  height: 50%;
 }
 </style>
