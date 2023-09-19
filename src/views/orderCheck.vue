@@ -137,6 +137,7 @@ const { courseCartStore } = storeToRefs(cartStore);
 */
 // 根據你的資料結構組合需要的資料
 const courseCart = courseCartStore.value; // 獲取courseCart數組
+const couponId = localStorage.getItem("cid");
 
 const dataToSend = {
   orderDate: "",
@@ -145,7 +146,7 @@ const dataToSend = {
   orderTotalAmount: "", // for (課程-折扣)
   orderPaymentMethod: "Credit Card", // 先寫死
   orderstate: 1, // 寫死
-  orderItem: courseCart.map((classId) => ({ classId, couponId: 1 })), // 使用map轉換courseCart數組
+  orderItem: courseCart.map((classId) => ({ classId, couponId })), // 使用map轉換courseCart數組
 };
 
 const memberId = localStorage.getItem("memberid");
@@ -233,12 +234,15 @@ const sendDataToBackend = async () => {
     // 先将 couponUsed 值加一
     couponUsed.value += 1;
     console.log("使用量 " + couponUsed.value);
-
-    const response = await axios.put(`${URL}/coupons/update/1`, null, {
-      params: {
-        couponused: couponUsed.value.toString(), // 将值作为请求参数发送
-      },
-    });
+    const response = await axios.put(
+      `${URL}/coupons/update/${couponId}`,
+      null,
+      {
+        params: {
+          couponused: couponUsed.value.toString(), // 将值作为请求参数发送
+        },
+      }
+    );
 
     // 处理后端响应
     console.log("后端响应：", response.data);
