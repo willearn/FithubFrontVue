@@ -38,7 +38,7 @@
                   <td>{{ item.courseName }}</td>
                   <td>{{ item.employeename }}</td>
                   <td>{{ item.classDate }}&nbsp;{{ item.classTime }}</td>
-                  <td>$NT &nbsp;{{ item.price }}</td>
+                  <td>NT$ &nbsp;{{ item.price.toLocaleString() }}</td>
                 </tr>
               </tbody>
             </table>
@@ -65,11 +65,13 @@
             <div class="card-body">
               <h4 class="card-title">總價:</h4>
               <p class="card-text">
-                NT$&nbsp;{{ totalPrice - couponDiscount }}
+                NT$&nbsp;{{ (totalPrice - couponDiscount).toLocaleString() }}
               </p>
               <div v-if="error">{{ error }}</div>
               <!-- 顯示折扣金額 -->
-              <div v-else-if="couponDiscount">折扣$ {{ couponDiscount }}</div>
+              <div v-else-if="couponDiscount">
+                折扣 NT$ {{ couponDiscount }}
+              </div>
               <div class="d-grid gap-3 col-12 mx-auto">
                 <router-link class="btn btn-primary" to="/ordercheck"
                   >結帳</router-link

@@ -18,7 +18,7 @@
         <td>{{ item.courseName }}</td>
         <td>{{ item.employeename }}</td>
         <td>{{ item.classDate }}&nbsp;{{ item.classTime }}</td>
-        <td>$NT &nbsp;{{ item.price }}</td>
+        <td>NT$ &nbsp;{{ item.price.toLocaleString() }}</td>
         <td>
           <div
             type="button"

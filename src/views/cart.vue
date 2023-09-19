@@ -1,6 +1,6 @@
 <template>
   <!-- 購物車 -->
-  <section class="page-section" style="padding-top: 5%;padding-bottom: 5%;">
+  <section class="page-section" style="padding-top: 5%; padding-bottom: 5%">
     <div class="container">
       <div class="row justify-content-center mb-5">
         <div class="col-12 col-md-6 col-lg-6">
@@ -12,26 +12,38 @@
           <div class="p-2 bg-light border">
             <ul class="nav nav-tabs">
               <li class="nav-item">
-                <button class="nav-link" :class="{
-                  active: pageState.isActiveOrDisableCart,
-                  disabled: pageState.isActiveOrDisableCart,
-                }" @click="changePage('cart')">
+                <button
+                  class="nav-link"
+                  :class="{
+                    active: pageState.isActiveOrDisableCart,
+                    disabled: pageState.isActiveOrDisableCart,
+                  }"
+                  @click="changePage('cart')"
+                >
                   購物車
                 </button>
               </li>
               <li class="nav-item">
-                <button class="nav-link" :class="{
-                  active: pageState.isActiveOrDisableWishlist,
-                  disabled: pageState.isActiveOrDisableWishlist,
-                }" @click="changePage('wishlist')">
+                <button
+                  class="nav-link"
+                  :class="{
+                    active: pageState.isActiveOrDisableWishlist,
+                    disabled: pageState.isActiveOrDisableWishlist,
+                  }"
+                  @click="changePage('wishlist')"
+                >
                   我的願望清單
                 </button>
               </li>
               <li class="nav-item">
-                <button class="nav-link" :class="{
-                  active: pageState.isActiveOrDisableCoupon,
-                  disabled: pageState.isActiveOrDisableCoupon,
-                }" @click="changePage('coupon')">
+                <button
+                  class="nav-link"
+                  :class="{
+                    active: pageState.isActiveOrDisableCoupon,
+                    disabled: pageState.isActiveOrDisableCoupon,
+                  }"
+                  @click="changePage('coupon')"
+                >
                   折價券
                 </button>
               </li>
@@ -39,7 +51,10 @@
           </div>
 
           <div class="p-2 bg-light border">
-            <table v-if="cartOrWishListOrCoupon == 'cart'" class="table align-middle text-center">
+            <table
+              v-if="cartOrWishListOrCoupon == 'cart'"
+              class="table align-middle text-center"
+            >
               <thead class="table-light">
                 <tr>
                   <th scope="col">#</th>
@@ -58,40 +73,69 @@
                   <td>{{ item.courseName }}</td>
                   <td>{{ item.employeename }}</td>
                   <td>{{ item.classDate }}&nbsp;{{ item.classTime }}</td>
-                  <td>$NT &nbsp;{{ item.price }}</td>
+                  <td>NT$ &nbsp;{{ item.price.toLocaleString() }}</td>
                   <td>
-                    <div type="button" class="bi bi-heart-fill" @click="addToWishlist(item.classId)"></div>
-                    <div type="button" class="bi bi-trash-fill" @click="deleteCartItem(item.classId)"></div>
+                    <div
+                      type="button"
+                      class="bi bi-heart-fill"
+                      @click="addToWishlist(item.classId)"
+                    ></div>
+                    <div
+                      type="button"
+                      class="bi bi-trash-fill"
+                      @click="deleteCartItem(item.classId)"
+                    ></div>
                   </td>
                 </tr>
               </tbody>
             </table>
             <!-- wishlist -->
-            <courseWishlist v-else-if="cartOrWishListOrCoupon == 'wishlist'"></courseWishlist>
+            <courseWishlist
+              v-else-if="cartOrWishListOrCoupon == 'wishlist'"
+            ></courseWishlist>
           </div>
           <!-- Coupon page start -->
           <div class="p-2 bg-light border">
-            <div class="rol-12 rol-md-9 row-lg-8" v-if="cartOrWishListOrCoupon == 'coupon'">
+            <div
+              class="rol-12 rol-md-9 row-lg-8"
+              v-if="cartOrWishListOrCoupon == 'coupon'"
+            >
               <memberCoupon></memberCoupon>
             </div>
           </div>
           <!-- Coupon page End -->
         </div>
         <!-- 結帳 card start -->
-        <div v-if="cartOrWishListOrCoupon == 'cart'" class="col-12 col-md-3 col-lg-2">
+        <div
+          v-if="cartOrWishListOrCoupon == 'cart'"
+          class="col-12 col-md-3 col-lg-2"
+        >
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">總價:</h4>
-              <p class="card-text">NT$&nbsp;{{ totalPrice }}</p>
+              <p class="card-text">
+                NT$&nbsp;{{ totalPrice.toLocaleString() }}
+              </p>
               <div class="d-grid gap-3 col-12 mx-auto">
-                <button class="btn btn-primary" :class="{
-                  disabled: isCheckoutButtonActive,
-                }" @click="toCheckoutOrNot">
+                <button
+                  class="btn btn-primary"
+                  :class="{
+                    disabled: isCheckoutButtonActive,
+                  }"
+                  @click="toCheckoutOrNot"
+                >
                   結帳
                 </button>
               </div>
             </div>
           </div>
+          <!-- back -->
+          <div class="row justify-content-center">
+            <router-link class="col-8 my-4 text-center" to="/course/0">
+              <button class="btn btn-primary">繼續購課</button>
+            </router-link>
+          </div>
+          <!-- back -->
         </div>
         <!-- 結帳 card end -->
       </div>
