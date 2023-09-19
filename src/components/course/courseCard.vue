@@ -1,15 +1,23 @@
 <template>
   <div class="card">
-    <img
+    <!-- <img
       :src="`https://picsum.photos/300/200?random=${cardAmount}`"
       class="card-img-top mt-3"
       alt="..."
+    /> -->
+    <img
+      v-show="loadImgFactor"
+      :src="`${URL}/course/getImg?cid=${course.courseId}`"
+      class="card-img-top mt-3"
+      alt="not Found"
+      @load="loadImg"
     />
+    <n-space v-if="!loadImgFactor" justify="center" Align="center">
+      <n-spin size="large" stroke="#ffc408" />
+    </n-space>
     <div class="card-body">
-      <h5 class="card-text">課程名稱: {{ course.courseName }}</h5>
-      <div class="card-text mb-1">
-        課程分類:{{ course.courseCategories.categoryName }}
-      </div>
+      <h5 class="card-text">{{ course.courseName }}</h5>
+      <SimpleTag :tagText="course.courseCategories.categoryName"></SimpleTag>
       <div class="card-text mb-1">NT$ 100 起</div>
       <div class="d-flex justify-content-end">
         <RouterLink
@@ -27,7 +35,10 @@
 /*
   imports
 */
+import { ref } from "vue";
 import { RouterLink } from "vue-router";
+import SimpleTag from "../course/util/simpleTag.vue";
+import { NSpace, NSpin } from "naive-ui";
 
 /*
   props
@@ -35,8 +46,18 @@ import { RouterLink } from "vue-router";
 const props = defineProps({
   cardAmount: Number,
   course: Object,
+  URL: String,
 });
 // console.log(props.cardAmount);
+
+/*
+  Load data
+*/
+// Load CourseImg
+const loadImgFactor = ref(false);
+const loadImg = () => {
+  loadImgFactor.value = true;
+};
 </script>
 
 <style scoped>
@@ -77,5 +98,10 @@ const props = defineProps({
   background-clip: border-box;
   border: var(--bs-card-border-width) solid var(--bs-card-border-color);
   border-radius: var(--bs-card-border-radius);
+}
+
+.card-img-top {
+  width: 100%;
+  height: 100%;
 }
 </style>

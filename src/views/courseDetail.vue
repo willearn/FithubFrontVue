@@ -8,8 +8,16 @@
         <div class="card col-12 col-md-11 col-lg-10 h-100 mb-4">
           <div class="row justify-content-center align-items-center">
             <div class="col-5 mx-3">
-              <img src="https://picsum.photos/300/200?random=10" class="card-img-top mt-3" alt="..." tabindex="0"
-                v-focus />
+              <img
+                v-show="loadImgFactor"
+                :src="`${URL}/course/getImg?cid=${route.params['courseid']}`"
+                class="card-img mt-3"
+                alt="not Found"
+                @load="loadImg"
+              />
+              <n-space v-if="!loadImgFactor" justify="center" Align="center">
+                <n-spin size="large" stroke="#ffc408" />
+              </n-space>
             </div>
             <div class="col-6 mx-3">
               <div class="my-3">
@@ -18,25 +26,27 @@
                     <div>課程時間:</div>
                   </div>
                   <div>
-                    <span>{{ displayClasses.classDate }}</span>&nbsp;&nbsp;
+                    <span>{{ displayClasses.classDate }}</span
+                    >&nbsp;&nbsp;
                     <span>{{ displayClasses.classTime }}</span>
                   </div>
                 </div>
               </div>
 
               <div class="my-3">
-                <div>授課教練:</div>
-                <div>{{ displayClasses.employeename }}</div>
+                <div>授課教練:&nbsp;{{ displayClasses.employeename }}</div>
               </div>
 
               <div class="my-3">
-                <div>地點:</div>
-                <div>{{ displayClasses.classroomName }}</div>
+                <div>地點:&nbsp;{{ displayClasses.classroomName }}</div>
               </div>
 
               <div class="my-3">
-                <div>價格:</div>
-                <div>NT$&nbsp;{{ displayClasses.price }}</div>
+                <div>
+                  價格:&nbsp;NT$&nbsp;{{
+                    displayClasses.price.toLocaleString()
+                  }}
+                </div>
               </div>
 
               <div class="ml-2 my-3">
@@ -46,20 +56,53 @@
                 </p>
               </div>
 
+              <div class="ml-2 my-3">
+                <div
+                  v-if="
+                    displayClasses.alreadyBuyAmount != undefined &&
+                    displayClasses.applicantsCeil <
+                      displayClasses.alreadyBuyAmount
+                  "
+                >
+                  剩餘名額:&nbsp;0
+                </div>
+                <div v-else-if="displayClasses.alreadyBuyAmount != undefined">
+                  剩餘名額:&nbsp;{{
+                    displayClasses.applicantsCeil -
+                    displayClasses.alreadyBuyAmount
+                  }}
+                </div>
+                <div v-else>
+                  剩餘名額:&nbsp;{{ displayClasses.applicantsCeil }}
+                </div>
+              </div>
+
               <div class="row justify-content-end my-4">
                 <div class="col-12 col-md-6 col-lg-4">
-                  <button class="btn btn btn-primary mx-2" @click="addToWishlist(displayClasses.classId)">
-                    <i type="button" class="bi bi-heart-fill"></i>&nbsp;&nbsp;加入願望清單
+                  <button
+                    class="btn btn btn-primary mx-2"
+                    @click="addToWishlist(displayClasses.classId)"
+                  >
+                    <i type="button" class="bi bi-heart-fill"></i
+                    >&nbsp;&nbsp;加入願望清單
                   </button>
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
-                  <button class="btn btn btn-primary mx-2" @click="saveCourseCartToLocalStorage('stay')">
-                    <i type="button" class="bi bi-cart4"></i>&nbsp;&nbsp;加入購物車
+                  <button
+                    class="btn btn btn-primary mx-2"
+                    @click="saveCourseCartToLocalStorage('stay')"
+                  >
+                    <i type="button" class="bi bi-cart4"></i
+                    >&nbsp;&nbsp;加入購物車
                   </button>
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
-                  <button class="btn btn btn-primary mx-2" @click="saveCourseCartToLocalStorage('forward')">
-                    <i type="button" class="bi bi-cart3"></i>&nbsp;&nbsp;直接購買
+                  <button
+                    class="btn btn btn-primary mx-2"
+                    @click="saveCourseCartToLocalStorage('forward')"
+                  >
+                    <i type="button" class="bi bi-cart3"></i
+                    >&nbsp;&nbsp;直接購買
                   </button>
                 </div>
               </div>
@@ -72,8 +115,11 @@
 
       <div class="row justify-content-center">
         <div class="col-12 col-md-10 col-lg-10">
-          <FullCalendar :courseName="pageCourse.courseName" :calendarEvents="calendarEvents"
-            @click-calendar-class-emit="onClickedClass"></FullCalendar>
+          <FullCalendar
+            :courseName="pageCourse.courseName"
+            :calendarEvents="calendarEvents"
+            @click-calendar-class-emit="onClickedClass"
+          ></FullCalendar>
         </div>
       </div>
 
@@ -82,9 +128,16 @@
       <div class="row justify-content-center">
         <div class="col-12 col-md-10 col-lg-10">
           <h2 class="text-center">推薦課程</h2>
-          <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center">
-            <courseCard v-for="(course, index) in recommendedCourses" class="col-3 mx-2 my-3" :cardAmount="index"
-              :course="course">
+          <div
+            class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center"
+          >
+            <courseCard
+              v-for="(course, index) in recommendedCourses"
+              class="col-3 mx-2 my-3"
+              :cardAmount="index"
+              :course="course"
+              :URL="URL"
+            >
             </courseCard>
           </div>
         </div>
@@ -100,10 +153,10 @@
   imports
 */
 
-import { ref, reactive, onMounted, onBeforeUnmount, watch } from "vue";
+import { ref, reactive, onMounted, watch } from "vue";
 import { RouterLink, useRoute, useRouter } from "vue-router";
 import axios from "axios";
-import { useDialog, useMessage } from "naive-ui";
+import { useDialog, useMessage, NSpace, NSpin } from "naive-ui";
 import courseCard from "../components/course/courseCard.vue";
 import FullCalendar from "../components/course/courseCalendar.vue";
 import CartIcon from "../components/course/util/icon-cart.vue";
@@ -154,6 +207,8 @@ const displayClasses = reactive({
   employeename: "",
   classroomName: "",
   price: "",
+  applicantsCeil: "",
+  alreadyBuyAmount: "",
 });
 
 /*
@@ -195,6 +250,8 @@ const loadPageClasses = async () => {
   pageClasses.value = response.data;
   // console.log(pageClasses);
 
+  const resAlreadyBuy = await getAlreadyBuy(pageClasses.value[0]["classId"]);
+
   // imitial diaplay data
   if (pageClasses.value.length != 0) {
     displayClasses.classId = pageClasses.value[0]["classId"];
@@ -203,6 +260,8 @@ const loadPageClasses = async () => {
     displayClasses.employeename = pageClasses.value[0]["employeename"];
     displayClasses.classroomName = pageClasses.value[0]["classroomName"];
     displayClasses.price = pageClasses.value[0]["price"];
+    displayClasses.applicantsCeil = pageClasses.value[0]["applicantsCeil"];
+    displayClasses.alreadyBuyAmount = resAlreadyBuy.data["orderAmount"];
   }
 
   // put all classes data in calendar
@@ -239,13 +298,26 @@ const loadPageWishlistClasses = async () => {
   }
 };
 
+// Load alreadyBuyAmount
+const URLAPIALREADYBUY = `${URL}/order-items/getOrderItemAmountByClassId`;
+const getAlreadyBuy = (classId) =>
+  axios
+    .get(URLAPIALREADYBUY, {
+      params: {
+        classId: classId,
+      },
+    })
+    .catch((error) => {
+      console.log(error.toJSON());
+    });
+
 // Load recommended courses data
 const recommendedCourses = ref([]);
 const loadRecommendedCourses = async () => {
   const URLAPI = `${URL}/course/page`;
   const response = await axios.get(URLAPI, {
     params: {
-      p: 1,
+      p: Math.floor(Math.random() * 5) + 1, // 隨機產生1~5正整數
       size: 3,
     },
   });
@@ -258,24 +330,46 @@ const loadRecommendedCourses = async () => {
   Event obj. method
 */
 
-const onClickedClass = (classId) => {
+const onClickedClass = async (classId) => {
   // console.log("get emit: " + classId);
 
   // update diaplay data
   let clickedCLass = pageClasses.value.find((item) => {
     return item.classId == classId;
   });
+
+  const resAlreadyBuy = await getAlreadyBuy(classId);
+
   displayClasses.classId = clickedCLass["classId"];
   displayClasses.classDate = clickedCLass["classDate"];
   displayClasses.classTime = clickedCLass["classTime"];
   displayClasses.employeename = clickedCLass["employeename"];
   displayClasses.classroomName = clickedCLass["classroomName"];
   displayClasses.price = clickedCLass["price"];
+  displayClasses.applicantsCeil = clickedCLass["applicantsCeil"];
+  displayClasses.alreadyBuyAmount = resAlreadyBuy.data["orderAmount"];
 };
 
-const saveCourseCartToLocalStorage = (forwardOrStay) => {
-  console.log("saveCartToLocalStorage");
-  console.log(courseCartStore.value);
+const saveCourseCartToLocalStorage = async (forwardOrStay) => {
+  // soldout verification start
+  if (displayClasses.applicantsCeil - displayClasses.alreadyBuyAmount <= 0) {
+    handleWarning("很抱歉，課程已經售完囉!");
+    return;
+  } else {
+    const res = await getAlreadyBuy(displayClasses.classId);
+    let i = 0;
+    for (let classId of courseCartStore.value) {
+      const res = await getAlreadyBuy(classId);
+      if (res.data["applicantsCeil"] - res.data["orderAmount"] <= 0) {
+        handleWarning(`很抱歉，課程已經售完囉!`);
+        deleteCartItem(res.data["classId"]);
+        return;
+      }
+      i++;
+    }
+  }
+  // soldout verification end
+
   if (
     // check classId have value and not repeat in LocalStorage
     displayClasses.classId != 0 &&
@@ -290,6 +384,13 @@ const saveCourseCartToLocalStorage = (forwardOrStay) => {
   } else {
     console.log("stay");
   }
+};
+
+// Load CourseImg
+const loadImgFactor = ref(false);
+const loadImg = () => {
+  loadImgFactor.value = true;
+  console.log("afterloaded");
 };
 
 /*
@@ -348,6 +449,13 @@ const handleSuccess = (contentText) => {
     positiveText: "確定",
   });
 };
+const handleWarning = (contentText) => {
+  dialog.warning({
+    title: "可惜了",
+    content: contentText,
+    positiveText: "確定",
+  });
+};
 const handleMessage = (messageText) => {
   messageNaive.info(messageText, {
     closable: true,
@@ -381,5 +489,12 @@ p {
   text-align: justify;
   /* padding: 1em; */
   text-indent: 2em;
+}
+
+.card-img,
+.card-img-top,
+.card-img-bottom {
+  width: 100%;
+  height: 100%;
 }
 </style>

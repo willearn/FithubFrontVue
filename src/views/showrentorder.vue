@@ -38,7 +38,7 @@ const loadDatas = async () => {
     // const response = await axios.get(`${url}/rent/list/bymemberid/${window.localStorage.getItem("memberid")}`)
     const response = await axios.post(`${url}/rent/list/findPageByDate`, datas)
 
-    console.log(response.data)
+    // console.log(response.data)
 
     rentOrders.value = response.data.list
 
@@ -132,7 +132,7 @@ const inputHandler = value => {
                                     {{ rent.rentstatus }}
                                 </template>
                             </td>
-                            <td>{{ rent.rentamount }}</td>
+                            <td>{{ rent.rentamount.toLocaleString() }}</td>
                         </tr>
                     </tbody>
                 </table>

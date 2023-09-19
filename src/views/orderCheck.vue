@@ -1,7 +1,7 @@
 <template>
   <!-- 結帳頁面 -->
   <section class="page-section">
-    <div class="container" style="padding-top: 10%;padding-bottom:10%">
+    <div class="container" style="padding-top: 10%; padding-bottom: 10%">
       <h1 class="text-center mb-5">訂單確認</h1>
       <!-- Progress Bar -->
       <div class="row justify-content-center mb-5">
@@ -33,7 +33,7 @@
                   <td>{{ item.courseName }}</td>
                   <td>{{ item.employeename }}</td>
                   <td>{{ item.classDate }}&nbsp;{{ item.classTime }}</td>
-                  <td>$NT &nbsp;{{ item.price }}</td>
+                  <td>NT$ &nbsp;{{ item.price.toLocaleString() }}</td>
                   <!-- <td>折扣金額(待補)</td> -->
                 </tr>
               </tbody>
@@ -68,34 +68,48 @@
                   <small class="text-muted">付款方式</small>
                 </blockquote>
 
-                <img src="../assets/index/other/ECPay.png" style="width: 200px; height: auto" />
+                <img
+                  src="../assets/index/other/ECPay.png"
+                  style="width: 200px; height: auto"
+                />
               </div>
 
               <!-- 付款方式 end -->
             </div>
           </div>
           <!-- 訂購人資訊 end -->
-
         </div>
         <!-- 結帳 -->
         <div class="col-12 col-md-3 col-lg-2">
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">總價:</h4>
-              <p class="card-text">$NT&nbsp;{{ totalPrice - dis }}</p>
+              <p class="card-text">
+                NT$&nbsp;{{ (totalPrice - dis).toLocaleString() }}
+              </p>
               <div class="d-grid gap-3 col-12 mx-auto">
                 <!-- <button @click="postDataToApi" class="btn btn-primary">
                   結帳
                 </button> -->
-                <button @click="
-                  sendDataToBackend();
-                postDataToApi();
-                " class="btn btn-primary">
+                <button
+                  @click="
+                    sendDataToBackend();
+                    postDataToApi();
+                  "
+                  class="btn btn-primary"
+                >
                   結帳
                 </button>
               </div>
             </div>
           </div>
+          <!-- back -->
+          <div class="row justify-content-center">
+            <router-link class="col-8 my-4 text-center" to="/checkout">
+              <button class="btn btn-primary">回上頁</button>
+            </router-link>
+          </div>
+          <!-- back -->
         </div>
       </div>
     </div>
@@ -125,6 +139,7 @@ const { courseCartStore } = storeToRefs(cartStore);
 */
 // 根據你的資料結構組合需要的資料
 const courseCart = courseCartStore.value; // 獲取courseCart數組
+const couponId = localStorage.getItem("cid");
 
 const dataToSend = {
   orderDate: "",
@@ -133,7 +148,7 @@ const dataToSend = {
   orderTotalAmount: "", // for (課程-折扣)
   orderPaymentMethod: "Credit Card", // 先寫死
   orderstate: 1, // 寫死
-  orderItem: courseCart.map((classId) => ({ classId, couponId: 1 })), // 使用map轉換courseCart數組
+  orderItem: courseCart.map((classId) => ({ classId, couponId })), // 使用map轉換courseCart數組
 };
 
 const memberId = localStorage.getItem("memberid");
@@ -221,12 +236,15 @@ const sendDataToBackend = async () => {
     // 先将 couponUsed 值加一
     couponUsed.value += 1;
     console.log("使用量 " + couponUsed.value);
-
-    const response = await axios.put(`${URL}/coupons/update/1`, null, {
-      params: {
-        couponused: couponUsed.value.toString(), // 将值作为请求参数发送
-      },
-    });
+    const response = await axios.put(
+      `${URL}/coupons/update/${couponId}`,
+      null,
+      {
+        params: {
+          couponused: couponUsed.value.toString(), // 将值作为请求参数发送
+        },
+      }
+    );
 
     // 处理后端响应
     console.log("后端响应：", response.data);

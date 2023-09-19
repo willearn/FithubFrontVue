@@ -1,6 +1,6 @@
 <template>
   <!-- 購物車 -->
-  <section class="page-section" style="padding-top: 5%;padding-bottom: 5%;">
+  <section class="page-section" style="padding-top: 5%; padding-bottom: 5%">
     <div class="container">
       <div class="row justify-content-center mb-5">
         <div class="col-12 col-md-6 col-lg-6">
@@ -12,26 +12,38 @@
           <div class="p-2 bg-light border">
             <ul class="nav nav-tabs">
               <li class="nav-item">
-                <button class="nav-link" :class="{
-                  active: pageState.isActiveOrDisableCart,
-                  disabled: pageState.isActiveOrDisableCart,
-                }" @click="changePage('cart')">
+                <button
+                  class="nav-link"
+                  :class="{
+                    active: pageState.isActiveOrDisableCart,
+                    disabled: pageState.isActiveOrDisableCart,
+                  }"
+                  @click="changePage('cart')"
+                >
                   購物車
                 </button>
               </li>
               <li class="nav-item">
-                <button class="nav-link" :class="{
-                  active: pageState.isActiveOrDisableWishlist,
-                  disabled: pageState.isActiveOrDisableWishlist,
-                }" @click="changePage('wishlist')">
+                <button
+                  class="nav-link"
+                  :class="{
+                    active: pageState.isActiveOrDisableWishlist,
+                    disabled: pageState.isActiveOrDisableWishlist,
+                  }"
+                  @click="changePage('wishlist')"
+                >
                   我的願望清單
                 </button>
               </li>
               <li class="nav-item">
-                <button class="nav-link" :class="{
-                  active: pageState.isActiveOrDisableCoupon,
-                  disabled: pageState.isActiveOrDisableCoupon,
-                }" @click="changePage('coupon')">
+                <button
+                  class="nav-link"
+                  :class="{
+                    active: pageState.isActiveOrDisableCoupon,
+                    disabled: pageState.isActiveOrDisableCoupon,
+                  }"
+                  @click="changePage('coupon')"
+                >
                   折價券
                 </button>
               </li>
@@ -39,7 +51,10 @@
           </div>
 
           <div class="p-2 bg-light border">
-            <table v-if="cartOrWishListOrCoupon == 'cart'" class="table align-middle text-center">
+            <table
+              v-if="cartOrWishListOrCoupon == 'cart'"
+              class="table align-middle text-center"
+            >
               <thead class="table-light">
                 <tr>
                   <th scope="col">#</th>
@@ -54,44 +69,82 @@
               <tbody v-for="(item, index) in pageClasses">
                 <tr>
                   <th scope="row">{{ index + 1 }}</th>
-                  <td><img src=https://picsum.photos/id/17/200 alt="..." /></td>
+                  <td>
+                    <!-- <img src=https://picsum.photos/id/17/200 alt="..." /> -->
+                    <img
+                      v-show="loadImgFactor"
+                      :src="`${URL}/course/getImg?cid=${item.courseId}`"
+                      class="cart-img-left mt-3"
+                      alt="not Found"
+                      @load="loadImg"
+                    />
+                  </td>
                   <td>{{ item.courseName }}</td>
                   <td>{{ item.employeename }}</td>
                   <td>{{ item.classDate }}&nbsp;{{ item.classTime }}</td>
-                  <td>$NT &nbsp;{{ item.price }}</td>
+                  <td>NT$ &nbsp;{{ item.price.toLocaleString() }}</td>
                   <td>
-                    <div type="button" class="bi bi-heart-fill" @click="addToWishlist(item.classId)"></div>
-                    <div type="button" class="bi bi-trash-fill" @click="deleteCartItem(item.classId)"></div>
+                    <div
+                      type="button"
+                      class="bi bi-heart-fill"
+                      @click="addToWishlist(item.classId)"
+                    ></div>
+                    <div
+                      type="button"
+                      class="bi bi-trash-fill"
+                      @click="deleteCartItem(item.classId)"
+                    ></div>
                   </td>
                 </tr>
               </tbody>
             </table>
             <!-- wishlist -->
-            <courseWishlist v-else-if="cartOrWishListOrCoupon == 'wishlist'"></courseWishlist>
+            <courseWishlist
+              v-else-if="cartOrWishListOrCoupon == 'wishlist'"
+            ></courseWishlist>
           </div>
           <!-- Coupon page start -->
           <div class="p-2 bg-light border">
-            <div class="rol-12 rol-md-9 row-lg-8" v-if="cartOrWishListOrCoupon == 'coupon'">
+            <div
+              class="rol-12 rol-md-9 row-lg-8"
+              v-if="cartOrWishListOrCoupon == 'coupon'"
+            >
               <memberCoupon></memberCoupon>
             </div>
           </div>
           <!-- Coupon page End -->
         </div>
         <!-- 結帳 card start -->
-        <div v-if="cartOrWishListOrCoupon == 'cart'" class="col-12 col-md-3 col-lg-2">
+        <div
+          v-if="cartOrWishListOrCoupon == 'cart'"
+          class="col-12 col-md-3 col-lg-2"
+        >
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">總價:</h4>
-              <p class="card-text">NT$&nbsp;{{ totalPrice }}</p>
+              <p class="card-text">
+                NT$&nbsp;{{ totalPrice.toLocaleString() }}
+              </p>
               <div class="d-grid gap-3 col-12 mx-auto">
-                <button class="btn btn-primary" :class="{
-                  disabled: isCheckoutButtonActive,
-                }" @click="toCheckoutOrNot">
+                <button
+                  class="btn btn-primary"
+                  :class="{
+                    disabled: isCheckoutButtonActive,
+                  }"
+                  @click="toCheckoutOrNot"
+                >
                   結帳
                 </button>
               </div>
             </div>
           </div>
+          <!-- back -->
+          <div class="row justify-content-center">
+            <router-link class="col-8 my-4 text-center" to="/course/0">
+              <button class="btn btn-primary">繼續購課</button>
+            </router-link>
+          </div>
+          <!-- back -->
         </div>
         <!-- 結帳 card end -->
       </div>
@@ -187,6 +240,25 @@ const loadPageClasses = async () => {
   // console.log(pageClasses);
 };
 
+// Load CourseImg
+const loadImgFactor = ref(false);
+const loadImg = () => {
+  loadImgFactor.value = true;
+};
+
+// Load alreadyBuyAmount
+const URLAPIALREADYBUY = `${URL}/order-items/getOrderItemAmountByClassId`;
+const getAlreadyBuy = (classId) =>
+  axios
+    .get(URLAPIALREADYBUY, {
+      params: {
+        classId: classId,
+      },
+    })
+    .catch((error) => {
+      console.log(error.toJSON());
+    });
+
 /*
   computed total price
 */
@@ -206,6 +278,7 @@ const totalPrice = computed(() => {
 // Delete single cart items throuth deleting in store
 const deleteCartItem = (classId) => {
   courseCartStore.value.splice(courseCartStore.value.indexOf(classId), 1);
+  handleMessage("已刪除您的購物車商品");
 };
 
 /*
@@ -245,7 +318,7 @@ const addToWishlist = (classId) => {
       console.log(courseWishlistStore.value);
 
       // Use Naive UI Dialog
-      handleSuccess("課程已成功加入願望清單");
+      handleMessage("課程已成功加入願望清單");
     } else {
       handleMessage("課程已存在您的願望清單");
     }
@@ -267,12 +340,25 @@ const CheckoutButtonActive = () => {
 };
 
 //
-const toCheckoutOrNot = () => {
+const toCheckoutOrNot = async () => {
   if (localStorage.getItem("memberid") == "") {
     handleMessage("請先登入會員");
-  } else {
-    router.push("checkout");
+    return;
   }
+
+  // soldout verification
+  let i = 0;
+  for (let classId of courseCartStore.value) {
+    const res = await getAlreadyBuy(classId);
+    if (res.data["applicantsCeil"] - res.data["orderAmount"] <= 0) {
+      handleWarning(`很抱歉，${res.data["courseName"]}課程已經售完囉!`);
+      deleteCartItem(res.data["classId"]);
+      return;
+    }
+    i++;
+  }
+
+  router.push("checkout");
 };
 
 /*
@@ -283,6 +369,13 @@ const messageNaive = useMessage();
 const handleSuccess = (contentText) => {
   dialog.success({
     title: "Success",
+    content: contentText,
+    positiveText: "確定",
+  });
+};
+const handleWarning = (contentText) => {
+  dialog.warning({
+    title: "可惜了",
     content: contentText,
     positiveText: "確定",
   });
@@ -315,5 +408,9 @@ onUpdated(() => {
   --bs-btn-hover-bg: #e83015;
   --bs-btn-hover-border-color: #c34e2e;
   --bs-btn-active-bg: #c34e2e;
+}
+.cart-img-left {
+  width: 50%;
+  height: 50%;
 }
 </style>

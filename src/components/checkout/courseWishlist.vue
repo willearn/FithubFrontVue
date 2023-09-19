@@ -14,11 +14,20 @@
     <tbody v-for="(item, index) in pageWishlistClasses">
       <tr>
         <th scope="row">{{ index + 1 }}</th>
-        <td><img src=https://picsum.photos/id/17/200 alt="..." /></td>
+        <td>
+          <!-- <img src=https://picsum.photos/id/17/200 alt="..." /> -->
+          <img
+            v-show="loadImgFactor"
+            :src="`${URL}/course/getImg?cid=${item.courseId}`"
+            class="cart-img-left mt-3"
+            alt="not Found"
+            @load="loadImg"
+          />
+        </td>
         <td>{{ item.courseName }}</td>
         <td>{{ item.employeename }}</td>
         <td>{{ item.classDate }}&nbsp;{{ item.classTime }}</td>
-        <td>$NT &nbsp;{{ item.price }}</td>
+        <td>NT$ &nbsp;{{ item.price.toLocaleString() }}</td>
         <td>
           <div
             type="button"
@@ -51,7 +60,7 @@
 
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
-import { useDialog } from "naive-ui";
+import { useDialog, useMessage } from "naive-ui";
 import { useCartStore, useWishlistStore } from "../../stores/courseStore.js";
 import { storeToRefs } from "pinia";
 const URL = import.meta.env.VITE_API_JAVAURL;
@@ -92,6 +101,12 @@ const loadPageWishlistClasses = async () => {
   }
 };
 
+// Load CourseImg
+const loadImgFactor = ref(false);
+const loadImg = () => {
+  loadImgFactor.value = true;
+};
+
 /*
   Methods Add wishlist item to cart
 */
@@ -101,9 +116,9 @@ const addWishlistToCart = (classId, listId, wishAddSince) => {
     courseCartStore.value.push(classId);
     deleteWishlistItemToDB(classId, listId, wishAddSince);
 
-    handleSuccess("已成功加入您的購物車");
+    handleMessage("已成功加入您的購物車");
   } else {
-    handleSuccess("課程已存在您的購物車");
+    handleMessage("課程已存在您的購物車");
   }
 };
 
@@ -123,7 +138,7 @@ const updateWishlistDBtoStore = (pageWishlistClasses) => {
 */
 
 // Delete single wishlist item throuth deleting in store
-// 可刪
+// 可刪，因爲store的值會被複寫
 const deleteWishlistItem = (classId) => {
   courseWishlistStore.value.splice(
     courseWishlistStore.value.indexOf(classId),
@@ -149,6 +164,7 @@ const deleteWishlistItemToDB = async (classId, listId, wishAddSince) => {
     });
   // deleteWishlistItem(classId); // reload 自動複寫 store
   loadPageWishlistClasses();
+  handleMessage("已取消您的願望收藏");
 };
 
 /*
@@ -163,6 +179,14 @@ const handleSuccess = (contentText) => {
   });
 };
 
+const messageNaive = useMessage();
+const handleMessage = (messageText) => {
+  messageNaive.info(messageText, {
+    closable: true,
+    duration: 5000,
+  });
+};
+
 /*
   LifeCycle Hooks
 */
@@ -171,4 +195,9 @@ onMounted(() => {
 });
 </script>
 
-<style></style>
+<style scoped>
+.cart-img-left {
+  width: 50%;
+  height: 50%;
+}
+</style>

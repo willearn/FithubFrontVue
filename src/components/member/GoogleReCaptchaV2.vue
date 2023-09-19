@@ -18,7 +18,7 @@ const instance_vueRecaptchaV2 = reactive({
 
     recaptchaVerified: async (response_token) => {
         test.response_token = response_token;
-        console.log(response_token);
+        // console.log(response_token);
         // 連接後端API，給後端進行認證
         // Connect to your Backend service.
         const response = await axios.post(`${url}/memberloginrecaptcha`, test)
@@ -30,13 +30,13 @@ const instance_vueRecaptchaV2 = reactive({
         // 驗證過期後進行的動作
         // After recaptcha is expired, the action you can do.
         emit('recaptcha', 'false');
-        console.log('驗證過期啦QAQ');
+        // console.log('驗證過期啦QAQ');
     },
     recaptchaFailed: () => {
         // 驗證失敗進行的動作
         // After recaptcha is failed, the action you can do.
         emit('recaptcha', 'false');
-        console.log('驗證失敗啦QAQ')
+        // console.log('驗證失敗啦QAQ')
     },
 });
 </script>
