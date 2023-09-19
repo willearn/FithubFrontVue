@@ -36,21 +36,15 @@
 
     <section class="page-section" id="team">
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 mybg-light">
-                    <div class="text-center">
-                        <h1>{{ activityDeatil.activityname }}</h1>
-                        <h2>{{ activityDeatil.activitydate }}</h2>
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 mybg-light text-center">
+                    <h1>{{ activityDeatil.activityname }}</h1>
+                    <h2>{{ activityDeatil.activitydate }}</h2>
+                    <hr />
+                    <div class="col-lg-8 offset-md-2" id="activityDeatil">
                     </div>
                     <hr />
-                    <div>
-                        <div id="activityDeatil">
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="text-center">
-                        <button class="btn btn-primary text-center m-2" @click="goBack">返回首頁</button>
-                    </div>
+                    <button class="btn btn-primary" @click="goBack">返回首頁</button>
                 </div>
             </div>
         </div>
