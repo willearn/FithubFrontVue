@@ -246,6 +246,19 @@ const loadImg = () => {
   loadImgFactor.value = true;
 };
 
+// Load alreadyBuyAmount
+const URLAPIALREADYBUY = `${URL}/order-items/getOrderItemAmountByClassId`;
+const getAlreadyBuy = (classId) =>
+  axios
+    .get(URLAPIALREADYBUY, {
+      params: {
+        classId: classId,
+      },
+    })
+    .catch((error) => {
+      console.log(error.toJSON());
+    });
+
 /*
   computed total price
 */
@@ -327,12 +340,30 @@ const CheckoutButtonActive = () => {
 };
 
 //
-const toCheckoutOrNot = () => {
+const toCheckoutOrNot = async () => {
   if (localStorage.getItem("memberid") == "") {
     handleMessage("請先登入會員");
-  } else {
-    router.push("checkout");
+    return;
   }
+
+  let i = 0;
+  for (let classId of courseCartStore.value) {
+    console.log(classId);
+    const res = await getAlreadyBuy(classId);
+    console.log(res);
+    console.log(res.data);
+    //
+    console.log(res.data["applicantsCeil"] - res.data["orderAmount"]);
+    //
+    if (res.data["applicantsCeil"] - res.data["orderAmount"] <= 0) {
+      handleWarning(`很抱歉，${res.data["courseName"]}課程已經售完囉!`);
+      deleteCartItem(res.data["classId"]);
+      return;
+    }
+    i++;
+  }
+
+  router.push("checkout");
 };
 
 /*
@@ -343,6 +374,13 @@ const messageNaive = useMessage();
 const handleSuccess = (contentText) => {
   dialog.success({
     title: "Success",
+    content: contentText,
+    positiveText: "確定",
+  });
+};
+const handleWarning = (contentText) => {
+  dialog.warning({
+    title: "可惜了",
     content: contentText,
     positiveText: "確定",
   });
