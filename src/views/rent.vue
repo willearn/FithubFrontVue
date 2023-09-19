@@ -52,7 +52,7 @@
                             <td class="col-lg-2 col-md-2">{{ classroom.classroomName }}</td>
                             <td class="col-lg-2 col-md-2">{{ classroom.classroomCapacity }}</td>
                             <td class="col-lg-2 col-md-2">{{ classroom.classroomDescription }}</td>
-                            <td class="col-lg-2 col-md-2">{{ classroom.classroomPrice }}</td>
+                            <td class="col-lg-2 col-md-2">$NT {{ classroom.classroomPrice }}</td>
                             <td class="col-lg-2 col-md-2">{{ classroom.classroomStatus }}</td>
                             <td class="col-lg-2 col-md-2"><img :src="classroom.classroomPic" class="img-fluid" alt="維修中">
                             </td>

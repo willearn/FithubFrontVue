@@ -26,7 +26,7 @@
                                 <td>{{ selectedClassroom.classroomName }}</td>
                                 <td>{{ selectedClassroom.rentdate }}</td>
                                 <td>{{ selectedClassroom.renttime }}</td>
-                                <td>{{ selectedClassroom.classroomPrice }}</td>
+                                <td>$NT {{ selectedClassroom.classroomPrice }}</td>
                             </tr>
                         </tbody>
                     </table>
