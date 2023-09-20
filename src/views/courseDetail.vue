@@ -315,15 +315,38 @@ const getAlreadyBuy = (classId) =>
 const recommendedCourses = ref([]);
 const loadRecommendedCourses = async () => {
   const URLAPI = `${URL}/course/page`;
-  const response = await axios.get(URLAPI, {
-    params: {
-      p: Math.floor(Math.random() * 5) + 1, // 隨機產生1~5正整數
-      size: 3,
-    },
-  });
+  const response = await axios
+    .get(URLAPI, {
+      params: {
+        p: Math.floor(Math.random() * 5) + 1, // 隨機產生1~5正整數
+        size: 3,
+      },
+    })
+    .catch((error) => {
+      console.log(error.toJSON());
+    });
 
   //取得所有課程放進courses變數
   recommendedCourses.value = response.data;
+};
+
+/*
+  Methods for Verification
+*/
+const memberAlreadyBuy = ref([]);
+const getMemberAlreadyBuy = async (classId) => {
+  const URLAPIMEMBERBUY = `${URL}/orders/getAlreadyBuy`;
+  const response = await axios
+    .get(URLAPIMEMBERBUY, {
+      params: {
+        classId: classId,
+        memberId: localStorage.getItem("memberid"),
+      },
+    })
+    .catch((error) => {
+      console.log(error.toJSON());
+    });
+  memberAlreadyBuy.value = response.data;
 };
 
 /*
@@ -353,7 +376,7 @@ const onClickedClass = async (classId) => {
 const saveCourseCartToLocalStorage = async (forwardOrStay) => {
   // soldout verification start
   if (displayClasses.applicantsCeil - displayClasses.alreadyBuyAmount <= 0) {
-    handleWarning("很抱歉，課程已經售完囉!");
+    handleWarning("可惜了", "很抱歉，課程已經售完囉!");
     return;
   } else {
     const res = await getAlreadyBuy(displayClasses.classId);
@@ -361,7 +384,7 @@ const saveCourseCartToLocalStorage = async (forwardOrStay) => {
     for (let classId of courseCartStore.value) {
       const res = await getAlreadyBuy(classId);
       if (res.data["applicantsCeil"] - res.data["orderAmount"] <= 0) {
-        handleWarning(`很抱歉，課程已經售完囉!`);
+        handleWarning("可惜了", "很抱歉，課程已經售完囉!");
         deleteCartItem(res.data["classId"]);
         return;
       }
@@ -369,6 +392,14 @@ const saveCourseCartToLocalStorage = async (forwardOrStay) => {
     }
   }
   // soldout verification end
+
+  // member already buy verification start
+  await getMemberAlreadyBuy(displayClasses.classId);
+  if (Object.keys(memberAlreadyBuy.value).length != 0) {
+    handleWarning("小提醒", "您已經購買過本課程囉!");
+    return;
+  }
+  // member already buy verification end
 
   if (
     // check classId have value and not repeat in LocalStorage
@@ -411,10 +442,18 @@ const AddWishlistItemToDB = async (classId) => {
 /*
   Add classes to courseWishlistStore and local storage
 */
-const addToWishlist = (classId) => {
+const addToWishlist = async (classId) => {
   if (localStorage.getItem("memberid") == "") {
     handleMessage("請先登入會員");
   } else {
+    // member already buy verification start
+    await getMemberAlreadyBuy(displayClasses.classId);
+    if (Object.keys(memberAlreadyBuy.value).length != 0) {
+      handleWarning("小提醒", "您已經購買過本課程囉!");
+      return;
+    }
+    // member already buy verification end
+
     if (!courseWishlistStore.value.includes(classId)) {
       AddWishlistItemToDB(classId);
       courseWishlistStore.value.push(classId);
@@ -449,9 +488,9 @@ const handleSuccess = (contentText) => {
     positiveText: "確定",
   });
 };
-const handleWarning = (contentText) => {
+const handleWarning = (titleText, contentText) => {
   dialog.warning({
-    title: "可惜了",
+    title: titleText,
     content: contentText,
     positiveText: "確定",
   });
