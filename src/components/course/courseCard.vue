@@ -17,8 +17,11 @@
     </n-space>
     <div class="card-body">
       <h5 class="card-text">{{ course.courseName }}</h5>
-      <SimpleTag :tagText="course.courseCategories.categoryName"></SimpleTag>
-      <div class="card-text mb-1">NT$ 100 起</div>
+      <SimpleTag
+        :tagText="course.courseCategories.categoryName"
+        class="mb-3"
+      ></SimpleTag>
+      <!-- <div class="card-text mb-1">NT$ 100 起</div> -->
       <div class="d-flex justify-content-end">
         <RouterLink
           :to="`/course/detail/${course.courseId}`"

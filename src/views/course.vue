@@ -192,8 +192,6 @@ const changePage = (nextOrLast, pageChoose) => {
     paginationData.page + nextOrLast <= paginationData.totalPages
   ) {
     paginationData.page += nextOrLast;
-  } else {
-    console.log("do nothing");
   }
 };
 
@@ -219,10 +217,7 @@ watch(
 */
 onBeforeMount(() => {
   // pageCourseCategoryId.value = route.params["categoryid"];
-  console.log("onBeforeMount1");
   loadAllCourseCategories();
-  console.log("onBeforeMount2");
-  console.log(allCourseCategories.value);
 });
 
 onMounted(() => {
