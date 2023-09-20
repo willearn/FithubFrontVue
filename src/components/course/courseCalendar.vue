@@ -25,6 +25,14 @@ const props = defineProps({
 const emit = defineEmits(["clickCalendarClassEmit"]);
 
 /*
+  initial value
+*/
+// 取得下一個月的第一天
+var initialDate = new Date();
+initialDate.setMonth(initialDate.getMonth() + 1);
+initialDate.setDate(1);
+
+/*
   Build FullCalendar
 */
 const calendarOptions = ref({
@@ -33,9 +41,19 @@ const calendarOptions = ref({
   weekends: true,
   height: 650,
   aspectRatio: 1,
+  initialDate: initialDate,
   // timeZone: 'UTC',
   locale: "en-us",
-  buttonText: { today: "今日" },
+  headerToolbar: {
+    left: "",
+    center: "title",
+    right: "",
+  },
+  titleFormat: {
+    year: "numeric",
+    month: "long",
+  },
+  // buttonText: { today: "今日" },
   events: [],
   eventColor: "#ffc408",
   interactive: true,
