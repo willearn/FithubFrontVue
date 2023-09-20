@@ -42,8 +42,12 @@
                         <h1>{{ activityDeatil.activityname }}</h1>
                         <h2>{{ activityDeatil.activitydate }}</h2>
                     </div>
+                    <div class="col-lg-8 offset-md-2" id="activityDeatil">
+                    </div>
                     <hr />
-                    <button class="btn btn-primary" @click="goBack">返回首頁</button>
+                    <div class="text-center">
+                        <button class="btn btn-primary" @click="goBack">返回首頁</button>
+                    </div>
                 </div>
             </div>
         </div>
