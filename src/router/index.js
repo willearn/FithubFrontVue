@@ -110,6 +110,11 @@ const router = createRouter({
       name: "ordercheck",
       component: () => import("../views/orderCheck.vue"),
     },
+    {
+      path: "/disclaimer",
+      name: "disclaimer",
+      component: () => import("../views/disclaimer.vue"),
+    },
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition && to.meta.keepAlive) {

@@ -90,6 +90,11 @@
         </div>
       </div>
     </div>
+    <div style="background-color: black;">
+      <div class="text-center">
+        <router-link class="nav-link" style="color: white;" to="/disclaimer">網站聲明</router-link>
+      </div>
+    </div>
   </section>
 </template>
 

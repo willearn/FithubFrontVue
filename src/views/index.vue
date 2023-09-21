@@ -81,7 +81,7 @@
     </div>
     <div class="row">
       <div class="col-lg-4" style="padding: 0px;" v-for="(image, index) in images" :key="index">
-        <img :src="image.src" @click="openLightbox(index)" alt="Image" class="myimg-full">
+        <img :src="image.src" style="cursor: pointer;" @click="openLightbox(index)" alt="Image" class="myimg-full">
       </div>
     </div>
     <vue-easy-lightbox :visible="lightboxVisible" :imgs="lightboxImages" :index="lightboxIndex"
@@ -100,7 +100,8 @@
     <Carousel v-bind="settings" :breakpoints="breakpoints">
       <Slide style="flex-direction: column;justify-content: flex-start" class="px-sm-5"
         v-for="(  activity, activityindex  ) in   activitys  " :key="activityindex">
-        <img style="width: 100%;height: 300px;" :src="activity.activitypic" alt="維修中" @click="handleImageClick(activity)">
+        <img style="width: 100%;height: 300px;cursor: pointer;" :src="activity.activitypic" alt="維修中"
+          @click="handleImageClick(activity)">
         <h3>{{ activity.activityname }}</h3>
       </Slide>
       <template #addons>
@@ -229,8 +230,8 @@ const images = [
     title: '有氧小教室'
   },
   {
-    src: 'src/assets/index/classroom/空中瑜珈.jpg',
-    title: '空中瑜珈'
+    src: 'src/assets/index/classroom/多功能教室.jpg',
+    title: '多功能教室'
   },
   {
     src: 'src/assets/index/classroom/飛輪教室.jpg',
