@@ -77,6 +77,15 @@
                 </div>
               </div>
 
+              <div class="ml-2 my-3">
+                <div
+                  v-if="displayClasses.isMemberaAlreadyBuy"
+                  style="color: red; font-size: medium"
+                >
+                  您已經購買過本課程囉!
+                </div>
+              </div>
+
               <div class="row justify-content-end my-4">
                 <div class="col-12 col-md-6 col-lg-4">
                   <button
@@ -209,6 +218,7 @@ const displayClasses = reactive({
   price: "",
   applicantsCeil: "",
   alreadyBuyAmount: "",
+  isMemberaAlreadyBuy: false,
 });
 
 /*
@@ -361,7 +371,11 @@ const onClickedClass = async (classId) => {
     return item.classId == classId;
   });
 
+  // 取得該堂課被購買的資訊
   const resAlreadyBuy = await getAlreadyBuy(classId);
+
+  // 取得該會員是否購買過課程
+  await getMemberAlreadyBuy(classId);
 
   displayClasses.classId = clickedCLass["classId"];
   displayClasses.classDate = clickedCLass["classDate"];
@@ -371,6 +385,9 @@ const onClickedClass = async (classId) => {
   displayClasses.price = clickedCLass["price"];
   displayClasses.applicantsCeil = clickedCLass["applicantsCeil"];
   displayClasses.alreadyBuyAmount = resAlreadyBuy.data["orderAmount"];
+  if (Object.keys(memberAlreadyBuy.value).length != 0) {
+    displayClasses.isMemberaAlreadyBuy = true;
+  }
 };
 
 const saveCourseCartToLocalStorage = async (forwardOrStay) => {
