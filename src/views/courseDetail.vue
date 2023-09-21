@@ -387,6 +387,8 @@ const onClickedClass = async (classId) => {
   displayClasses.alreadyBuyAmount = resAlreadyBuy.data["orderAmount"];
   if (Object.keys(memberAlreadyBuy.value).length != 0) {
     displayClasses.isMemberaAlreadyBuy = true;
+  } else {
+    displayClasses.isMemberaAlreadyBuy = false;
   }
 };
 
