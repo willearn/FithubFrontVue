@@ -282,6 +282,16 @@ const loadPageClasses = async () => {
       start: item["classDate"],
     };
   });
+
+  if (localStorage.getItem("memberid") != "") {
+    // 取得該會員是否購買過課程
+    await getMemberAlreadyBuy(pageClasses.value[0]["classId"]);
+    if (Object.keys(memberAlreadyBuy.value).length != 0) {
+      displayClasses.isMemberaAlreadyBuy = true;
+    } else {
+      displayClasses.isMemberaAlreadyBuy = false;
+    }
+  }
 };
 
 // Load wishlist classes data
