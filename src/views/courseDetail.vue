@@ -415,10 +415,12 @@ const saveCourseCartToLocalStorage = async (forwardOrStay) => {
   // soldout verification end
 
   // member already buy verification start
-  await getMemberAlreadyBuy(displayClasses.classId);
-  if (Object.keys(memberAlreadyBuy.value).length != 0) {
-    handleWarning("小提醒", "您已經購買過本課程囉!");
-    return;
+  if (localStorage.getItem("memberid") != "") {
+    await getMemberAlreadyBuy(displayClasses.classId);
+    if (Object.keys(memberAlreadyBuy.value).length != 0) {
+      handleWarning("小提醒", "您已經購買過本課程囉!");
+      return;
+    }
   }
   // member already buy verification end
 
