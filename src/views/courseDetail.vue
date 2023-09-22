@@ -374,8 +374,15 @@ const onClickedClass = async (classId) => {
   // 取得該堂課被購買的資訊
   const resAlreadyBuy = await getAlreadyBuy(classId);
 
-  // 取得該會員是否購買過課程
-  await getMemberAlreadyBuy(classId);
+  if (localStorage.getItem("memberid") != "") {
+    // 取得該會員是否購買過課程
+    await getMemberAlreadyBuy(classId);
+    if (Object.keys(memberAlreadyBuy.value).length != 0) {
+      displayClasses.isMemberaAlreadyBuy = true;
+    } else {
+      displayClasses.isMemberaAlreadyBuy = false;
+    }
+  }
 
   displayClasses.classId = clickedCLass["classId"];
   displayClasses.classDate = clickedCLass["classDate"];
@@ -385,11 +392,6 @@ const onClickedClass = async (classId) => {
   displayClasses.price = clickedCLass["price"];
   displayClasses.applicantsCeil = clickedCLass["applicantsCeil"];
   displayClasses.alreadyBuyAmount = resAlreadyBuy.data["orderAmount"];
-  if (Object.keys(memberAlreadyBuy.value).length != 0) {
-    displayClasses.isMemberaAlreadyBuy = true;
-  } else {
-    displayClasses.isMemberaAlreadyBuy = false;
-  }
 };
 
 const saveCourseCartToLocalStorage = async (forwardOrStay) => {
