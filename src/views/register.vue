@@ -202,21 +202,6 @@ router.beforeResolve(async (to) => {
   console.log("test")
 });
 
-const inputTestData = () => {
-  registerData.memberemail = "tw3555488@gmail.com"
-  registerData.memberpassword = "P@ssw0rd"
-  registerData.memberphoneno = "0912345678"
-  registerData.membername = "陳慶君"
-  registerData.membergender = "男"
-  registerData.membercity = "高雄市"
-  registerData.memberzone = "旗山區"
-  registerData.memberaddress = "鳳楠路108巷17號"
-  registerData.memberbirthday = "2000-02-02"
-
-  checkpassword.againpassword = "P@ssw0rd"
-}
-
-
 </script>
 
 <template>
@@ -234,7 +219,7 @@ const inputTestData = () => {
                   <!-- 信箱 -->
                   <div>
                     <div>
-                      <input type="button" value="測試資料" class="btn btn-secondary ms-1" @click="inputTestData"/>
+                      <input type="button" value="測試資料" class="btn btn-secondary ms-1" />
                     </div>
                     <label class="form-label mb-1">信箱</label><span v-if="!registerData.memberemail"
                       class="text-danger">*</span>
