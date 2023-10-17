@@ -21,6 +21,6 @@ app.use(router);
 app.use(naive);
 app.use(vue3GoogleLogin, {
   clientId:
-    "1052054161616-ierb817mjstfe847c2diep8911njsgap.apps.googleusercontent.com",
+    "請輸入金鑰",
 });
 app.mount("#app");
