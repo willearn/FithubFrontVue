@@ -117,7 +117,7 @@
       <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-lg-6 col-xl-6">
           <!-- GoogleMap -->
-          <GoogleMap api-key="AIzaSyB3Hjtldwb3Ep_QOvoCs1UZAtkmWNDCJyA" style="width: 100%; height: 100%" :center="center"
+          <GoogleMap api-key="AIzaSyD13mXOowqW0fYFcLBub3zyGFlJOeJ0Zlo" style="width: 100%; height: 100%" :center="center"
             :zoom="15">
             <Marker :options="{ position: center }">
               <InfoWindow>

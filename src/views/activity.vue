@@ -18,7 +18,7 @@
                     <img src="../assets/index/classroom/有氧大教室.jpg" class="d-block w-100" alt="...">
                 </div>
                 <div class="carousel-item">
-                    <img src="../assets/index/classroom/空中瑜珈.jpg" class="d-block w-100" alt="...">
+                    <img src="../assets/index/classroom/多功能教室.jpg" class="d-block w-100" alt="...">
                 </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
@@ -75,17 +75,17 @@ const getActivityDeatil = async () => {
         activityDeatil.value = response.data;
 
         const activityDeatilDiv = document.getElementById('activityDeatil');
-        
+
 
         // 將activityDescription的内容設置為<div>的innerHTML
         activityDeatilDiv.innerHTML = activityDeatil.value.activitydescription;
 
         const dynamicParagraph = activityDeatilDiv.querySelector('img');
         if (dynamicParagraph) {
-            dynamicParagraph.style.width = '100%'; 
-            dynamicParagraph.style.height = '100%'; 
+            dynamicParagraph.style.width = '100%';
+            dynamicParagraph.style.height = '100%';
         }
-       
+
     } catch (error) {
         console.error('Error:', error);
     }
